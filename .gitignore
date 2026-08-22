@@ -1,0 +1,14 @@
+node_modules/
+dist/
+coverage/
+playwright-report/
+test-results/
+.DS_Store
+*.local
+*.log
+
+# Environment files may contain deployment configuration.
+.env
+.env.*
+!.env.example
+

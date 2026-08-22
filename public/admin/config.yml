@@ -1,0 +1,296 @@
+# Decap writes content commits through GitLab. Register a non-confidential GitLab
+# OAuth application with the deployed /admin/ URL and replace this public app ID.
+backend:
+  name: gitlab
+  repo: beerwolf-shop/landing
+  branch: main
+  auth_type: pkce
+  app_id: REPLACE_WITH_GITLAB_OAUTH_APP_ID
+
+# Local editing uses `npx decap-server`; no GitLab login is needed in development.
+local_backend: true
+
+# Uploaded media is committed with content and served from the static site.
+media_folder: public/uploads
+public_folder: uploads
+
+locale: en
+publish_mode: editorial_workflow
+
+collections:
+  - name: localization
+    label: Localization
+    label_singular: Locale
+    folder: src/content/copy
+    create: true
+    extension: json
+    format: json
+    identifier_field: meta.title
+    slug: '{{slug}}'
+    summary: '{{filename}} — {{meta.title}}'
+    fields:
+      - label: Metadata
+        name: meta
+        widget: object
+        fields:
+          - { label: Browser title, name: title, widget: string }
+          - { label: Search description, name: description, widget: text }
+      - label: Navigation
+        name: nav
+        widget: object
+        fields:
+          - { label: Accessible label, name: label, widget: string }
+          - { label: Concept link, name: concept, widget: string }
+          - { label: Process link, name: process, widget: string }
+          - { label: Archive link, name: archive, widget: string }
+          - { label: Contact link, name: contact, widget: string }
+          - { label: Open menu label, name: menuOpen, widget: string }
+          - { label: Close menu label, name: menuClose, widget: string }
+          - { label: Skip link, name: skip, widget: string }
+      - label: Shared labels
+        name: common
+        widget: object
+        fields:
+          - { label: Telegram CTA, name: telegramCta, widget: string }
+          - { label: Visit project, name: viewProject, widget: string }
+          - { label: Demo project, name: demoProject, widget: string }
+          - { label: Scroll cue, name: scrollCue, widget: string }
+          - { label: Language label, name: language, widget: string }
+      - label: Hero
+        name: hero
+        widget: object
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string }
+          - { label: Title first line, name: titleLead, widget: string }
+          - { label: Title accent line, name: titleAccent, widget: string }
+          - { label: Description, name: description, widget: text }
+          - { label: Side note, name: sideNote, widget: string }
+          - { label: Stamp, name: stamp, widget: string }
+          - { label: Poster alt text, name: posterAlt, widget: string }
+      - label: Process
+        name: process
+        widget: object
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string }
+          - { label: Title, name: title, widget: string }
+          - { label: Introduction, name: intro, widget: text }
+          - label: Steps
+            name: steps
+            widget: list
+            collapsed: true
+            summary: '{{fields.number}} — {{fields.title}}'
+            fields:
+              - { label: Number, name: number, widget: string }
+              - { label: Kicker, name: kicker, widget: string }
+              - { label: Title, name: title, widget: string }
+              - { label: Body, name: body, widget: text }
+          - label: Project board
+            name: board
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Project reference, name: project, widget: string }
+              - label: Columns
+                name: columns
+                widget: list
+                collapsed: true
+                summary: '{{fields.title}}'
+                fields:
+                  - { label: Title, name: title, widget: string }
+                  - label: Task cards
+                    name: cards
+                    widget: list
+                    field: { label: Task, name: task, widget: string }
+          - label: Telegram conversation
+            name: telegram
+            widget: object
+            fields:
+              - { label: Title, name: title, widget: string }
+              - { label: Status, name: status, widget: string }
+              - label: Messages
+                name: messages
+                widget: list
+                collapsed: true
+                summary: '{{fields.from}} — {{fields.text}}'
+                fields:
+                  - label: Sender
+                    name: from
+                    widget: select
+                    options: [bot, client]
+                  - { label: Text, name: text, widget: text }
+              - label: Bot actions
+                name: actions
+                widget: list
+                field: { label: Action, name: action, widget: string }
+      - label: Archive
+        name: archive
+        widget: object
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string }
+          - { label: Title, name: title, widget: string }
+          - { label: Introduction, name: intro, widget: text }
+          - label: Dossier labels
+            name: labels
+            widget: object
+            fields:
+              - { label: Client, name: client, widget: string }
+              - { label: Year, name: year, widget: string }
+              - { label: Direction, name: direction, widget: string }
+              - { label: Features, name: features, widget: string }
+              - { label: Stack, name: stack, widget: string }
+              - { label: Status, name: status, widget: string }
+          - label: Archive cabinet
+            name: cabinet
+            widget: object
+            fields:
+              - { label: Brand line, name: brand, widget: string }
+              - { label: Select label, name: selectLabel, widget: string }
+              - { label: Select aria label, name: selectAriaLabel, widget: string }
+              - { label: Files suffix, name: filesSuffix, widget: string }
+              - { label: Order link, name: skipToContact, widget: string }
+      - label: Contact
+        name: contact
+        widget: object
+        fields:
+          - { label: Eyebrow, name: eyebrow, widget: string }
+          - label: Heading
+            name: heading
+            widget: object
+            fields:
+              - { label: Question line, name: question, widget: string }
+              - { label: Script line, name: scriptLine, widget: string }
+              - { label: Brand name, name: brand, widget: string }
+          - { label: Introduction, name: intro, widget: text }
+          - { label: Telegram title, name: telegramTitle, widget: string }
+          - { label: Telegram body, name: telegramBody, widget: text }
+          - { label: Form title, name: formTitle, widget: string }
+          - { label: Form introduction, name: formIntro, widget: text }
+          - label: Field labels
+            name: fields
+            widget: object
+            fields:
+              - { label: Name label, name: name, widget: string }
+              - { label: Name placeholder, name: namePlaceholder, widget: string }
+              - { label: Method label, name: method, widget: string }
+              - { label: Contact label, name: contact, widget: string }
+              - { label: Contact placeholder, name: contactPlaceholder, widget: string }
+              - { label: Idea label, name: idea, widget: string }
+              - { label: Idea placeholder, name: ideaPlaceholder, widget: string }
+              - { label: References label, name: references, widget: string }
+              - {
+                  label: References placeholder,
+                  name: referencesPlaceholder,
+                  widget: string,
+                }
+              - { label: Budget label, name: budget, widget: string }
+              - { label: Budget placeholder, name: budgetPlaceholder, widget: string }
+              - { label: Consent label, name: consent, widget: text }
+              - { label: Honeypot label, name: honeypot, widget: string }
+          - label: Contact methods
+            name: methods
+            widget: list
+            field: { label: Method, name: method, widget: string }
+          - { label: Submit button, name: submit, widget: string }
+          - { label: Sending status, name: sending, widget: string }
+          - { label: Success status, name: success, widget: text }
+          - { label: Error status, name: error, widget: text }
+          - { label: Missing endpoint status, name: missingEndpoint, widget: text }
+          - { label: Required-field status, name: required, widget: text }
+          - { label: Availability, name: availability, widget: string }
+          - { label: Privacy note, name: privacy, widget: string }
+      - label: Footer
+        name: footer
+        widget: object
+        fields:
+          - { label: Social title, name: socialTitle, widget: string }
+          - { label: Signoff, name: signoff, widget: string }
+          - { label: Copyright, name: copyright, widget: text }
+          - { label: Easter egg, name: easterEgg, widget: text }
+
+  - name: portfolio
+    label: Portfolio
+    files:
+      - label: Projects
+        name: projects
+        file: src/content/projects.json
+        fields:
+          - label: Projects
+            name: projects
+            widget: list
+            allow_add: true
+            allow_remove: true
+            allow_reorder: true
+            collapsed: true
+            summary: '{{fields.year}} — {{fields.translations.en.title}}'
+            fields:
+              - label: ID
+                name: id
+                widget: string
+                hint: Lowercase letters, numbers and hyphens only.
+                pattern: ['^[a-z0-9-]+$', 'Use lowercase letters, numbers and hyphens.']
+              - { label: Year, name: year, widget: string }
+              - { label: Identity / client, name: client, widget: string }
+              - { label: Artwork, name: image, widget: image }
+              - label: Artwork alt text
+                name: imageAlt
+                widget: object
+                fields:
+                  - { label: English, name: en, widget: string }
+                  - { label: Russian, name: ru, widget: string }
+              - label: Artwork treatment
+                name: artVariant
+                widget: select
+                options: [signal, riot, river]
+              - label: Stack
+                name: stack
+                widget: list
+                field: { label: Technology, name: technology, widget: string }
+              - { label: Live URL, name: liveUrl, widget: string, required: false }
+              - label: Localized content
+                name: translations
+                widget: object
+                fields:
+                  - label: English
+                    name: en
+                    widget: object
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - { label: Description, name: description, widget: text }
+                      - { label: Visual direction, name: direction, widget: text }
+                      - label: Features
+                        name: features
+                        widget: list
+                        field: { label: Feature, name: feature, widget: string }
+                  - label: Russian
+                    name: ru
+                    widget: object
+                    fields:
+                      - { label: Title, name: title, widget: string }
+                      - { label: Description, name: description, widget: text }
+                      - { label: Visual direction, name: direction, widget: text }
+                      - label: Features
+                        name: features
+                        widget: list
+                        field: { label: Feature, name: feature, widget: string }
+
+  - name: settings
+    label: Settings
+    files:
+      - label: Links and contacts
+        name: links
+        file: src/content/settings.json
+        fields:
+          - { label: Brand name, name: brandName, widget: string }
+          - { label: Telegram bot URL, name: telegramBotUrl, widget: string }
+          - { label: Contact email, name: email, widget: string }
+          - label: Social links
+            name: socials
+            widget: list
+            allow_add: true
+            allow_remove: true
+            allow_reorder: true
+            collapsed: true
+            summary: '{{fields.label}}'
+            fields:
+              - { label: Label, name: label, widget: string }
+              - { label: URL, name: url, widget: string }

@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img">
+  <defs>
+    <linearGradient id="paper" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#e9d998"/>
+      <stop offset="1" stop-color="#d7a66b"/>
+    </linearGradient>
+    <linearGradient id="water" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#315c4b"/>
+      <stop offset="1" stop-color="#132f29"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#paper)" d="M0 0h1200v760H0z"/>
+  <path fill="#cc704b" opacity=".55" d="M0 0h1200v73H0zM0 687h1200v73H0z"/>
+  <ellipse cx="610" cy="411" rx="450" ry="245" fill="url(#water)"/>
+  <g fill="none" stroke="#8eaa66" opacity=".6">
+    <ellipse cx="610" cy="411" rx="374" ry="190" stroke-width="3"/>
+    <ellipse cx="610" cy="411" rx="294" ry="141" stroke-width="2"/>
+    <ellipse cx="610" cy="411" rx="194" ry="88"/>
+  </g>
+  <g transform="translate(608 366)">
+    <path fill="#d3cd63" d="m-364 29 93-144 118-55 77 43-113 61 126 48-99 77-111-31z"/>
+    <path fill="#8fa35d" d="m-76-127 115-49 139 65-68 77-127-14z"/>
+    <path fill="#f0d454" d="m179-111 103 73 30 108-102-39-100-65z"/>
+    <path fill="#ca714d" d="m312 70 50 112-120 70-74-93 42-128z"/>
+    <path fill="#b4bc63" d="m242 252-132 77-151-35 62-100 147-35z"/>
+    <path fill="#d8cc65" d="m-41 294-149 3-108-74 85-79 158 51z"/>
+    <path fill="#739260" d="m-298 223-93-72 27-122 91-1 60 116z"/>
+    <path fill="#17352d" d="m-216-83 63-87 77 43-113 61zM39-176l65 30 6 112-127-14zM282-38l30 108-102-39zM362 182l-120 70 0-95zM110 329l-151-35 77-39zM-190 297l-108-74 94-15zM-391 151l27-122 66 74z"/>
+    <path fill="#f3da59" d="m285-54 34-43 10 48 47 16-44 21-1 50-35-37-48 14 23-43-28-40z"/>
+  </g>
+  <g fill="#17352d" font-family="monospace">
+    <text x="54" y="48" font-size="22" letter-spacing="4">FIELD GUIDE / MEMORY POOL</text>
+    <text x="862" y="717" font-size="28" font-weight="700" letter-spacing="5">RIVER MEMORY</text>
+  </g>
+</svg>
+

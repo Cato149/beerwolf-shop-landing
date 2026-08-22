@@ -1,0 +1,109 @@
+{
+  "projects": [
+    {
+      "id": "moth-signal",
+      "year": "2026",
+      "client": "Morrow / luna moth",
+      "image": "art/moth-signal.svg",
+      "imageAlt": {
+        "en": "A lime moth silhouette crossing an orange radio-wave sun",
+        "ru": "Лаймовый силуэт мотылька на фоне оранжевого солнца из радиоволн"
+      },
+      "artVariant": "signal",
+      "stack": ["React", "GSAP", "Web Audio"],
+      "liveUrl": null,
+      "translations": {
+        "en": {
+          "title": "Moth Signal",
+          "description": "A nocturnal identity archive that behaves like a shortwave receiver: field recordings, artwork and character lore surface as the visitor tunes the dial.",
+          "direction": "Night radio manuals, entomology plates, fluorescent screen print.",
+          "features": [
+            "Tuneable audio fragments",
+            "Specimen archive",
+            "Moon-phase palette"
+          ]
+        },
+        "ru": {
+          "title": "Сигнал мотылька",
+          "description": "Ночной архив образа, работающий как коротковолновый приёмник: полевые записи, арты и история персонажа появляются, пока посетитель настраивает частоту.",
+          "direction": "Инструкции к ночным радиостанциям, энтомологические таблицы, флуоресцентная шелкография.",
+          "features": [
+            "Настраиваемые аудиофрагменты",
+            "Архив образцов",
+            "Палитра лунных фаз"
+          ]
+        }
+      }
+    },
+    {
+      "id": "soft-riot",
+      "year": "2025",
+      "client": "Rook / striped hyena",
+      "image": "art/soft-riot.svg",
+      "imageAlt": {
+        "en": "A striped geometric creature leaping through yellow photocopied stars",
+        "ru": "Полосатое геометрическое существо прыгает сквозь жёлтые ксероксные звёзды"
+      },
+      "artVariant": "riot",
+      "stack": ["React", "SVG", "Headless CMS"],
+      "liveUrl": null,
+      "translations": {
+        "en": {
+          "title": "Soft Riot",
+          "description": "Part commission sheet, part touring zine. The site mixes an illustration gallery with gig memories, handmade badges and deliberately unruly type.",
+          "direction": "Queer punk flyers, torn paper, safety orange and friendly damage.",
+          "features": [
+            "Layered gig map",
+            "Drag-to-sort sticker wall",
+            "Printable character sheet"
+          ]
+        },
+        "ru": {
+          "title": "Тихий бунт",
+          "description": "Наполовину коммишен-лист, наполовину гастрольный зин. Галерея иллюстраций смешана с концертными воспоминаниями, самодельными значками и нарочно непослушной типографикой.",
+          "direction": "Квир-панк афиши, рваная бумага, сигнальный оранжевый и дружелюбные повреждения.",
+          "features": [
+            "Многослойная карта концертов",
+            "Стена с перетаскиваемыми стикерами",
+            "Печатный лист персонажа"
+          ]
+        }
+      }
+    },
+    {
+      "id": "river-memory",
+      "year": "2025",
+      "client": "Tavi / river dragon",
+      "image": "art/river-memory.svg",
+      "imageAlt": {
+        "en": "A low-poly river dragon curling around a dark green memory pool",
+        "ru": "Низкополигональный речной дракон обвивает тёмно-зелёный бассейн памяти"
+      },
+      "artVariant": "river",
+      "stack": ["React", "Canvas", "Static hosting"],
+      "liveUrl": null,
+      "translations": {
+        "en": {
+          "title": "River Memory",
+          "description": "A quiet personal museum where stories drift downstream. Visitors uncover artwork, travel notes and character history by following floating objects.",
+          "direction": "Faded nature books, early 3D water, field-guide typography.",
+          "features": [
+            "Current-driven timeline",
+            "Low-poly keepsakes",
+            "Accessible reading mode"
+          ]
+        },
+        "ru": {
+          "title": "Память реки",
+          "description": "Тихий персональный музей, где истории плывут по течению. Арты, путевые заметки и история персонажа открываются вслед за плавающими объектами.",
+          "direction": "Выцветшие книги о природе, ранняя 3D-вода, типографика полевых справочников.",
+          "features": [
+            "Хронология по течению",
+            "Низкополигональные сувениры",
+            "Доступный режим чтения"
+          ]
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#17352d"/>
+      <stop offset="1" stop-color="#274b39"/>
+    </linearGradient>
+    <filter id="rough">
+      <feTurbulence baseFrequency=".7" numOctaves="2" seed="8" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="3"/>
+    </filter>
+  </defs>
+  <path fill="url(#bg)" d="M0 0h1200v760H0z"/>
+  <g fill="none" stroke="#d9764e" stroke-width="38" opacity=".9">
+    <circle cx="610" cy="365" r="294"/>
+    <circle cx="610" cy="365" r="230"/>
+    <circle cx="610" cy="365" r="164"/>
+  </g>
+  <g fill="#f3da59" opacity=".85">
+    <path d="m70 104 11 30 32 2-25 20 8 31-26-18-27 18 9-31-26-20 33-2z"/>
+    <path d="m1080 565 8 23 24 1-19 15 6 23-19-13-20 13 7-23-20-15 24-1z"/>
+    <path d="m1032 78 5 16 17 1-13 10 4 16-13-9-14 9 5-16-14-10 17-1z"/>
+  </g>
+  <g filter="url(#rough)" transform="translate(610 375)">
+    <path fill="#d4dc66" d="M-22-48C-196-234-345-208-369-86c-22 111 93 189 327 121z"/>
+    <path fill="#ebd95d" d="M22-48c174-186 323-160 347-38 22 111-93 189-327 121z"/>
+    <path fill="#93aa5c" d="M-36 28c-154 4-234 91-189 172 46 82 159 47 214-141z"/>
+    <path fill="#b4c45c" d="M36 28c154 4 234 91 189 172-46 82-159 47-214-141z"/>
+    <path fill="#f4c84a" d="m-214-96 126 64-151-1zM214-96 88-32l151-1z"/>
+    <path fill="#17352d" d="M-27-96h54L42 127 0 184l-42-57z"/>
+    <circle cy="-118" r="43" fill="#f3da59"/>
+    <path fill="none" stroke="#f3da59" stroke-width="10" d="M-12-147c-62-75-110-58-120-16M12-147c62-75 110-58 120-16"/>
+  </g>
+  <g fill="#f1e7b8" font-family="monospace" font-size="23" letter-spacing="6">
+    <text x="58" y="705">MOTH SIGNAL / 88.7 NIGHT BAND</text>
+    <text x="895" y="48">DOSSIER 01</text>
+  </g>
+</svg>
+

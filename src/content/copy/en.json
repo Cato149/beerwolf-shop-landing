@@ -1,0 +1,179 @@
+{
+  "meta": {
+    "title": "Beerwolf — personal websites for furry identities",
+    "description": "Personal websites for furry identities, designed and built like art commissions."
+  },
+  "nav": {
+    "label": "Main navigation",
+    "concept": "The ritual",
+    "process": "How it works",
+    "archive": "Project archive",
+    "contact": "Start a commission",
+    "menuOpen": "Open navigation",
+    "menuClose": "Close navigation",
+    "skip": "Skip to the main composition"
+  },
+  "common": {
+    "telegramCta": "Order via TelegramBot",
+    "viewProject": "Visit project",
+    "demoProject": "Demo dossier",
+    "scrollCue": "Scroll into the signal",
+    "language": "Language"
+  },
+  "hero": {
+    "eyebrow": "Independent web commissions · open for signals",
+    "titleLead": "Personal websites",
+    "titleAccent": "for furry identities.",
+    "description": "Your fursona, references, favorite sounds and strange little details become a one-of-one website — developed together, built turnkey, and never pulled from a template shelf.",
+    "sideNote": "Concept / design / code / launch",
+    "stamp": "Made like an art commission",
+    "posterAlt": "Abstract screen-printed wolf signal made from geometric shapes"
+  },
+  "process": {
+    "eyebrow": "No agency maze. No template lottery.",
+    "title": "A commission process with every pawprint visible.",
+    "intro": "You bring the character and the feeling. I turn it into a visual system, keep the work transparent, and handle the technical parts all the way to launch.",
+    "steps": [
+      {
+        "number": "01",
+        "kicker": "Tune in",
+        "title": "We build the visual concept together",
+        "body": "We collect artwork, character notes, music, subculture references, colors, websites and tiny obsessions. Then we find the visual thread that feels unmistakably yours."
+      },
+      {
+        "number": "02",
+        "kicker": "No copies",
+        "title": "Your identity shapes the interface",
+        "body": "Composition, type, motion and interaction grow around your fursona and community presence. The result should look lived-in, not configured."
+      },
+      {
+        "number": "03",
+        "kicker": "One handoff",
+        "title": "Turnkey from sketch to live URL",
+        "body": "I handle design, frontend development, responsive behavior, deployment and technical setup. You focus on ideas, feedback and the content only you can provide."
+      },
+      {
+        "number": "04",
+        "kicker": "Open studio",
+        "title": "See the work while it happens",
+        "body": "A compact project board shows what is queued, in progress, ready to review and complete. No mysterious silence between updates."
+      },
+      {
+        "number": "05",
+        "kicker": "One signal",
+        "title": "The Telegram bot keeps everything together",
+        "body": "Check status, request revisions, collect files and receive important project updates without searching through five different services."
+      },
+      {
+        "number": "06",
+        "kicker": "Aftercare",
+        "title": "Launch is not a disappearance act",
+        "body": "Technical support stays available after release for fixes, maintenance and the inevitable new idea that appears once the site is alive."
+      }
+    ],
+    "board": {
+      "title": "LIVE PROJECT BOARD",
+      "project": "IDENTITY SITE / W-014",
+      "columns": [
+        {
+          "title": "TO DO",
+          "cards": ["Choose final domain", "Send gallery captions"]
+        },
+        {
+          "title": "IN MOTION",
+          "cards": ["Archive card animation", "Mobile type pass"]
+        },
+        {
+          "title": "REVIEW",
+          "cards": ["Hero color proof"]
+        },
+        {
+          "title": "DONE",
+          "cards": ["Moodboard", "Content map", "Wireframe"]
+        }
+      ]
+    },
+    "telegram": {
+      "title": "BEERWOLF BOT / PROJECT LINE",
+      "status": "online · watching the board",
+      "messages": [
+        {
+          "from": "bot",
+          "text": "Morning. Your hero color proof is ready for review."
+        },
+        {
+          "from": "client",
+          "text": "Can the yellow glow feel a little warmer?"
+        },
+        {
+          "from": "bot",
+          "text": "Revision logged as BW-28. You can follow it from here."
+        }
+      ],
+      "actions": ["Project status", "Request revision", "Get materials"]
+    }
+  },
+  "archive": {
+    "eyebrow": "Previous transmissions",
+    "title": "Pull a story from the archive.",
+    "intro": "Three fictional commission dossiers show how different identities can produce completely different web worlds. Real projects can replace them from the admin panel.",
+    "labels": {
+      "client": "Identity",
+      "year": "Logged",
+      "direction": "Visual direction",
+      "features": "Special details",
+      "stack": "Built with",
+      "status": "Archive status"
+    },
+    "cabinet": {
+      "brand": "BEERWOLF / VISUAL IDENTITY ARCHIVE",
+      "selectLabel": "Pick file",
+      "selectAriaLabel": "Choose a portfolio file from the archive",
+      "filesSuffix": "FILES",
+      "skipToContact": "Order"
+    }
+  },
+  "contact": {
+    "eyebrow": "Commission line is open",
+    "heading": {
+      "question": "Need website?",
+      "scriptLine": "Better call",
+      "brand": "Beerwolf"
+    },
+    "intro": "Bring a finished brief, a chaotic folder of references, or just a strong feeling. We can find the shape of the site together.",
+    "telegramTitle": "Fastest route",
+    "telegramBody": "Open the bot, answer a few calm questions, and keep the whole project in one conversation.",
+    "formTitle": "Prefer another channel?",
+    "formIntro": "Leave a signal here. I’ll reply through the contact method you choose.",
+    "fields": {
+      "name": "Name / nickname",
+      "namePlaceholder": "How should I address you?",
+      "method": "Preferred contact method",
+      "contact": "Telegram / Discord / email / other contact",
+      "contactPlaceholder": "@handle or address",
+      "idea": "Tell me about your idea",
+      "ideaPlaceholder": "Your character, purpose, mood, must-have pages...",
+      "references": "Website / reference links (optional)",
+      "referencesPlaceholder": "One link per line is perfect",
+      "budget": "Approximate budget (optional)",
+      "budgetPlaceholder": "A range is enough",
+      "consent": "I agree that Beerwolf may use these details to reply to this project request.",
+      "honeypot": "Leave this field empty"
+    },
+    "methods": ["Telegram", "Discord", "Email", "Other"],
+    "submit": "Send the signal",
+    "sending": "Sending…",
+    "success": "Signal received. I’ll follow your chosen trail shortly.",
+    "error": "The signal dropped. Please try again or use Telegram.",
+    "missingEndpoint": "The web form is being tuned. Telegram and email are ready now.",
+    "required": "Please complete the required fields.",
+    "availability": "Currently booking a small number of projects.",
+    "privacy": "Your details are used only to answer this request."
+  },
+  "footer": {
+    "socialTitle": "Other frequencies",
+    "signoff": "Personal sites, made personally.",
+    "copyright": "Beerwolf. Built with curiosity and a slightly unreliable photocopier.",
+    "easterEgg": "You found the tiny wolf radio. It only plays dial-up noises."
+  }
+}

@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img">
+  <defs>
+    <pattern id="dots" width="22" height="22" patternUnits="userSpaceOnUse">
+      <circle cx="4" cy="4" r="2.5" fill="#17352d" opacity=".22"/>
+    </pattern>
+    <filter id="copy">
+      <feTurbulence baseFrequency=".45" numOctaves="3" seed="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="4"/>
+    </filter>
+  </defs>
+  <path fill="#d9764e" d="M0 0h1200v760H0z"/>
+  <path fill="url(#dots)" d="M0 0h1200v760H0z"/>
+  <path fill="#f3da59" filter="url(#copy)" d="M86 92 300 34l104 95 188-68 113 103 213-52 49 137 167 31-85 148 62 143-181 25-96 124-151-88-172 68-91-128-201 20-7-154-160-78 112-123z"/>
+  <g transform="translate(605 375) rotate(-7)">
+    <path fill="#17352d" d="M-330-63-207-209l164 64 81-76 180 84 145 5-91 106 58 159-151-10-119 119-117-105-177 10 49-150z"/>
+    <path fill="#efe4b2" d="m-252-56 113-104 83 58 72-67 91 44-87 86 95 83-82 83-86-69-95 49 47-107z"/>
+    <path fill="#d9764e" d="m-172-88 52-52 55 37-43 50zM-92 17l55-49 53 47-57 45zM17-91l55-47 49 39-50 52zM91 31l52-52 55 45-57 54zM163-82l48-43 42 40-49 44z"/>
+    <path fill="#f3da59" d="m220-24 70-75-5 91 73 55-94 5-50 86-15-90-88-25z"/>
+    <circle cx="-211" cy="-17" r="16" fill="#f3da59"/>
+    <circle cx="-155" cy="-43" r="16" fill="#f3da59"/>
+  </g>
+  <g fill="#17352d" font-family="monospace" font-weight="700">
+    <text x="52" y="68" font-size="34" letter-spacing="5">SOFT RIOT!</text>
+    <text x="806" y="710" font-size="24" letter-spacing="4">TOURING ZINE / FILE 02</text>
+  </g>
+  <g fill="#f3da59">
+    <path d="m106 586 14 38 40 2-32 24 10 39-32-23-34 23 11-39-33-24 41-2z"/>
+    <path d="m1068 71 10 29 31 1-25 18 8 30-24-18-26 18 9-30-26-18 32-1z"/>
+  </g>
+</svg>
+
