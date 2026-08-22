@@ -9,7 +9,7 @@ the repository and is managed through Decap CMS.
 - React 18, TypeScript and Vite
 - GSAP + ScrollTrigger for coordinated motion
 - Zod for runtime content validation
-- Decap CMS with GitLab PKCE authentication
+- Decap CMS with GitHub authentication via an OAuth proxy
 - Vitest, Testing Library, Playwright and axe
 - GitLab CI/CD and GitLab Pages
 
@@ -107,25 +107,26 @@ npx decap-server
 Then open `http://localhost:5173/admin/`. `local_backend: true` is intended only
 for local editing.
 
-### GitLab authentication
+### GitHub authentication
 
-Production uses client-side PKCE, so there is no OAuth secret or auth server.
+GitHub OAuth always needs a client secret, so production login goes through a
+small OAuth proxy. Never put that secret in the repository.
 
-1. In GitLab, create a new OAuth application.
-2. Set its redirect URI to the final admin URL, for example
-   `https://beerwolf-shop.gitlab.io/landing/admin/`.
-3. Disable **Confidential**.
-4. Grant the `api` scope.
-5. Copy the public Application ID to `public/admin/config.yml` as `app_id`.
-6. Never put the GitLab client secret in the repository.
+1. In GitHub, create an OAuth App (`Settings → Developer settings → OAuth Apps`).
+2. Set the authorization callback URL to `https://<oauth-proxy>/callback`.
+3. Deploy a Decap GitHub OAuth proxy (for example a Cloudflare Worker such as
+   [decap-proxy](https://github.com/sterlingwes/decap-proxy)) and give it the
+   GitHub Client ID and Client Secret.
+4. Copy the public proxy origin to `public/admin/config.yml` as `base_url`.
+5. Keep `auth_endpoint: /auth` unless the proxy uses a different login path.
 
-CMS users need write access to `beerwolf-shop/landing`. Editorial workflow keeps
-content edits on reviewable branches before publication. Portfolio projects use a
-Decap list widget, so they can be added, removed and drag-reordered.
+CMS users need push access to `Cato149/beerwolf-shop-landing`. Editorial workflow
+keeps content edits on reviewable branches before publication. Portfolio projects
+use a Decap list widget, so they can be added, removed and drag-reordered.
 
 Trade-off: Git-backed content is inexpensive, versioned and easy to roll back, but
-every publication requires a GitLab build. It is deliberately not intended for
-live inventory, customer data or a large media library.
+every publication requires a CI build. It is deliberately not intended for live
+inventory, customer data or a large media library.
 
 ## GitLab Pages
 
