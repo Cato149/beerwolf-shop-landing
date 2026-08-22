@@ -1,0 +1,19 @@
+{
+  "brandName": "Beerwolf",
+  "telegramBotUrl": "https://t.me/beerwolf_shop_bot",
+  "email": "hello@beerwolf.studio",
+  "socials": [
+    {
+      "label": "Telegram",
+      "url": "https://t.me/beerwolf_shop_bot"
+    },
+    {
+      "label": "Discord",
+      "url": "https://discord.com/"
+    },
+    {
+      "label": "Email",
+      "url": "mailto:hello@beerwolf.studio"
+    }
+  ]
+}

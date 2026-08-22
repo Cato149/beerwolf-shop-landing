@@ -1,0 +1,517 @@
+# Beerwolf landing — design system
+
+Практический справочник по визуальному языку лендинга. Документ описывает
+текущую реализацию, а не абстрактный брендбук: куда править токен, какой
+компонент отвечает за поверхность и что нельзя ломать при доработке.
+
+Тексты, ссылки и досье проектов живут в JSON и CMS. Этот файл — про форму:
+цвет, тип, ритм, композицию и поведение интерфейса.
+
+## Как пользоваться
+
+| Задача | Куда идти |
+| --- | --- |
+| Сменить цвет, шрифт, отступ, тень | `src/styles/tokens.css` |
+| Поменять типографику абзаца, заголовка секции, фокус | `src/styles/global.css` |
+| Сверстать или поправить блок, карточку, форму | `src/styles/composition.css` |
+| Изменить текст EN/RU | `src/content/copy/{en,ru}.json` |
+| Добавить или переставить проект | `src/content/projects.json` |
+| Сменить Telegram, email, соцсети | `src/content/settings.json` |
+| Подключить другой вес/набор шрифта | `src/main.tsx` |
+| Поменять входную анимацию | `src/animation/` |
+
+Правило: сначала токен, потом композиция. Жёсткие hex в компонентах
+допустимы только как локальный акцент (сейчас так сделан бумажный тон
+архивного билета `#dca36e`). Если акцент повторяется — вынести в токен.
+
+## Визуальный язык
+
+Лендинг — один непрерывный **poster-world**: шелкография, архивное досье,
+билеты с зазубринами, канбан и «живые» объекты на тёмно-лесном фоне.
+
+- **Тон.** Ночной лес + закатное солнце. Тёплые бумаги поверх тёмного леса.
+- **Поверхности.** Печатные плашки: жёсткая обводка, жёсткая тень-«сдвиг»,
+  без больших скруглений.
+- **Наклоны.** Почти все артефакты чуть повёрнуты (`±0.5°…3°`). Это часть
+  языка, не баг вёрстки.
+- **Тактильность.** Hover у кнопок сдвигает блок навстречу тени
+  (`translate` + короче `box-shadow`), как нажатие штампа.
+- **Декор.** Зерно, орбы, ленты и пиксельные глифы не кликабельны и скрыты
+  от assistive technology (`aria-hidden`).
+
+Не превращать лендинг в ровный SaaS-макет: выравнивание «в сетку до пикселя»
+ломает характер композиции.
+
+## Карта стилей
+
+```
+src/main.tsx                 # импорт Fontsource + трёх CSS-слоёв
+src/styles/tokens.css        # :root — единственный источник токенов
+src/styles/global.css        # reset, body, утилиты, reduced-motion
+src/styles/composition.css   # все секции, компоненты, брейкпоинты
+```
+
+Порядок импорта важен: токены → глобальные правила → композиция.
+
+BEM-подобные классы: блок (`archive-card`), элемент (`archive-card__tab`),
+модификатор (`archive-card--riot`). Общие утилиты живут в `global.css`:
+
+| Класс | Назначение |
+| --- | --- |
+| `.section-shell` | Центрированный контейнер `var(--container)` |
+| `.eyebrow` | Жёлтый моно-кикер с «радиоштрихами» слева |
+| `.section-title` | Display-заголовок секции, `max-width: 18ch` |
+| `.section-intro` | Вводный абзац на `--measure-narrow` |
+| `.skip-link` | Жёлтая плашка «пропустить к контенту» |
+| `.visually-hidden` | Скрытие для всех, кроме скринридеров |
+
+## Палитра
+
+Имена ролей важнее оттенка. Новые цвета добавлять рядом с семейством,
+не как одноразовый `--color-button`.
+
+| Токен | Hex | Роль |
+| --- | --- | --- |
+| `--color-forest-950` | `#102a24` | Чернила, фон `html/body`, обводки |
+| `--color-forest-900` | `#16342c` | Тёмные панели, мобильное меню |
+| `--color-forest-800` | `#24463a` | Ночной градиент |
+| `--color-forest-700` | `#365b48` | Приглушённый текст на бумаге |
+| `--color-orange-700` | `#b85b42` | Акцент на бумаге, labels |
+| `--color-orange-600` | `#d4724b` | Шапка канбана, подвал, градиент мира |
+| `--color-orange-500` | `#e58a56` | Hover-заливка CTA, вкладка `riot` |
+| `--color-yellow-500` | `#f2d44f` | Солнце, CTA, фокус, selection |
+| `--color-yellow-300` | `#f7e887` | Герой-билет, live-метка канбана |
+| `--color-paper-500` | `#e9d89c` | Канбан-доска, вкладки архива |
+| `--color-paper-300` | `#f1e7ba` | Билеты, подпись тотема, telegram-ticket |
+| `--color-cream` | `#f6efcd` | Основной текст на тёмном |
+| `--color-moss` | `#8da16a` | Морда тотема, мягкие орбы |
+| `--color-sage` | `#b6c37b` | Вкладка `river`, online-статус |
+| `--color-ink` | = forest-950 | Семантический алиас |
+
+`theme-color` в `index.html` — `#17352d` (чуть светлее forest-950, совпадает
+с полосками шкафа архива).
+
+### Градиенты
+
+| Токен | Где |
+| --- | --- |
+| `--gradient-world` | Фон `.poster-world`: солнце → лес → охра |
+| `--gradient-sun` | Аватар в Telegram-треде |
+| `--gradient-paper` | Зарезервирован, почти не используется в композиции |
+| `--gradient-night` | Зарезервирован |
+
+Локальные радиальные заливки секций (`process-journey::before`,
+`archive::before`, `contact`) не вынесены в токены: они привязаны к
+геометрии конкретной секции. При смене палитры править их вручную,
+подставляя те же RGB из таблицы выше.
+
+### Контрастные пары
+
+Рабочие комбинации, которые уже выдерживают обзор:
+
+- cream / yellow на forest-950
+- forest-950 на yellow-500, paper-300, orange-600
+- orange-700 на paper (подписи досье)
+
+Selection: жёлтый фон, лесные чернила. Фокус: `0.2rem` жёлтый outline
+со смещением `0.25rem`.
+
+## Типографика
+
+Шрифты подключаются через Fontsource в `src/main.tsx`, не через Google
+Fonts runtime. Менять набор — менять и импорты, и CSS-переменные.
+
+| Роль | Токен | Семейство | Начертания | Fallback |
+| --- | --- | --- | --- | --- |
+| Заголовки, бренд, маркеры | `--font-display` | Unbounded | 400, 700 · latin + cyrillic | Arial Black, sans-serif |
+| Основной текст | `--font-body` | Lora | 400, 500, 600 · latin + cyrillic + cyrillic-ext | Iowan Old Style, Palatino, Book Antiqua, serif |
+| UI, навигация, ярлыки | `--font-mono` | IBM Plex Mono | 400, 600 · latin + cyrillic | ui-monospace, monospace |
+| Script EN (contact lockup) | `--font-script-en` | Pacifico | 400 · latin | Segoe Script, cursive |
+| Script RU (contact lockup) | `--font-script-ru` | Marck Script | 400 · cyrillic | Segoe Script, cursive |
+
+Pacifico не содержит кириллицы — поэтому для `lang="ru"` слоган в контакте
+переключается на Marck Script через `:lang(ru)`. Не подставлять Pacifico
+в русские строки.
+
+### Модульная шкала
+
+Все размеры текста — `clamp`, чтобы один и тот же ритм жил от телефона
+до широкого постера.
+
+| Токен | Диапазон | Типичное применение |
+| --- | --- | --- |
+| `--step--1` | 0.78–0.88rem | Eyebrow, мелкие mono-ярлыки |
+| `--step-0` | 1–1.15rem | `body` |
+| `--step-1` | 1.18–1.55rem | Интро секций, описание героя |
+| `--step-2` | 1.45–2.2rem | Заголовки шагов и досье |
+| `--step-3` | 2–3.8rem | `.section-title` |
+| `--step-4` | 2.9–7.2rem | Запас для крупных акцентов |
+| `--step-5` | 4–12.6rem | Запас; герой использует свой clamp |
+
+Герой намеренно вне шкалы:
+
+```css
+.hero__title { font-size: clamp(4.6rem, 8.2vw, 8.8rem); }
+:lang(ru) .hero__title { font-size: clamp(4rem, 7.1vw, 7.5rem); }
+```
+
+Кириллица шире латиницы — для RU заголовок уже ужат. Любой новый
+крупный display-текст проверять в обеих локалях.
+
+### Ритм набора
+
+| Токен | Значение | Где |
+| --- | --- | --- |
+| `--type-body-tracking` | 0.012em | `body` |
+| `--type-body-leading` | 1.58 | `body` |
+| `--type-small-tracking` | 0.018em | Карточки, билеты, мелкий копирайт |
+| `--type-small-leading` | 1.54 | То же |
+
+Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height ≈ 0.8–1.02`,
+`text-wrap: balance`. Mono-ярлыки: uppercase, tracking `0.05em…0.16em`.
+
+Мера строки: `--measure` = 68ch, `--measure-narrow` = 50ch.
+
+## Пространство и сетка
+
+| Токен | Диапазон | Роль |
+| --- | --- | --- |
+| `--space-2xs` | 0.35–0.55rem | Микрозазоры |
+| `--space-xs` | 0.65–0.9rem | Подписи, внутренние поля |
+| `--space-sm` | 0.9–1.3rem | Поля карточек |
+| `--space-md` | 1.35–2.2rem | Ряды, интро-сетки |
+| `--space-lg` | 2–4rem | Секции, форма |
+| `--space-xl` | 3.2–7.5rem | Вертикаль между главами |
+| `--space-2xl` | 5–13rem | Контакт, низ процесса |
+
+Контейнер: `--container: min(92rem, calc(100vw - 2 * var(--space-md)))`.
+Не задавать фиксированную ширину страницы — только этот токен.
+
+### Брейкпоинты
+
+Композиция и GSAP должны совпадать. Если двигаете порог в CSS —
+проверьте хуки анимации.
+
+| Порог | Что происходит |
+| --- | --- |
+| `max-width: 72rem` | Уже колонки, канбан чуть сжимается |
+| `max-width: 58rem` | Одна колонка, бургер, архив без pin, канбан стопкой |
+| `min-width: 59rem` | Process/archive motion (см. хуки) |
+| `min-width: 929px` | Меню архива может прятать лишние карты |
+| `max-width: 38rem` | Прячутся ленты, алмаз, scroll-cue; форма в одну колонку |
+
+`58rem ≈ 928px`. Анимации процесса и архива включаются с `59rem`,
+чтобы не драться с мобильной вёрсткой.
+
+## Поверхности
+
+| Токен | Значение | Смысл |
+| --- | --- | --- |
+| `--border-thin` | 1px cream 32% | Хедер, разделители на тёмном |
+| `--border-ink` | 2px forest-950 | Печатный край бумаги и кнопок |
+| `--shadow-print` | 0.45 / 0.5rem forest 48% | Штамп CTA и маркеров |
+| `--shadow-yellow` | 0.45 / 0.5rem yellow-500 | Бумага на тёмном, мобильное меню |
+| `--glow-yellow` | 4rem yellow 38% | Пиксельные глифы |
+| `--radius-xs` | 0.25rem | Почти не используется |
+| `--radius-sm` | 0.65rem | Почти не используется |
+| `--radius-blob` | organic 45/55… | Ореол вокруг тотема |
+
+Углы по умолчанию прямые (`border-radius: 0` у полей формы и кнопок).
+Круги — только солнце, аватар, орбы.
+
+## Движение
+
+| Токен | Значение |
+| --- | --- |
+| `--ease-organic` | `cubic-bezier(0.22, 1, 0.36, 1)` |
+| `--ease-tactile` | `cubic-bezier(0.34, 1.56, 0.64, 1)` — лёгкий overshoot |
+| `--duration-fast` | 180ms — hover, меню |
+| `--duration-medium` | 420ms — подчеркивания, панели |
+| `--duration-slow` | 900ms — орбы, pointer-glow |
+
+Единственный JS-рантайм анимации — GSAP + ScrollTrigger
+(`src/animation/gsap.ts`). Не добавлять Framer Motion / CSS keyframes
+для сюжетных сцен: они разъедутся с `prefers-reduced-motion`.
+
+| Хук / сцена | Поведение |
+| --- | --- |
+| `useHeroMotion` | Появление копирайта, 3D-вход тотема, parallax, pointer tilt |
+| `useProcessMotion` | С ≥59rem шаги въезжают слева/справа, рисуется пунктир |
+| `useArchiveMotion` | На широком экране pin + scrub стопки; первые 3 карты в скролле |
+| `GlowField` | `--pointer-x/y` пишутся в rAF, без ререндера React |
+| CSS `orb-drift` | Три орба, 14–22s |
+| CSS `grain-jump` | Шаги по 0.65s, opacity 0.13 |
+| CSS `cue-line` | Полоска «скролль дальше» |
+
+`ARCHIVE_SCROLL_SEQUENCE_LIMIT = 3` в `src/animation/archive-motion.ts`.
+Четвёртая и дальше карты на десктопе открываются из селекта шкафа
+(`data-menu-only`), не из pin-последовательности.
+
+`prefers-reduced-motion: reduce` в `global.css` гасит CSS-анимации;
+хуки GSAP сами не создают timeline. Архив в этом режиме — обычный стек
+карточек в потоке документа.
+
+## Слои (z-index)
+
+| Токен / факт | Значение | Слой |
+| --- | --- | --- |
+| `--z-base` | 0 | Фон мира |
+| `--z-decor` | 1 | Ленты, глифы, орбы |
+| `--z-content` | 2 | Секции |
+| `.archive__cabinet` | 10 | Липкий шкаф |
+| `--z-header` | 20 | Шапка |
+| `.archive-card[data-menu-active]` | 30 | Карта из меню |
+| `.grain-overlay` | 40 | Зерно на весь экран |
+| `--z-skip` | 50 | Skip-link |
+
+Новый декоративный слой — между `--z-decor` и `--z-content`.
+Не поднимать декор выше хедера и skip-link.
+
+## Компоненты
+
+Компоненты не содержат инлайновых цветов. Вариант = CSS-модификатор
+или проп, который его выставляет.
+
+### UI — `src/components/ui`
+
+#### `SiteHeader`
+
+Абсолютная шапка над героем, не sticky. Состав: `brand-mark` (волчий
+знак + `settings.brandName`), якоря `#concept #process #archive #contact`,
+`LanguageSwitcher`. Ниже `58rem` панель становится выпадающим плакатом
+(`data-open`), кнопка `.menu-toggle`.
+
+#### `LanguageSwitcher`
+
+Две квадратные кнопки `EN / RU`, `aria-pressed`. Активная: жёлтая
+заливка, лесные чернила. В футере инвертируется: активная — лес на
+оранжевом поле.
+
+Локаль пишется в `localStorage`. Английский — default.
+
+#### `TelegramCta`
+
+Ссылка на `settings.telegramBotUrl`. Текст — `copy.common.telegramCta`.
+
+| Проп `variant` | Класс | Вид |
+| --- | --- | --- |
+| `sun` (default) | `.telegram-cta--sun` | Жёлтая плашка, `--shadow-print` |
+| `ink` | `.telegram-cta--ink` | Лесная плашка, оранжевая тень |
+
+Hover: сдвиг `0.25rem 0.3rem` и оранжевая заливка слева направо.
+Минимальная высота 4rem.
+
+#### `TicketCopy`
+
+Бумажный билет с перфорацией, штрихкодом и следами (лапа, кофе,
+отпечаток). Код билета — `data-ticket`, рисуется через `::before`.
+
+```tsx
+<TicketCopy code="BW / ONE-WAY / 001" variant="hero">
+  {copy.hero.description}
+</TicketCopy>
+```
+
+| `variant` | Бумага | Перфорация | Наклон |
+| --- | --- | --- | --- |
+| `hero` | `--color-yellow-300` | справа | −0.45° |
+| `process` | `--color-paper-300` | слева | +0.55° |
+| `archive` | `#dca36e` | справа | −0.70° |
+| `contact` | тип есть, стилей нет | не использовать, пока нет CSS | — |
+
+Положение пятен задаётся custom properties (`--paw-x`, `--coffee-y`…).
+Новый вариант — новый модификатор в `composition.css`, не копия разметки.
+
+#### `ArchiveCabinet`
+
+Липкая «полка архива»: бренд, счётчик дел, `<select>` проекта, якорь
+на `#contact`. На мобиле становится обычным блоком под интро.
+
+#### `ContactForm`
+
+Поля: имя, способ связи, контакт, идея, референсы, бюджет, согласие,
+honeypot. Отправка в Formspree (`VITE_FORMSPREE_ENDPOINT`). Без endpoint
+форма честно отключена — не имитировать success.
+
+Поля: тёмный лес, кремовая обводка, при фокусе жёлтый кант и жёлтая
+тень. Кнопка отправки визуально равна `TelegramCta` / sun.
+
+### Visual — `src/components/visual`
+
+Все декоративные, кроме тотема (у него `role="img"` и локализованный alt).
+
+| Компонент | Класс | Заметка |
+| --- | --- | --- |
+| `GlowField` | `.glow-field` | Три орба + pointer blob. На coarse pointer blob выключен |
+| `GrainOverlay` | `.grain-overlay` | SVG turbulence, `pointer-events: none` |
+| `PixelGlyphs` | `.pixel-glyph--*` | cross, diamond, steps, spark. Позиции в `rem`/`vw` от верха мира |
+| `LowPolyTotem` | `.low-poly-totem` | Геометрический волк. Цвета плоскостей — классы `.totem-*` |
+| `ProjectBoard` | `.project-board` | 4 колонки канбана из `copy.process.board` |
+| `TelegramThread` | `.telegram-thread` | Инсценированный чат из `copy.process.telegram` |
+
+`artVariant` проекта красит только вкладку досье:
+
+| `artVariant` | Вкладка |
+| --- | --- |
+| `signal` | paper-500 (по умолчанию) |
+| `riot` | orange-500 |
+| `river` | sage |
+
+Новый вариант: добавить значение в `src/content/schema.ts` и класс
+`.archive-card--{name}` в `composition.css`.
+
+### Секции — `src/sections`
+
+Страница собирается в `PosterWorld`:
+
+```
+skip-link
+GlowField / GrainOverlay / PixelGlyphs / ribbons
+SiteHeader
+main
+  HeroSection        #concept
+  ProcessJourney     #process
+  ArchivePortfolio   #archive
+  ContactSection     #contact
+SiteFooter
+```
+
+Не вшивать копирайт в JSX. Исключения — технические штампы вроде
+`BW / ONE-WAY / 001`, `ROUTE / 01`, `PROCESS / PROCESS`, маркер футера.
+Их можно локализовать позже, если появятся в CMS.
+
+#### Hero
+
+Две колонки: копирайт + тотем. Заголовок из двух строк
+(`titleLead` + `titleAccent`). Акцент жёлтый, чуть меньше и повёрнут.
+Билет + CTA стоят столбиком шириной до 38rem.
+
+#### Process
+
+6 шагов. Чётные — текст слева, нечётные — справа. Артефакты только у
+шагов с индексом 3 (канбан) и 4 (telegram). Если меняется число шагов —
+поправить эти индексы и `process-step--compact`.
+
+Пунктир — SVG path `data-process-path`. Кривая завязана на высоту трека;
+после добавления шага path нужно перечертить.
+
+#### Archive
+
+Сцена `430vh` на десктопе, sticky-стопка `86vh`. Карта позиционируется
+через `--card-index`. Бумага в линейку, слева арт, справа досье.
+
+На узком экране pin снимается, карты идут потоком.
+
+#### Contact
+
+Закатный градиент, декоративное солнце. Lockup: mono-вопрос + script +
+жирный бренд. Два маршрута: sticky telegram-ticket и тёмная форма.
+
+#### Footer
+
+Оранжевое поле, лесные чернила. Сигнальный знак `⌁`, соцсети, свитчер,
+пасхалка `.wolf-radio`, маркер `BEERWOLF · ONE OF ONE ·`.
+
+## Контент, который двигает дизайн
+
+Схема: `src/content/schema.ts`. После смены полей — тесты в
+`src/content/content.test.ts` и виджеты Decap (`public/admin/config.yml`).
+
+### Проект
+
+```
+id            kebab-case, уникальный
+year          строка на вкладке и в шифре BW–{year}–00N
+client        имя / вид
+image         путь от public/ (обычно art/… или uploads/…)
+imageAlt      { en, ru }
+artVariant    signal | riot | river
+stack[]       рисуется через " / "
+liveUrl       null → статус «Demo dossier»
+translations  title, description, direction, features[]
+```
+
+Картинки: SVG / AVIF / WebP, локализованный alt, intrinsic size
+(сейчас 1200×760), чтобы не прыгала вёрстка. Демо-арт — `public/art`.
+CMS грузит в `public/uploads`.
+
+Длинные `title` ломают вкладку и `h3` (`max-width: 12ch`). Проверять
+RU-строки отдельно.
+
+### Настройки
+
+`brandName`, `telegramBotUrl`, `email`, `socials[]`. Меняют шапку,
+CTA, билет контакта и футер без правки компонентов.
+
+## Доступность, которую нельзя сломать
+
+- Семантика: `header` / `main` / `footer`, якоря секций, `aria-labelledby`.
+- Фокус всегда жёлтый; не снимать outline без замены.
+- Цели тапа ≥ 2.75–3rem (свитчер, CTA, burger, wolf-radio).
+- Декор без указателя и без имени.
+- Форма: подписи, `required`, honeypot, `aria` статуса.
+- Контраст: не класть sage-текст на orange и cream-текст на paper.
+- Reduced motion обязателен для любой новой сцены.
+
+## Рецепты изменений
+
+### Сменить акцент «солнца»
+
+1. `--color-yellow-500` и соседние yellow/orange в `tokens.css`.
+2. Просмотреть RGB в градиентах мира и секций (`rgb(242 212 79 / …)`).
+3. Проверить CTA, фокус, selection, вкладки, шкаф архива.
+
+### Сменить шрифт заголовков
+
+1. Пакет `@fontsource/…` + импорты в `main.tsx` (latin **и** cyrillic).
+2. `--font-display` в `tokens.css`.
+3. Прогнать герой и `section-title` в RU: Unbounded сидит плотно,
+   более широкий гротеск потребует свой `:lang(ru)` clamp.
+
+### Добавить секцию
+
+1. Компонент в `src/sections`, класс в `composition.css`.
+2. Якорь в `SiteHeader`.
+3. Ключи в `copy/en.json` и `copy/ru.json` + `schema.ts`.
+4. Общие `.section-shell` / `.eyebrow` / `.section-title` / `.section-intro`.
+5. При скролл-сцене — хук в `src/animation` и ветка reduced-motion.
+
+### Добавить проект в архив
+
+1. Запись в `projects.json` (или Decap).
+2. Картинка в `public/art` или `public/uploads`.
+3. Если проектов больше трёх — четвёртый откроется из шкафа, не из pin.
+   Чтобы включить его в скролл, поднять `ARCHIVE_SCROLL_SEQUENCE_LIMIT`
+   и пересчитать высоту `.archive__stage`.
+
+### Новая CTA-кнопка
+
+Копировать `.telegram-cta`, не изобретать круглую кнопку. Нужен второй
+смысл — новый модификатор (`--ghost`, `--paper`), те же высота и mono.
+
+### Убрать зерно / орбы
+
+Компоненты монтируются в `PosterWorld`. Выключить — убрать из дерева
+или `display: none` под media. Не удалять CSS, пока нет замены атмосферы:
+без зерна poster-world становится «чистым градиентом».
+
+## Чего избегать
+
+- Новых цветов вне `tokens.css`.
+- `position: sticky` у шапки — она специально абсолютная, чтобы герой
+  читался как плакат, а не как продукт с chrome.
+- Скруглений > 0 на кнопках и инпутах.
+- Google Fonts с CDN — ломает автономность и приватность.
+- Анимаций, которые двигают layout (`top/left` вместо `transform`).
+- Копирайта в компонентах: иначе EN/RU разъедутся.
+- Горизонтального скролла канбана на мобиле — колонки уже стопкой.
+
+## Чеклист перед визуальным MR
+
+- [ ] Токены, не магические числа (кроме локального акцента билета)
+- [ ] EN и RU, особенно display и script
+- [ ] 1280 / 920 / 390 ширины
+- [ ] Hover/focus у интерактивных контролов
+- [ ] `prefers-reduced-motion`
+- [ ] Декор не перехватывает клики
+- [ ] Новые строки — в JSON и схеме, не в JSX

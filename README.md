@@ -1,93 +1,165 @@
-# Landing
+# Beerwolf landing
 
+An interactive bilingual poster-world for commissioning personal furry identity
+websites. The public site is a static React application; editable content lives in
+the repository and is managed through Decap CMS.
 
+## Stack
 
-## Getting started
+- React 18, TypeScript and Vite
+- GSAP + ScrollTrigger for coordinated motion
+- Zod for runtime content validation
+- Decap CMS with GitLab PKCE authentication
+- Vitest, Testing Library, Playwright and axe
+- GitLab CI/CD and GitLab Pages
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+No database or custom application server is required.
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+Visual language, tokens, type, components and change recipes live in
+[`docs/DESIGN.md`](docs/DESIGN.md). Use it when adjusting color, type,
+layout or motion so the poster-world stays consistent.
 
-## Add your files
+## Local setup
 
-* [Create](https://docs.gitlab.com/user/project/repository/web_editor/#create-a-file) or [upload](https://docs.gitlab.com/user/project/repository/web_editor/#upload-a-file) files
-* [Add files using the command line](https://docs.gitlab.com/topics/git/add_files/#add-files-to-a-git-repository) or push an existing Git repository with the following command:
+Requirements:
 
+- Node.js 20 or newer is recommended (the dependency set also supports Node 18)
+- npm 9 or newer
+
+```bash
+npm ci
+cp .env.example .env
+npm run dev
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/beerwolf-shop/landing.git
-git branch -M main
-git push -uf origin main
+
+Open `http://localhost:5173`. Never commit `.env`; only the commented
+`.env.example` belongs in Git.
+
+### Environment variables
+
+```dotenv
+# Public Formspree endpoint used by the contact form.
+VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/your-form-id
+
+# Deployment base path. Use / locally/custom domains and /landing/ on GitLab Pages.
+VITE_BASE_PATH=/
 ```
 
-## Integrate with your tools
+The Formspree endpoint is public by design. Configure spam controls and delivery
+inside Formspree. If the endpoint is absent, the form is disabled and the site
+openly directs visitors to Telegram or email instead of simulating success.
 
-* [Set up project integrations](https://gitlab.com/beerwolf-shop/landing/-/settings/integrations)
+## Commands
 
-## Collaborate with your team
+```bash
+npm run dev          # Vite development server
+npm run build        # Type-check and production build
+npm run preview      # Preview the production build
+npm run lint         # ESLint
+npm run format:check # Prettier verification
+npm run typecheck    # TypeScript project checks
+npm run test         # Unit/component tests
+npm run test:e2e     # Playwright desktop/mobile checks
+npm run check        # Main local quality gate
+```
 
-* [Invite team members and collaborators](https://docs.gitlab.com/user/project/members/)
-* [Create a new merge request](https://docs.gitlab.com/user/project/merge_requests/creating_merge_requests/)
-* [Automatically close issues from merge requests](https://docs.gitlab.com/user/project/issues/managing_issues/#closing-issues-automatically)
-* [Enable merge request approvals](https://docs.gitlab.com/user/project/merge_requests/approvals/)
-* [Set auto-merge](https://docs.gitlab.com/user/project/merge_requests/auto_merge/)
+Install Playwright's browser once before the first E2E run:
 
-## Test and Deploy
+```bash
+npx playwright install chromium
+```
 
-Use the built-in continuous integration in GitLab.
+## Content model
 
-* [Get started with GitLab CI/CD](https://docs.gitlab.com/ci/quick_start/)
-* [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/user/application_security/sast/)
-* [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/topics/autodevops/requirements/)
-* [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/user/clusters/agent/)
-* [Set up protected environments](https://docs.gitlab.com/ci/environments/protected_environments/)
+Public content is never embedded directly in section components:
 
-***
+- `src/content/copy/en.json` — English interface and page copy
+- `src/content/copy/ru.json` — Russian interface and page copy
+- `src/content/projects.json` — ordered portfolio dossiers and translations
+- `src/content/settings.json` — Telegram, email and social links
+- `src/content/schema.ts` — runtime validation and TypeScript models
 
-# Editing this README
+English is the default locale. The EN/RU preference is persisted in localStorage.
+To add another language:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+1. Copy an existing locale JSON file and translate every field.
+2. Add the locale code in `src/content/index.ts`.
+3. Extend localized project fields and the Decap portfolio schema.
+4. Add test assertions for the new locale.
 
-## Suggestions for a good README
+Project media uploaded by the CMS is committed under `public/uploads`. Demo artwork
+under `public/art` is original SVG placeholder material and can be replaced from
+the CMS.
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## Content studio (Decap CMS)
 
-## Name
-Choose a self-explaining name for your project.
+The admin shell is available at `/admin/`.
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+### Local CMS
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+Run the site and the Decap proxy in separate terminals:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+```bash
+npm run dev
+npx decap-server
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+Then open `http://localhost:5173/admin/`. `local_backend: true` is intended only
+for local editing.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+### GitLab authentication
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+Production uses client-side PKCE, so there is no OAuth secret or auth server.
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+1. In GitLab, create a new OAuth application.
+2. Set its redirect URI to the final admin URL, for example
+   `https://beerwolf-shop.gitlab.io/landing/admin/`.
+3. Disable **Confidential**.
+4. Grant the `api` scope.
+5. Copy the public Application ID to `public/admin/config.yml` as `app_id`.
+6. Never put the GitLab client secret in the repository.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+CMS users need write access to `beerwolf-shop/landing`. Editorial workflow keeps
+content edits on reviewable branches before publication. Portfolio projects use a
+Decap list widget, so they can be added, removed and drag-reordered.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+Trade-off: Git-backed content is inexpensive, versioned and easy to roll back, but
+every publication requires a GitLab build. It is deliberately not intended for
+live inventory, customer data or a large media library.
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+## GitLab Pages
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+`.gitlab-ci.yml` runs linting, type checks, unit tests, a production build and
+desktop/mobile Playwright smoke tests. The Pages job publishes `dist/` only from
+the default branch.
 
-## License
-For open source projects, say how it is licensed.
+For the GitLab project path, CI supplies:
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+```dotenv
+# Project Pages sub-path.
+VITE_BASE_PATH=/landing/
+```
+
+Change it to `/` when a custom domain is attached. Add
+`VITE_FORMSPREE_ENDPOINT` as a GitLab CI/CD variable so production builds can
+submit the contact form.
+
+Development follows Gitflow: feature branches start from `develop`, are reviewed
+there, and release changes move to `main`.
+
+## Animation and accessibility
+
+- GSAP is the only JavaScript animation runtime.
+- Pointer movement writes CSS variables directly inside animation frames rather
+  than causing React renders.
+- The archive is a scrubbed physical card stack on wide screens and a shorter
+  stacked reveal on touch/mobile layouts.
+- `prefers-reduced-motion` removes pinned/scrubbed travel and leaves every dossier
+  visible in normal document flow.
+- Keyboard focus, semantic landmarks, labels, status announcements, contrast and
+  touch target sizes are part of the automated/manual review.
+- Decorative grain, glows, ribbons and pixel glyphs ignore pointer input and are
+  hidden from assistive technology.
+
+When replacing assets, prefer SVG, AVIF or WebP, include accurate localized alt
+text, and provide intrinsic dimensions to avoid layout shifts.
