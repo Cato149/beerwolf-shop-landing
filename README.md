@@ -11,7 +11,7 @@ the repository and is managed through Decap CMS.
 - Zod for runtime content validation
 - Decap CMS with GitHub authentication via an OAuth proxy
 - Vitest, Testing Library, Playwright and axe
-- GitLab CI/CD and GitLab Pages
+- GitHub Actions, Caddy production hosting and GitHub Pages
 
 No database or custom application server is required.
 
@@ -41,7 +41,8 @@ Open `http://localhost:5173`. Never commit `.env`; only the commented
 # Public Formspree endpoint used by the contact form.
 VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/your-form-id
 
-# Deployment base path. Use / locally/custom domains and /landing/ on GitLab Pages.
+# Deployment base path. Use / locally and on beerwolf.site.
+# GitHub Pages sets this automatically from the repository name.
 VITE_BASE_PATH=/
 ```
 
@@ -128,25 +129,76 @@ Trade-off: Git-backed content is inexpensive, versioned and easy to roll back, b
 every publication requires a CI build. It is deliberately not intended for live
 inventory, customer data or a large media library.
 
-## GitLab Pages
+## GitHub Actions
 
-`.gitlab-ci.yml` runs linting, type checks, unit tests, a production build and
-desktop/mobile Playwright smoke tests. The Pages job publishes `dist/` only from
-the default branch.
+`.github/workflows/ci.yml` runs linting, type checks, unit tests and
+desktop/mobile Playwright smoke tests on `main`, `develop`, feature branches and
+pull requests.
 
-For the GitLab project path, CI supplies:
+Two production publishes run from `main` (or via **Actions → Run workflow**):
 
-```dotenv
-# Project Pages sub-path.
-VITE_BASE_PATH=/landing/
-```
+- `.github/workflows/deploy.yml` builds the site with `VITE_BASE_PATH=/` and
+  publishes it to [beerwolf.site](https://beerwolf.site) through the existing
+  Caddy container.
+- `.github/workflows/pages.yml` builds the same site for GitHub Pages. The Pages
+  action supplies the public path, which is `/beerwolf-shop-landing/` for the
+  project site and `/` if a custom Pages domain is attached.
 
-Change it to `/` when a custom domain is attached. Add
-`VITE_FORMSPREE_ENDPOINT` as a GitLab CI/CD variable so production builds can
-submit the contact form.
+Add `VITE_FORMSPREE_ENDPOINT` as a GitHub Actions **variable** so production
+builds can submit the contact form. Enable **Settings → Pages → Source:
+GitHub Actions** once.
 
 Development follows Gitflow: feature branches start from `develop`, are reviewed
-there, and release changes move to `main`.
+there, and release changes move to `main`. Only `main` is deployed.
+
+### Production server
+
+The landing does not start its own web server. The existing Caddy container
+serves files from `/root/caddy/site`, mounted into the container as `/srv`.
+
+On each production deploy GitHub Actions:
+
+1. Builds `dist/` and packs it as a release archive.
+2. Uploads the archive over SSH to `193.104.57.96`.
+3. Extracts it into
+   `/root/caddy/site/beerwolf-releases/<commit>-<attempt>`.
+4. Atomically switches the relative `beerwolf-current` symlink.
+5. Validates and reloads Caddy, then checks `/healthz`.
+
+The Caddy route lives in `deploy/beerwolf.caddy`. The workflow adds
+`import beerwolf.caddy` to `/root/caddy/conf/Caddyfile` once.
+
+Create a GitHub environment named `production` and add these secrets:
+
+- `DEPLOY_SSH_KEY` — private SSH key that can log in as
+  `root@193.104.57.96`
+- `SSH_KNOWN_HOSTS` — pinned `known_hosts` line for the server
+
+Generate the host line with the command below, then verify the fingerprint
+over a trusted channel before saving it:
+
+```bash
+ssh-keyscan -H 193.104.57.96
+```
+
+To roll back, point the symlink at a previous release directory:
+
+```bash
+cd /root/caddy/site
+ln -sfn beerwolf-releases/<release> beerwolf-current.next
+mv -Tf beerwolf-current.next beerwolf-current
+```
+
+Caddy starts serving that release without restarting the container.
+
+### GitHub Pages
+
+The Pages workflow uploads `dist/` as a Pages artifact and deploys it with
+`actions/deploy-pages`. The expected project URL is
+`https://cato149.github.io/beerwolf-shop-landing/`.
+
+`dist/404.html` is copied from `index.html` so unknown paths still load the
+single-page app.
 
 ## Animation and accessibility
 

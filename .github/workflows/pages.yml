@@ -1,0 +1,81 @@
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: false
+
+env:
+  # Public Formspree endpoint used by the contact form at build time.
+  VITE_FORMSPREE_ENDPOINT: ${{ vars.VITE_FORMSPREE_ENDPOINT }}
+
+jobs:
+  build:
+    name: Build Pages bundle
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Configure GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v5
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint, typecheck and unit tests
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run format:check
+          npm run test
+
+      - name: Build for the Pages base path
+        env:
+          # Project sites use /<repo>/; a custom Pages domain uses /.
+          PAGES_BASE_PATH: ${{ steps.pages.outputs.base_path }}
+        run: |
+          # Vite requires a trailing slash on the public base path.
+          base="${PAGES_BASE_PATH:-/}"
+          case "$base" in
+            */) ;;
+            *) base="${base}/" ;;
+          esac
+          VITE_BASE_PATH="$base" npm run build
+
+      - name: Add Pages SPA fallback
+        run: cp dist/index.html dist/404.html
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+  deploy:
+    name: Publish GitHub Pages
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

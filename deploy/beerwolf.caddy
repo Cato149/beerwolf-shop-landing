@@ -1,0 +1,17 @@
+# Production site served by the existing Caddy container.
+# The deployment workflow atomically points beerwolf-current at a release.
+beerwolf.site {
+	root * /srv/beerwolf-current
+
+	# Used by the deployment smoke check without reading a content file.
+	@health path /healthz
+	respond @health 200
+
+	# Vite emits content-hashed files under /assets/.
+	@assets path /assets/*
+	header @assets Cache-Control "public, max-age=31536000, immutable"
+
+	encode zstd gzip
+	try_files {path} {path}/ /index.html
+	file_server
+}

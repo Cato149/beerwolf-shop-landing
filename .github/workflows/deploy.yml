@@ -1,0 +1,168 @@
+name: Deploy production
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: beerwolf-production
+  cancel-in-progress: false
+
+env:
+  # Public production SSH endpoint.
+  DEPLOY_HOST: 193.104.57.96
+  # Account that owns the Caddy deployment on the server.
+  DEPLOY_USER: root
+  # Standard SSH port exposed by the production server.
+  DEPLOY_PORT: '22'
+  # Custom domain is served from the site root.
+  VITE_BASE_PATH: /
+  # Public Formspree endpoint used by the contact form at build time.
+  VITE_FORMSPREE_ENDPOINT: ${{ vars.VITE_FORMSPREE_ENDPOINT }}
+
+jobs:
+  deploy:
+    name: Publish static site
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint, typecheck and unit tests
+        run: |
+          npm run lint
+          npm run typecheck
+          npm run format:check
+          npm run test
+
+      - name: Build production bundle
+        run: npm run build
+
+      - name: Configure SSH
+        env:
+          # Private key authorized for DEPLOY_USER on the production server.
+          DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+          # Pinned known_hosts entry for DEPLOY_HOST to prevent MITM attacks.
+          SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
+        run: |
+          set -euo pipefail
+          install -d -m 0700 "$HOME/.ssh"
+          printf '%s\n' "$DEPLOY_SSH_KEY" > "$HOME/.ssh/deploy_key"
+          chmod 0600 "$HOME/.ssh/deploy_key"
+          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
+          chmod 0644 "$HOME/.ssh/known_hosts"
+
+      - name: Package website
+        env:
+          # A run attempt suffix makes manual reruns independently reversible.
+          RELEASE_NAME: ${{ github.sha }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          test -f dist/index.html
+          tar -czf "/tmp/beerwolf-${RELEASE_NAME}.tar.gz" -C dist .
+
+      - name: Upload release and Caddy route
+        env:
+          # Must match the archive name generated in the package step.
+          RELEASE_NAME: ${{ github.sha }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          scp \
+            -i "$HOME/.ssh/deploy_key" \
+            -P "$DEPLOY_PORT" \
+            "/tmp/beerwolf-${RELEASE_NAME}.tar.gz" \
+            deploy/beerwolf.caddy \
+            "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/"
+
+      - name: Activate release
+        env:
+          # Immutable directory name and symlink target for this deployment.
+          RELEASE_NAME: ${{ github.sha }}-${{ github.run_attempt }}
+        run: |
+          set -euo pipefail
+          ssh \
+            -i "$HOME/.ssh/deploy_key" \
+            -p "$DEPLOY_PORT" \
+            "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            "RELEASE_NAME='${RELEASE_NAME}' bash -s" <<'DEPLOY'
+          set -euo pipefail
+
+          readonly SITE_ROOT="/root/caddy/site"
+          readonly RELEASES_DIR="${SITE_ROOT}/beerwolf-releases"
+          readonly RELEASE_DIR="${RELEASES_DIR}/${RELEASE_NAME}"
+          readonly CURRENT_LINK="${SITE_ROOT}/beerwolf-current"
+          readonly ARCHIVE="/tmp/beerwolf-${RELEASE_NAME}.tar.gz"
+          readonly CADDYFILE="/root/caddy/conf/Caddyfile"
+          readonly CADDY_SNIPPET="/root/caddy/conf/beerwolf.caddy"
+          readonly CADDY_CONTAINER="caddy-caddy-1"
+          readonly CADDYFILE_BACKUP="/tmp/Caddyfile.beerwolf-backup"
+          readonly SNIPPET_BACKUP="/tmp/beerwolf.caddy.backup"
+
+          install -d -m 0755 "$RELEASES_DIR" "$RELEASE_DIR"
+          tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
+          test -f "$RELEASE_DIR/index.html"
+
+          cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+          snippet_existed=false
+          if test -f "$CADDY_SNIPPET"; then
+            cp "$CADDY_SNIPPET" "$SNIPPET_BACKUP"
+            snippet_existed=true
+          fi
+          install -m 0644 /tmp/beerwolf.caddy "$CADDY_SNIPPET"
+
+          if ! awk '$0 == "import beerwolf.caddy" { found=1 } END { exit !found }' "$CADDYFILE"; then
+            printf '\nimport beerwolf.caddy\n' >> "$CADDYFILE"
+          fi
+
+          if ! docker exec "$CADDY_CONTAINER" caddy validate --config /etc/caddy/Caddyfile; then
+            cp "$CADDYFILE_BACKUP" "$CADDYFILE"
+            if test "$snippet_existed" = true; then
+              cp "$SNIPPET_BACKUP" "$CADDY_SNIPPET"
+            else
+              rm -f "$CADDY_SNIPPET"
+            fi
+            exit 1
+          fi
+
+          previous_release="$(readlink "$CURRENT_LINK" || true)"
+          ln -sfn "beerwolf-releases/${RELEASE_NAME}" "${CURRENT_LINK}.next"
+          mv -Tf "${CURRENT_LINK}.next" "$CURRENT_LINK"
+
+          if ! docker exec "$CADDY_CONTAINER" caddy reload --config /etc/caddy/Caddyfile; then
+            if test -n "$previous_release"; then
+              ln -sfn "$previous_release" "${CURRENT_LINK}.next"
+              mv -Tf "${CURRENT_LINK}.next" "$CURRENT_LINK"
+            else
+              rm -f "$CURRENT_LINK"
+            fi
+            cp "$CADDYFILE_BACKUP" "$CADDYFILE"
+            if test "$snippet_existed" = true; then
+              cp "$SNIPPET_BACKUP" "$CADDY_SNIPPET"
+            else
+              rm -f "$CADDY_SNIPPET"
+            fi
+            docker exec "$CADDY_CONTAINER" caddy reload --config /etc/caddy/Caddyfile
+            exit 1
+          fi
+
+          rm -f "$ARCHIVE" /tmp/beerwolf.caddy "$CADDYFILE_BACKUP" "$SNIPPET_BACKUP"
+          DEPLOY
+
+      - name: Verify production
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://beerwolf.site/healthz

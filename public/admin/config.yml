@@ -1,13 +1,17 @@
-# Decap writes content commits through GitLab. Register a non-confidential GitLab
-# OAuth application with the deployed /admin/ URL and replace this public app ID.
+# Decap writes content commits through GitHub. GitHub OAuth needs a small proxy
+# because the client secret cannot live in this static /admin/ page.
 backend:
-  name: gitlab
-  repo: beerwolf-shop/landing
+  name: github
+  # owner/name of the content repository on GitHub.
+  repo: Cato149/beerwolf-shop-landing
+  # Branch Decap commits published content to.
   branch: main
-  auth_type: pkce
-  app_id: REPLACE_WITH_GITLAB_OAUTH_APP_ID
+  # Public origin of the OAuth proxy (no trailing slash), e.g. a Cloudflare Worker.
+  base_url: REPLACE_WITH_OAUTH_PROXY_URL
+  # Path on the proxy that starts the GitHub login popup.
+  auth_endpoint: /auth
 
-# Local editing uses `npx decap-server`; no GitLab login is needed in development.
+# Local editing uses `npx decap-server`; no GitHub login is needed in development.
 local_backend: true
 
 # Uploaded media is committed with content and served from the static site.

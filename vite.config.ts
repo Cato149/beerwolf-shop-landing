@@ -5,7 +5,7 @@ export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '');
 
   return {
-    // GitLab Pages serves project sites from a sub-path; custom domains use "/".
+    // GitHub Pages project sites use /<repo>/; beerwolf.site and local dev use "/".
     base: env.VITE_BASE_PATH || '/',
     plugins: [react()],
     build: {
