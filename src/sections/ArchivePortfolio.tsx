@@ -23,17 +23,14 @@ export function ArchivePortfolio() {
     motionControlsRef.current?.clearMenuView();
   }, []);
 
-  const handleScrollActiveIndex = useCallback(
-    (index: number) => {
-      setSelectedIndex(index);
+  const handleScrollActiveIndex = useCallback((index: number) => {
+    setSelectedIndex(index);
 
-      if (menuActiveIndexRef.current !== null) {
-        setMenuActiveIndex(null);
-        motionControlsRef.current?.clearMenuView();
-      }
-    },
-    [],
-  );
+    if (menuActiveIndexRef.current !== null) {
+      setMenuActiveIndex(null);
+      motionControlsRef.current?.clearMenuView();
+    }
+  }, []);
 
   useArchiveMotion(sectionRef, {
     controlsRef: motionControlsRef,
@@ -94,9 +91,7 @@ export function ArchivePortfolio() {
                 style={{ '--card-index': index } as CSSProperties}
                 data-archive-card
                 data-menu-only={isMenuOnly ? 'true' : undefined}
-                data-menu-active={
-                  menuActiveIndex === index ? 'true' : undefined
-                }
+                data-menu-active={menuActiveIndex === index ? 'true' : undefined}
                 aria-labelledby={titleId}
               >
                 <div className="archive-card__tab" aria-hidden="true">

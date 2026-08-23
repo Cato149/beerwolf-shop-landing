@@ -63,7 +63,12 @@ function openMenuOnlyCard(cards: HTMLElement[], index: number) {
 
 export function useArchiveMotion(
   scope: RefObject<HTMLElement | null>,
-  { controlsRef, menuActiveIndexRef, onActiveIndexChange, onExitMenuView }: UseArchiveMotionOptions,
+  {
+    controlsRef,
+    menuActiveIndexRef,
+    onActiveIndexChange,
+    onExitMenuView,
+  }: UseArchiveMotionOptions,
 ) {
   useGSAP(
     () => {
@@ -212,7 +217,9 @@ export function useArchiveMotion(
               if (!scrollTrigger) return;
 
               cards.forEach((card) => {
-                gsap.set(card, { clearProps: 'transform,opacity,scale,rotate,pointerEvents' });
+                gsap.set(card, {
+                  clearProps: 'transform,opacity,scale,rotate,pointerEvents',
+                });
                 gsap.set(getCardDetails(card), { clearProps: 'transform,opacity' });
               });
 
@@ -220,7 +227,8 @@ export function useArchiveMotion(
               primeMenuOnlyCards();
               timeline.progress(scrollTrigger.progress);
             },
-            isScrollSequenceCard: (index: number) => index < ARCHIVE_SCROLL_SEQUENCE_LIMIT,
+            isScrollSequenceCard: (index: number) =>
+              index < ARCHIVE_SCROLL_SEQUENCE_LIMIT,
           };
 
           document.fonts.ready.then(() => ScrollTrigger.refresh());
@@ -266,7 +274,7 @@ export function useArchiveMotion(
               onActiveIndexChange?.(index);
             },
             clearMenuView: () => undefined,
-            isScrollSequenceCard: (_index: number) => true,
+            isScrollSequenceCard: () => true,
           };
 
           return () => {
@@ -279,12 +287,13 @@ export function useArchiveMotion(
       media.add('(prefers-reduced-motion: reduce)', () => {
         controlsRef.current = {
           openCardFromMenu: (index: number) => {
-            const cards = scope.current?.querySelectorAll<HTMLElement>('[data-archive-card]');
+            const cards =
+              scope.current?.querySelectorAll<HTMLElement>('[data-archive-card]');
             cards?.[index]?.scrollIntoView({ behavior: 'auto', block: 'center' });
             onActiveIndexChange?.(index);
           },
           clearMenuView: () => undefined,
-          isScrollSequenceCard: (_index: number) => true,
+          isScrollSequenceCard: () => true,
         };
 
         return () => {
@@ -294,6 +303,14 @@ export function useArchiveMotion(
 
       return () => media.revert();
     },
-    { scope, dependencies: [controlsRef, menuActiveIndexRef, onActiveIndexChange, onExitMenuView] },
+    {
+      scope,
+      dependencies: [
+        controlsRef,
+        menuActiveIndexRef,
+        onActiveIndexChange,
+        onExitMenuView,
+      ],
+    },
   );
 }
