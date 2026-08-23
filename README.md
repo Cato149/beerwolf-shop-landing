@@ -150,8 +150,11 @@ there, and release changes move to `main`. Only `main` is deployed.
 
 ### Production server
 
-The landing does not start its own web server. The host Caddy package serves
-files from `/root/caddy/site/beerwolf-current`.
+The landing does not start its own web server. The host Caddy package runs as
+user `caddy` and serves `/root/caddy/site/beerwolf-current`. Deploy grants that
+user traverse/read on the site tree (`chmod 0711 /root` plus `a+rX` on the
+files). `/healthz` can succeed while `/` still returns 403 if those bits are
+missing.
 
 On each production deploy GitHub Actions:
 

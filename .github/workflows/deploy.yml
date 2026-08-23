@@ -265,6 +265,15 @@ jobs:
           ln -sfn "beerwolf-releases/${RELEASE_NAME}" "${CURRENT_LINK}.next"
           mv -Tf "${CURRENT_LINK}.next" "$CURRENT_LINK"
 
+          # Distro Caddy runs as user `caddy`. /root is 0700, so file_server
+          # returns 403 while /healthz (respond) still succeeds.
+          chmod 0711 /root /root/caddy
+          chmod -R a+rX "$SITE_ROOT"
+          if id caddy >/dev/null 2>&1 && command -v setfacl >/dev/null; then
+            setfacl -m u:caddy:--x /root /root/caddy
+            setfacl -R -m u:caddy:rX "$SITE_ROOT"
+          fi
+
           if ! reload_caddy; then
             if test -n "$previous_release"; then
               ln -sfn "$previous_release" "${CURRENT_LINK}.next"
