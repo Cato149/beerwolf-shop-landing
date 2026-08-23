@@ -192,17 +192,30 @@ jobs:
           readonly RELEASE_DIR="${RELEASES_DIR}/${RELEASE_NAME}"
           readonly CURRENT_LINK="${SITE_ROOT}/beerwolf-current"
           readonly ARCHIVE="/tmp/beerwolf-${RELEASE_NAME}.tar.gz"
-          readonly CADDYFILE="/root/caddy/conf/Caddyfile"
-          readonly CADDY_SNIPPET="/root/caddy/conf/beerwolf.caddy"
-          readonly CADDY_CONTAINER="caddy-caddy-1"
+          # Host Caddy from the distro package reads this directory.
+          readonly CADDYFILE="/etc/caddy/Caddyfile"
+          readonly CADDY_SNIPPET="/etc/caddy/beerwolf.caddy"
           readonly CADDYFILE_BACKUP="/tmp/Caddyfile.beerwolf-backup"
           readonly SNIPPET_BACKUP="/tmp/beerwolf.caddy.backup"
 
-          install -d -m 0755 "$RELEASES_DIR" "$RELEASE_DIR"
+          reload_caddy() {
+            if systemctl is-active --quiet caddy; then
+              systemctl reload caddy
+            else
+              caddy reload --config "$CADDYFILE"
+            fi
+          }
+
+          install -d -m 0755 /etc/caddy "$RELEASES_DIR" "$RELEASE_DIR"
           tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
           test -f "$RELEASE_DIR/index.html"
 
-          cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+          if test -f "$CADDYFILE"; then
+            cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+          else
+            printf 'import beerwolf.caddy\n' > "$CADDYFILE"
+            cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+          fi
           snippet_existed=false
           if test -f "$CADDY_SNIPPET"; then
             cp "$CADDY_SNIPPET" "$SNIPPET_BACKUP"
@@ -214,7 +227,12 @@ jobs:
             printf '\nimport beerwolf.caddy\n' >> "$CADDYFILE"
           fi
 
-          if ! docker exec "$CADDY_CONTAINER" caddy validate --config /etc/caddy/Caddyfile; then
+          if ! command -v caddy >/dev/null; then
+            echo "caddy is not on PATH. Install the host Caddy package before deploy." >&2
+            exit 1
+          fi
+
+          if ! caddy validate --config "$CADDYFILE"; then
             cp "$CADDYFILE_BACKUP" "$CADDYFILE"
             if test "$snippet_existed" = true; then
               cp "$SNIPPET_BACKUP" "$CADDY_SNIPPET"
@@ -228,7 +246,7 @@ jobs:
           ln -sfn "beerwolf-releases/${RELEASE_NAME}" "${CURRENT_LINK}.next"
           mv -Tf "${CURRENT_LINK}.next" "$CURRENT_LINK"
 
-          if ! docker exec "$CADDY_CONTAINER" caddy reload --config /etc/caddy/Caddyfile; then
+          if ! reload_caddy; then
             if test -n "$previous_release"; then
               ln -sfn "$previous_release" "${CURRENT_LINK}.next"
               mv -Tf "${CURRENT_LINK}.next" "$CURRENT_LINK"
@@ -241,7 +259,7 @@ jobs:
             else
               rm -f "$CADDY_SNIPPET"
             fi
-            docker exec "$CADDY_CONTAINER" caddy reload --config /etc/caddy/Caddyfile
+            reload_caddy || true
             exit 1
           fi
 
