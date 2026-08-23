@@ -15,7 +15,7 @@ concurrency:
 
 env:
   # Public production SSH endpoint.
-  DEPLOY_HOST: 193.104.57.96
+  DEPLOY_HOST: 85.137.89.253
   # Account that owns the Caddy deployment on the server.
   DEPLOY_USER: root
   # Standard SSH port exposed by the production server.

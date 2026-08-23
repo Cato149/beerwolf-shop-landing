@@ -2,14 +2,14 @@
 
 An interactive bilingual poster-world for commissioning personal furry identity
 websites. The public site is a static React application; editable content lives in
-the repository and is managed through Decap CMS.
+the repository and is managed through Sveltia CMS.
 
 ## Stack
 
 - React 18, TypeScript and Vite
 - GSAP + ScrollTrigger for coordinated motion
 - Zod for runtime content validation
-- Decap CMS with GitHub authentication via an OAuth proxy
+- Sveltia CMS with GitHub fine-grained PAT login
 - Vitest, Testing Library, Playwright and axe
 - GitHub Actions, Caddy production hosting and GitHub Pages
 
@@ -85,45 +85,42 @@ To add another language:
 
 1. Copy an existing locale JSON file and translate every field.
 2. Add the locale code in `src/content/index.ts`.
-3. Extend localized project fields and the Decap portfolio schema.
+3. Extend localized project fields and the CMS portfolio schema.
 4. Add test assertions for the new locale.
 
 Project media uploaded by the CMS is committed under `public/uploads`. Demo artwork
 under `public/art` is original SVG placeholder material and can be replaced from
 the CMS.
 
-## Content studio (Decap CMS)
+## Content studio (Sveltia CMS)
 
-The admin shell is available at `/admin/`.
+The admin shell is available at `/admin/`. Production uses the same token login
+as [beerwolf.site](https://beerwolf.site/admin/): a GitHub fine-grained PAT,
+with no OAuth proxy.
 
 ### Local CMS
 
-Run the site and the Decap proxy in separate terminals:
-
 ```bash
 npm run dev
-npx decap-server
 ```
 
-Then open `http://localhost:5173/admin/`. `local_backend: true` is intended only
-for local editing.
+Open `http://localhost:5173/admin/` and sign in with a PAT, or use Sveltia’s
+local workflow against the files on disk. `decap-server` is not required.
 
 ### GitHub authentication
 
-GitHub OAuth always needs a client secret, so production login goes through a
-small OAuth proxy. Never put that secret in the repository.
+1. Open `/admin/` and choose **Sign in with Token**.
+2. Create a fine-grained PAT from the link Sveltia shows. The token must have
+   **Contents: Read and write** on `Cato149/beerwolf-shop-landing`.
+3. Paste the token. It stays in this browser’s local storage only.
 
-1. In GitHub, create an OAuth App (`Settings → Developer settings → OAuth Apps`).
-2. Set the authorization callback URL to `https://<oauth-proxy>/callback`.
-3. Deploy a Decap GitHub OAuth proxy (for example a Cloudflare Worker such as
-   [decap-proxy](https://github.com/sterlingwes/decap-proxy)) and give it the
-   GitHub Client ID and Client Secret.
-4. Copy the public proxy origin to `public/admin/config.yml` as `base_url`.
-5. Keep `auth_endpoint: /auth` unless the proxy uses a different login path.
+Do not add `base_url` unless you later deploy a real OAuth proxy. A placeholder
+there is treated as a relative path, so GitHub login sends you back to the
+landing page (`…/admin/REPLACE_WITH_OAUTH_PROXY_URL/auth`).
 
 CMS users need push access to `Cato149/beerwolf-shop-landing`. Editorial workflow
 keeps content edits on reviewable branches before publication. Portfolio projects
-use a Decap list widget, so they can be added, removed and drag-reordered.
+use a list widget, so they can be added, removed and drag-reordered.
 
 Trade-off: Git-backed content is inexpensive, versioned and easy to roll back, but
 every publication requires a CI build. It is deliberately not intended for live

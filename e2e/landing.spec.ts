@@ -44,6 +44,24 @@ test('has no serious automated accessibility violations', async ({ page }) => {
   expect(severeViolations).toEqual([]);
 });
 
+test('admin studio does not use a relative OAuth placeholder', async ({ page, request }) => {
+  const config = await request.get('/admin/config.yml');
+  expect(config.ok()).toBeTruthy();
+  const body = await config.text();
+  expect(body).not.toContain('REPLACE_WITH_OAUTH_PROXY_URL');
+  expect(body).toContain('auth_methods: [token]');
+
+  await page.goto('/admin/');
+  await expect(page).toHaveURL(/\/admin\/?$/);
+  await expect(page.locator('script[src*="sveltia-cms"]')).toHaveCount(1);
+  await expect(
+    page.getByRole('heading', {
+      level: 1,
+      name: /Personal websites for furry identities/i,
+    }),
+  ).toHaveCount(0);
+});
+
 test('archive file picker stays on the selected dossier', async ({ page }) => {
   await page.goto('/');
   await page.locator('#archive').scrollIntoViewIfNeeded();
