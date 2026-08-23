@@ -169,6 +169,9 @@ jobs:
             deploy/beerwolf.caddy \
             beerwolf-prod:/tmp/; then
             echo "Server rejected the deploy key. Add the public key printed in Configure SSH to /root/.ssh/authorized_keys on ${DEPLOY_HOST}." >&2
+            echo "GitHub Deploy keys do not grant SSH into the VPS; only authorized_keys does." >&2
+            echo "Verbose SSH follows; look for 'Offering public key' and PermitRootLogin." >&2
+            ssh -F "$HOME/.ssh/config" -v beerwolf-prod true || true
             exit 255
           fi
 
