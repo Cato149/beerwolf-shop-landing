@@ -1,24 +1,28 @@
-# Decap writes content commits through GitHub. GitHub OAuth needs a small proxy
-# because the client secret cannot live in this static /admin/ page.
+# yaml-language-server: $schema=https://unpkg.com/@sveltia/cms/schema/sveltia-cms.json
+#
+# Sveltia writes content commits through GitHub. Token login matches
+# beerwolf.site and does not need an OAuth proxy or client secret.
 backend:
   name: github
   # owner/name of the content repository on GitHub.
   repo: Cato149/beerwolf-shop-landing
-  # Branch Decap commits published content to.
+  # Branch Sveltia commits published content to.
   branch: main
-  # Public origin of the OAuth proxy (no trailing slash), e.g. a Cloudflare Worker.
-  base_url: REPLACE_WITH_OAUTH_PROXY_URL
-  # Path on the proxy that starts the GitHub login popup.
-  auth_endpoint: /auth
-
-# Local editing uses `npx decap-server`; no GitHub login is needed in development.
-local_backend: true
+  # PAT login only. OAuth would require a separate proxy and base_url.
+  auth_methods: [token]
+  # Readable commit subjects make CMS edits easy to find in Actions.
+  commit_messages:
+    create: 'cms: create {{collection}} «{{slug}}»'
+    update: 'cms: update {{collection}} «{{slug}}»'
+    delete: 'cms: delete {{collection}} «{{slug}}»'
+    uploadMedia: 'cms: upload {{path}}'
+    deleteMedia: 'cms: delete {{path}}'
 
 # Uploaded media is committed with content and served from the static site.
 media_folder: public/uploads
-public_folder: uploads
+# Leading slash so the published site resolves files from the origin root.
+public_folder: /uploads
 
-locale: en
 publish_mode: editorial_workflow
 
 collections:
