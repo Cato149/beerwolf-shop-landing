@@ -156,7 +156,7 @@ serves files from `/root/caddy/site`, mounted into the container as `/srv`.
 On each production deploy GitHub Actions:
 
 1. Builds `dist/` and packs it as a release archive.
-2. Uploads the archive over SSH to `193.104.57.96`.
+2. Uploads the archive over SSH to `85.137.89.253`.
 3. Extracts it into
    `/root/caddy/site/beerwolf-releases/<commit>-<attempt>`.
 4. Atomically switches the relative `beerwolf-current` symlink.
@@ -168,21 +168,47 @@ The Caddy route lives in `deploy/beerwolf.caddy`. The workflow adds
 Create a GitHub environment named `production` and add these secrets:
 
 - `DEPLOY_SSH_KEY` — private SSH key that can log in as
-  `root@193.104.57.96`
-- `SSH_KNOWN_HOSTS` — pinned `known_hosts` lines for `193.104.57.96`
+  `root@85.137.89.253`
+- `SSH_KNOWN_HOSTS` — pinned `known_hosts` lines for `85.137.89.253`
 
-Use the **IP**, not the domain. Copy every line that does not start with `#`.
-Do not hash the entries (`-H`) and do not wrap the secret in quotes.
+`DEPLOY_SSH_KEY` must be the full PEM (`BEGIN`/`END` lines included), with real
+line breaks, no quotes and no passphrase. Copy the file, do not paste a
+one-line dump:
 
 ```bash
-ssh-keyscan 193.104.57.96
+ssh-keygen -y -f beerwolf-deploy
+pbcopy < beerwolf-deploy
 ```
 
-Example of a valid secret (the key material must come from your server):
+`error in libcrypto` means GitHub stored a broken PEM (literal `\n`, missing
+newlines, or the `.pub` file). Re-copy the private key and rerun deploy.
+
+`Permission denied (publickey)` means the PEM is valid, but this public key is
+not in `/root/.ssh/authorized_keys` on `85.137.89.253`. After a host change,
+authorize the same key on the new server:
+
+```bash
+ssh-keygen -y -f beerwolf-deploy
+ssh root@85.137.89.253 'umask 077; mkdir -p /root/.ssh; cat >> /root/.ssh/authorized_keys'
+```
+
+Paste the `ssh-ed25519 AAAA...` line, then confirm `PermitRootLogin` allows
+keys (`prohibit-password` or `yes`) and `PubkeyAuthentication yes`.
+
+Use the **IP**, not the domain. Copy every `ssh-keyscan` line that does not
+start with `#`. Do not hash the entries (`-H`) and do not wrap the secret in
+quotes.
+
+```bash
+ssh-keyscan 85.137.89.253
+```
+
+Example of a valid `SSH_KNOWN_HOSTS` secret (the key material must come from
+your server):
 
 ```
-193.104.57.96 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
-193.104.57.96 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAA...
+85.137.89.253 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
+85.137.89.253 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAA...
 ```
 
 Verify the fingerprints over a trusted channel before saving the secret.

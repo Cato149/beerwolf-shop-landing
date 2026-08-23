@@ -63,9 +63,55 @@ jobs:
           fi
 
           install -d -m 0700 "$HOME/.ssh"
-          # Strip CR so a Windows-pasted secret still parses as a PEM key.
-          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/deploy_key"
-          chmod 0600 "$HOME/.ssh/deploy_key"
+
+          # GitHub often stores a PEM as one line, with literal \n, or wrapped
+          # in quotes. OpenSSH then fails with "error in libcrypto".
+          python3 - <<'PY'
+          import os
+          import pathlib
+          import re
+
+          raw = os.environ["DEPLOY_SSH_KEY"]
+          raw = raw.strip().strip('"').strip("'").replace("\r\n", "\n").replace("\r", "\n")
+          if "\n" not in raw and "\\n" in raw:
+              raw = raw.replace("\\n", "\n")
+          raw = raw.strip()
+          lines = [line.strip() for line in raw.split("\n") if line.strip()]
+          dest = pathlib.Path.home() / ".ssh" / "deploy_key"
+          if len(lines) >= 3 and lines[0].startswith("-----BEGIN") and lines[-1].startswith("-----END"):
+              dest.write_text("\n".join(lines) + "\n")
+          else:
+              match = re.match(
+                  r"(-----BEGIN [^-]+-----)\s+(.+?)\s+(-----END [^-]+-----)$",
+                  raw,
+                  flags=re.S,
+              )
+              if match:
+                  header, body, footer = match.groups()
+                  body = re.sub(r"\s+", "", body)
+                  wrapped = "\n".join(body[i : i + 70] for i in range(0, len(body), 70))
+                  dest.write_text(f"{header}\n{wrapped}\n{footer}\n")
+              else:
+                  dest.write_text(raw if raw.endswith("\n") else raw + "\n")
+          dest.chmod(0o600)
+          PY
+
+          if ! grep -qE '^-----BEGIN .*PRIVATE KEY-----$' "$HOME/.ssh/deploy_key"; then
+            echo "DEPLOY_SSH_KEY is not a private key. Paste the PEM including BEGIN/END lines, not the .pub file." >&2
+            exit 1
+          fi
+
+          if ! ssh-keygen -y -f "$HOME/.ssh/deploy_key" >/dev/null; then
+            echo "DEPLOY_SSH_KEY could not be parsed by OpenSSH (error in libcrypto)." >&2
+            echo "Re-copy the key with real line breaks, no quotes and no passphrase:" >&2
+            echo "  ssh-keygen -y -f beerwolf-deploy && pbcopy < beerwolf-deploy" >&2
+            exit 1
+          fi
+
+          # Public half only. Compare this line with authorized_keys on the server.
+          echo "Deploy public key (must exist in /root/.ssh/authorized_keys on ${DEPLOY_HOST}):" >&2
+          ssh-keygen -y -f "$HOME/.ssh/deploy_key" >&2
+          ssh-keygen -l -E sha256 -f "$HOME/.ssh/deploy_key" >&2
 
           known_hosts="$HOME/.ssh/known_hosts"
           if [ -n "${SSH_KNOWN_HOSTS}" ]; then
@@ -117,11 +163,14 @@ jobs:
           RELEASE_NAME: ${{ github.sha }}-${{ github.run_attempt }}
         run: |
           set -euo pipefail
-          scp \
+          if ! scp \
             -F "$HOME/.ssh/config" \
             "/tmp/beerwolf-${RELEASE_NAME}.tar.gz" \
             deploy/beerwolf.caddy \
-            beerwolf-prod:/tmp/
+            beerwolf-prod:/tmp/; then
+            echo "Server rejected the deploy key. Add the public key printed in Configure SSH to /root/.ssh/authorized_keys on ${DEPLOY_HOST}." >&2
+            exit 255
+          fi
 
       - name: Activate release
         env:
