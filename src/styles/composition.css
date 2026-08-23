@@ -1585,7 +1585,7 @@
 
 .contact__heading h2,
 .contact__logo-heading {
-  max-width: min(100%, 18rem);
+  max-width: min(100%, 26rem);
   margin-top: var(--space-md);
   text-wrap: balance;
   transform: rotate(-1.2deg);
@@ -1610,6 +1610,14 @@
 
 .contact__logo-script {
   display: block;
+  /* content-box so the padding below is added outside the glyph advance.
+     Pacifico/Marck + skewX hang past the layout width; background-clip
+     would otherwise shear the last letters (ll / те) and the l-ascenders. */
+  box-sizing: content-box;
+  justify-self: start;
+  width: max-content;
+  padding-block: 0.18em 0.08em;
+  padding-inline: 0.06em 0.36em;
   background: linear-gradient(
     118deg,
     var(--color-orange-600) 8%,
@@ -1622,7 +1630,7 @@
   filter: drop-shadow(0.08rem 0.1rem 0 rgb(16 42 36 / 42%));
   font-size: clamp(2.4rem, 1.35rem + 4.8vw, 4.8rem);
   letter-spacing: -0.02em;
-  line-height: 0.92;
+  line-height: 1.08;
   transform: rotate(-3.5deg) skewX(-6deg);
   transform-origin: left center;
 }
@@ -2539,7 +2547,7 @@
 
   .contact__heading h2,
   .contact__logo-heading {
-    max-width: min(100%, 16rem);
+    max-width: min(100%, 22rem);
   }
 
   .contact__logo-script {
