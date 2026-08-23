@@ -198,11 +198,17 @@ jobs:
           readonly CADDYFILE_BACKUP="/tmp/Caddyfile.beerwolf-backup"
           readonly SNIPPET_BACKUP="/tmp/beerwolf.caddy.backup"
 
+          # systemd ExecReload calls `caddy reload`, which needs the admin
+          # API on 127.0.0.1:2019. If that socket is off, restart instead.
           reload_caddy() {
+            if ! systemctl cat caddy >/dev/null 2>&1; then
+              echo "caddy.service is not installed." >&2
+              return 1
+            fi
             if systemctl is-active --quiet caddy; then
-              systemctl reload caddy
+              systemctl reload caddy || systemctl restart caddy
             else
-              caddy reload --config "$CADDYFILE"
+              systemctl start caddy
             fi
           }
 
