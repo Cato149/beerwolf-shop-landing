@@ -581,7 +581,7 @@
   --coffee-y: 78%;
   --finger-x: 91%;
   --finger-y: 21%;
-  transform: rotate(-0.45deg);
+  rotate: -0.45deg;
 }
 
 .ticket-copy--process {
@@ -615,7 +615,7 @@
     0 24%,
     0.48rem 16%
   );
-  transform: rotate(0.55deg);
+  rotate: 0.55deg;
 }
 
 .ticket-copy--process::before {
@@ -633,7 +633,7 @@
   --finger-x: 94%;
   --finger-y: 52%;
   --finger-rotate: -19deg;
-  transform: rotate(-0.7deg);
+  rotate: -0.7deg;
 }
 
 .hero__story .telegram-cta {
@@ -848,7 +848,7 @@
 .process-journey {
   position: relative;
   z-index: var(--z-content);
-  padding-block: var(--space-xl) var(--space-2xl);
+  padding-block: var(--space-xl) var(--space-md);
 }
 
 .process-journey::before {
@@ -866,13 +866,9 @@
 .process-journey__intro {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  align-items: end;
+  align-items: start;
   gap: var(--space-md);
   margin-bottom: var(--space-xl);
-}
-
-.process-journey__intro .eyebrow {
-  grid-column: 1 / -1;
 }
 
 .process-journey__track {
@@ -1173,7 +1169,7 @@
 
 .process-journey__bleed {
   width: 120%;
-  margin-top: var(--space-lg);
+  margin-top: var(--space-sm);
   margin-left: -10%;
   overflow: hidden;
   color: rgb(242 212 79 / 9%);
@@ -1189,7 +1185,7 @@
 .archive {
   position: relative;
   z-index: var(--z-content);
-  padding-top: var(--space-xl);
+  padding-top: var(--space-sm);
 }
 
 .archive::before {
@@ -1205,13 +1201,10 @@
 .archive__intro {
   display: grid;
   grid-template-columns: 1.1fr 1fr;
-  align-items: end;
-  gap: var(--space-md);
-  padding-bottom: var(--space-xl);
-}
-
-.archive__intro .eyebrow {
-  grid-column: 1 / -1;
+  align-items: start;
+  column-gap: var(--space-md);
+  row-gap: var(--space-sm);
+  padding-bottom: var(--space-lg);
 }
 
 .archive__stage {
@@ -1601,7 +1594,7 @@
 .contact__heading h2,
 .contact__logo-heading {
   max-width: min(100%, 26rem);
-  margin-top: var(--space-md);
+  margin-top: 0;
   text-wrap: balance;
   transform: rotate(-1.2deg);
 }
@@ -1693,13 +1686,6 @@
   content: '';
   opacity: 0.72;
   transform: rotate(-1deg);
-}
-
-.contact__heading > p:last-child {
-  max-width: 46ch;
-  margin-top: var(--space-sm);
-  color: var(--color-forest-950);
-  font-size: var(--step-1);
 }
 
 .contact__routes {

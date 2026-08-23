@@ -148,6 +148,18 @@ ol {
   content: '';
 }
 
+.section-heading {
+  display: grid;
+  align-content: start;
+  gap: var(--space-xs);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-section-ticket] {
+    visibility: hidden;
+  }
+}
+
 .section-title {
   max-width: 18ch;
   color: var(--color-cream);

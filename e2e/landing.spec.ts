@@ -14,6 +14,8 @@ test('presents the complete commission journey', async ({ page }) => {
     page.getByRole('link', { name: /Order via TelegramBot/i }).first(),
   ).toBeVisible();
   await expect(page.locator('[data-archive-card]')).toHaveCount(3);
+  await expect(page.locator('#archive [data-section-ticket]')).toHaveCount(1);
+  await expect(page.locator('#process [data-section-ticket]')).toHaveCount(1);
   await expect(
     page.getByRole('heading', {
       name: 'Need website? Better call Beerwolf.',

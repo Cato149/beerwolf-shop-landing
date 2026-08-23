@@ -25,15 +25,18 @@ export function HeroSection() {
           <span>{copy.hero.titleLead}</span>
           <span className="hero__title-accent">{copy.hero.titleAccent}</span>
         </h1>
-        <div className="hero__story" data-hero-reveal>
+        <div className="hero__story">
           <TicketCopy
             className="hero__description"
             code="BW / ONE-WAY / 001"
             variant="hero"
+            edge="start"
           >
             {copy.hero.description}
           </TicketCopy>
-          <TelegramCta />
+          <div data-hero-reveal>
+            <TelegramCta />
+          </div>
         </div>
       </div>
 

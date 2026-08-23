@@ -37,22 +37,6 @@ export function MotionScene() {
         },
       });
 
-      gsap.fromTo(
-        '.contact__heading h2',
-        { y: 90, autoAlpha: 0.25 },
-        {
-          y: 0,
-          autoAlpha: 1,
-          ease: 'power3.out',
-          scrollTrigger: {
-            trigger: '.contact__heading',
-            start: 'top 82%',
-            end: 'center 48%',
-            scrub: 0.8,
-          },
-        },
-      );
-
       gsap.from('.contact__routes > *', {
         y: 80,
         rotateZ: (index) => (index ? 1.5 : -2),

@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 import { gsap, useGSAP } from './gsap';
 
-export function useProcessMotion(scope: RefObject<HTMLElement>) {
+export function useProcessMotion(scope: RefObject<HTMLElement | null>) {
   useGSAP(
     () => {
       const media = gsap.matchMedia();

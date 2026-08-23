@@ -4,6 +4,7 @@ import {
   type ArchiveMotionControls,
 } from '../animation/archive-motion';
 import { useArchiveMotion } from '../animation/useArchiveMotion';
+import { useSectionIntroMotion } from '../animation/useSectionIntroMotion';
 import { ArchiveCabinet } from '../components/ui/ArchiveCabinet';
 import { TicketCopy } from '../components/ui/TicketCopy';
 import { getAssetUrl, projects } from '../content';
@@ -38,6 +39,7 @@ export function ArchivePortfolio() {
     onActiveIndexChange: handleScrollActiveIndex,
     onExitMenuView: handleExitMenuView,
   });
+  useSectionIntroMotion(sectionRef);
 
   const handleSelect = (index: number) => {
     setSelectedIndex(index);
@@ -58,15 +60,18 @@ export function ArchivePortfolio() {
       aria-labelledby="archive-title"
       ref={sectionRef}
     >
-      <div className="section-shell archive__intro">
-        <p className="eyebrow">{copy.archive.eyebrow}</p>
-        <h2 className="section-title" id="archive-title">
-          {copy.archive.title}
-        </h2>
+      <div className="section-shell archive__intro" data-section-intro>
+        <div className="section-heading" data-section-heading>
+          <p className="eyebrow">{copy.archive.eyebrow}</p>
+          <h2 className="section-title" id="archive-title">
+            {copy.archive.title}
+          </h2>
+        </div>
         <TicketCopy
           className="section-intro"
           code="ARCHIVE PASS / 003"
           variant="archive"
+          edge="end"
         >
           {copy.archive.intro}
         </TicketCopy>

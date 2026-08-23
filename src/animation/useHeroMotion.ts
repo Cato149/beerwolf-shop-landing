@@ -11,6 +11,7 @@ export function useHeroMotion(scope: RefObject<HTMLElement>) {
         const art = section?.querySelector<HTMLElement>('[data-hero-art]');
         if (!section || !art) return;
 
+        const ticket = section.querySelector<HTMLElement>('[data-section-ticket]');
         const entrance = gsap.timeline({ defaults: { ease: 'power3.out' } });
         entrance
           .fromTo(
@@ -30,6 +31,21 @@ export function useHeroMotion(scope: RefObject<HTMLElement>) {
             },
             0.2,
           );
+
+        if (ticket) {
+          entrance.fromTo(
+            ticket,
+            {
+              x: () => {
+                const rect = ticket.getBoundingClientRect();
+                return -(rect.right + 48);
+              },
+              autoAlpha: 0,
+            },
+            { x: 0, autoAlpha: 1, duration: 1.15 },
+            0.55,
+          );
+        }
 
         gsap.to('.low-poly-totem', {
           y: -16,

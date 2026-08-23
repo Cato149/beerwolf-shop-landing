@@ -1,5 +1,6 @@
 import { useRef } from 'react';
 import { useProcessMotion } from '../animation/useProcessMotion';
+import { useSectionIntroMotion } from '../animation/useSectionIntroMotion';
 import { TicketCopy } from '../components/ui/TicketCopy';
 import { ProjectBoard } from '../components/visual/ProjectBoard';
 import { TelegramThread } from '../components/visual/TelegramThread';
@@ -9,6 +10,7 @@ export function ProcessJourney() {
   const { copy } = useLocale();
   const sectionRef = useRef<HTMLElement>(null);
   useProcessMotion(sectionRef);
+  useSectionIntroMotion(sectionRef);
 
   return (
     <section
@@ -17,15 +19,18 @@ export function ProcessJourney() {
       aria-labelledby="process-title"
       ref={sectionRef}
     >
-      <div className="section-shell process-journey__intro">
-        <p className="eyebrow">{copy.process.eyebrow}</p>
-        <h2 className="section-title" id="process-title">
-          {copy.process.title}
-        </h2>
+      <div className="section-shell process-journey__intro" data-section-intro>
+        <div className="section-heading" data-section-heading>
+          <p className="eyebrow">{copy.process.eyebrow}</p>
+          <h2 className="section-title" id="process-title">
+            {copy.process.title}
+          </h2>
+        </div>
         <TicketCopy
           className="section-intro"
           code="STUDIO LINE / 06 STOPS"
           variant="process"
+          edge="end"
         >
           {copy.process.intro}
         </TicketCopy>

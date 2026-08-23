@@ -104,7 +104,9 @@ export function useArchiveMotion(
           const primeScrollCards = () => {
             scrollCards.forEach((card, index) => {
               gsap.set(card, {
-                y: () => window.innerHeight * 0.69 + index * 22,
+                // Sit just under the fold so the first dossier peeks as soon as
+                // the title hits the viewport center and the timeline starts.
+                y: () => window.innerHeight * 0.22 + index * 22,
                 z: index * -28,
                 rotation: (index - 1) * 0.7,
                 clearProps: 'opacity,visibility,scale,xPercent,pointerEvents',
@@ -129,10 +131,16 @@ export function useArchiveMotion(
           primeScrollCards();
           primeMenuOnlyCards();
 
+          const heading =
+            scope.current?.querySelector<HTMLElement>('[data-section-heading]');
+
           const timeline = gsap.timeline({
             scrollTrigger: {
-              trigger: stage,
-              start: 'top top',
+              // First dossier starts rising once the archive title sits at the
+              // bottom of the viewport, not after the intro has already left.
+              trigger: heading ?? stage,
+              start: heading ? 'top 90%' : 'top top',
+              endTrigger: stage,
               end: 'bottom bottom',
               scrub: 0.9,
               invalidateOnRefresh: true,
