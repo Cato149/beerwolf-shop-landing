@@ -266,7 +266,7 @@ export function useArchiveMotion(
               onActiveIndexChange?.(index);
             },
             clearMenuView: () => undefined,
-            isScrollSequenceCard: (_index: number) => true,
+            isScrollSequenceCard: () => true,
           };
 
           return () => {
@@ -284,7 +284,7 @@ export function useArchiveMotion(
             onActiveIndexChange?.(index);
           },
           clearMenuView: () => undefined,
-          isScrollSequenceCard: (_index: number) => true,
+          isScrollSequenceCard: () => true,
         };
 
         return () => {

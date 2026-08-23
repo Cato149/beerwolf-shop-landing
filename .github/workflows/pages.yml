@@ -40,13 +40,8 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Lint, typecheck and unit tests
-        run: |
-          npm run lint
-          npm run typecheck
-          npm run format:check
-          npm run test
-
+      # Quality gates stay in ci.yml. A lint failure here previously skipped the
+      # Vite build, and GitHub's Jekyll Pages job published the raw index.html.
       - name: Build for the Pages base path
         env:
           # Project sites use /<repo>/; a custom Pages domain uses /.
@@ -58,10 +53,19 @@ jobs:
             */) ;;
             *) base="${base}/" ;;
           esac
+          echo "Building with VITE_BASE_PATH=${base}"
           VITE_BASE_PATH="$base" npm run build
+          test -f dist/index.html
+          if grep -q 'src/main.tsx' dist/index.html; then
+            echo "Vite did not rewrite the development entry script" >&2
+            exit 1
+          fi
 
       - name: Add Pages SPA fallback
-        run: cp dist/index.html dist/404.html
+        run: |
+          cp dist/index.html dist/404.html
+          # Stop Jekyll from rewriting files if a branch Pages build runs again.
+          touch dist/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3
