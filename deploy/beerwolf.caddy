@@ -1,6 +1,6 @@
 # Production site served by the existing Caddy container.
 # The deployment workflow atomically points beerwolf-current at a release.
-beerwolf.site {
+shop.beerwolf.site {
 	root * /srv/beerwolf-current
 
 	# Used by the deployment smoke check without reading a content file.

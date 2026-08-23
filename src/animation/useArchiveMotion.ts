@@ -16,9 +16,9 @@ function getCardDetails(card: HTMLElement) {
   return card.querySelectorAll('.archive-card__dossier > *, .archive-card__art img');
 }
 
-/** Scroll position where a card is fully raised and its dossier is visible. */
+/** Real timeline label: ScrollTrigger.labelToScroll() only looks up exact keys. */
 function getOpenCardScrollLabel(index: number) {
-  return `card-${index}+=0.92`;
+  return `card-${index}-open`;
 }
 
 function openMenuOnlyCard(cards: HTMLElement[], index: number) {
@@ -181,7 +181,10 @@ export function useArchiveMotion(
                 },
                 `${label}+=0.42`,
               )
-              .to({}, { duration: 0.52 });
+              .to({}, { duration: 0.52 })
+              // Named label — "card-0+=0.92" is a position, not a labels{} key, so
+              // labelToScroll() used to return 0 and jump the page to the hero.
+              .addLabel(`${label}-open`, `${label}+=0.92`);
 
             if (index < scrollCards.length - 1) {
               timeline.to(card, {
@@ -203,9 +206,18 @@ export function useArchiveMotion(
                 const scrollTrigger = timeline.scrollTrigger;
                 if (!scrollTrigger) return;
 
-                scrollTrigger.scroll(
-                  scrollTrigger.labelToScroll(getOpenCardScrollLabel(index)),
+                const target = scrollTrigger.labelToScroll(
+                  getOpenCardScrollLabel(index),
                 );
+                // Missing labels resolve to 0 and would snap the page to the hero.
+                if (target > 0) {
+                  scrollTrigger.scroll(target);
+                } else {
+                  cards[index]?.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'center',
+                  });
+                }
                 onActiveIndexChange?.(index);
                 return;
               }
