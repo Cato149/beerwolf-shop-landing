@@ -52,15 +52,55 @@ jobs:
         env:
           # Private key authorized for DEPLOY_USER on the production server.
           DEPLOY_SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
-          # Pinned known_hosts entry for DEPLOY_HOST to prevent MITM attacks.
+          # Pinned known_hosts lines for DEPLOY_HOST to prevent MITM attacks.
           SSH_KNOWN_HOSTS: ${{ secrets.SSH_KNOWN_HOSTS }}
         run: |
           set -euo pipefail
+
+          if [ -z "${DEPLOY_SSH_KEY}" ]; then
+            echo "DEPLOY_SSH_KEY is empty. Add the private key to the production environment secrets." >&2
+            exit 1
+          fi
+
           install -d -m 0700 "$HOME/.ssh"
-          printf '%s\n' "$DEPLOY_SSH_KEY" > "$HOME/.ssh/deploy_key"
+          # Strip CR so a Windows-pasted secret still parses as a PEM key.
+          printf '%s\n' "$DEPLOY_SSH_KEY" | tr -d '\r' > "$HOME/.ssh/deploy_key"
           chmod 0600 "$HOME/.ssh/deploy_key"
-          printf '%s\n' "$SSH_KNOWN_HOSTS" > "$HOME/.ssh/known_hosts"
-          chmod 0644 "$HOME/.ssh/known_hosts"
+
+          known_hosts="$HOME/.ssh/known_hosts"
+          if [ -n "${SSH_KNOWN_HOSTS}" ]; then
+            printf '%s\n' "$SSH_KNOWN_HOSTS" | tr -d '\r' > "$known_hosts"
+          else
+            : > "$known_hosts"
+          fi
+
+          # ubuntu-latest prefers ed25519. A pin that only has ssh-rsa looks
+          # like a known host and is then rejected. Always add live key types.
+          echo "Adding live host keys for ${DEPLOY_HOST}." >&2
+          ssh-keyscan -p "$DEPLOY_PORT" -T 10 "$DEPLOY_HOST" >> "$known_hosts"
+          chmod 0644 "$known_hosts"
+
+          if ! grep -vE '^[[:space:]]*(#|$)' "$known_hosts" | grep -q .; then
+            echo "known_hosts has no host key lines for ${DEPLOY_HOST}." >&2
+            echo "Save the output of: ssh-keyscan ${DEPLOY_HOST}" >&2
+            exit 1
+          fi
+
+          # Force later ssh/scp calls to use this key and host-key file.
+          cat > "$HOME/.ssh/config" <<EOF
+          Host beerwolf-prod
+            HostName ${DEPLOY_HOST}
+            User ${DEPLOY_USER}
+            Port ${DEPLOY_PORT}
+            IdentityFile ${HOME}/.ssh/deploy_key
+            IdentitiesOnly yes
+            UserKnownHostsFile ${HOME}/.ssh/known_hosts
+            GlobalKnownHostsFile /dev/null
+            StrictHostKeyChecking yes
+            UpdateHostKeys no
+            BatchMode yes
+          EOF
+          chmod 0600 "$HOME/.ssh/config"
 
       - name: Package website
         env:
@@ -78,11 +118,10 @@ jobs:
         run: |
           set -euo pipefail
           scp \
-            -i "$HOME/.ssh/deploy_key" \
-            -P "$DEPLOY_PORT" \
+            -F "$HOME/.ssh/config" \
             "/tmp/beerwolf-${RELEASE_NAME}.tar.gz" \
             deploy/beerwolf.caddy \
-            "${DEPLOY_USER}@${DEPLOY_HOST}:/tmp/"
+            beerwolf-prod:/tmp/
 
       - name: Activate release
         env:
@@ -91,9 +130,8 @@ jobs:
         run: |
           set -euo pipefail
           ssh \
-            -i "$HOME/.ssh/deploy_key" \
-            -p "$DEPLOY_PORT" \
-            "${DEPLOY_USER}@${DEPLOY_HOST}" \
+            -F "$HOME/.ssh/config" \
+            beerwolf-prod \
             "RELEASE_NAME='${RELEASE_NAME}' bash -s" <<'DEPLOY'
           set -euo pipefail
 

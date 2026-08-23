@@ -172,14 +172,25 @@ Create a GitHub environment named `production` and add these secrets:
 
 - `DEPLOY_SSH_KEY` — private SSH key that can log in as
   `root@193.104.57.96`
-- `SSH_KNOWN_HOSTS` — pinned `known_hosts` line for the server
+- `SSH_KNOWN_HOSTS` — pinned `known_hosts` lines for `193.104.57.96`
 
-Generate the host line with the command below, then verify the fingerprint
-over a trusted channel before saving it:
+Use the **IP**, not the domain. Copy every line that does not start with `#`.
+Do not hash the entries (`-H`) and do not wrap the secret in quotes.
 
 ```bash
-ssh-keyscan -H 193.104.57.96
+ssh-keyscan 193.104.57.96
 ```
+
+Example of a valid secret (the key material must come from your server):
+
+```
+193.104.57.96 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAA...
+193.104.57.96 ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAA...
+```
+
+Verify the fingerprints over a trusted channel before saving the secret.
+If the secret is empty or lists a different host, the workflow fetches live
+keys with `ssh-keyscan` during deploy.
 
 To roll back, point the symlink at a previous release directory:
 
