@@ -150,8 +150,8 @@ there, and release changes move to `main`. Only `main` is deployed.
 
 ### Production server
 
-The landing does not start its own web server. The existing Caddy container
-serves files from `/root/caddy/site`, mounted into the container as `/srv`.
+The landing does not start its own web server. The host Caddy package serves
+files from `/root/caddy/site/beerwolf-current`.
 
 On each production deploy GitHub Actions:
 
@@ -160,10 +160,12 @@ On each production deploy GitHub Actions:
 3. Extracts it into
    `/root/caddy/site/beerwolf-releases/<commit>-<attempt>`.
 4. Atomically switches the relative `beerwolf-current` symlink.
-5. Validates and reloads Caddy, then checks `/healthz`.
+5. Writes `deploy/beerwolf.caddy` into `/etc/caddy/`, validates, reloads the
+   host `caddy` unit, then checks `/healthz`.
 
-The Caddy route lives in `deploy/beerwolf.caddy`. The workflow adds
-`import beerwolf.caddy` to `/root/caddy/conf/Caddyfile` once.
+The site block lives in `deploy/beerwolf.caddy`. The workflow adds
+`import beerwolf.caddy` to `/etc/caddy/Caddyfile` once. If that file already
+has a `beerwolf.site` site, remove the duplicate before the first import.
 
 Create a GitHub environment named `production` and add these secrets:
 
