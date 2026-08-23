@@ -44,6 +44,17 @@ test('has no serious automated accessibility violations', async ({ page }) => {
   expect(severeViolations).toEqual([]);
 });
 
+test('archive file picker stays on the selected dossier', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#archive').scrollIntoViewIfNeeded();
+
+  const picker = page.getByLabel('Choose a portfolio file from the archive');
+  await picker.selectOption({ index: 1 });
+
+  await expect(page.getByRole('heading', { level: 1 })).not.toBeInViewport();
+  await expect(page.getByRole('heading', { name: 'Soft Riot' })).toBeVisible();
+});
+
 test.describe('reduced motion', () => {
   test.use({ reducedMotion: 'reduce' });
 
