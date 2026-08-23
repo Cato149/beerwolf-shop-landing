@@ -6,96 +6,102 @@ export function useProcessMotion(scope: RefObject<HTMLElement>) {
     () => {
       const media = gsap.matchMedia();
 
-      media.add('(min-width: 59rem) and (prefers-reduced-motion: no-preference)', () => {
-        const steps = gsap.utils.toArray<HTMLElement>('[data-process-step]');
+      media.add(
+        '(min-width: 59rem) and (prefers-reduced-motion: no-preference)',
+        () => {
+          const steps = gsap.utils.toArray<HTMLElement>('[data-process-step]');
 
-        steps.forEach((step, index) => {
-          const article = step.querySelector('article');
-          const artifact = step.querySelector('.process-step__artifact');
-          const fromX = index % 2 ? 72 : -72;
+          steps.forEach((step, index) => {
+            const article = step.querySelector('article');
+            const artifact = step.querySelector('.process-step__artifact');
+            const fromX = index % 2 ? 72 : -72;
 
-          gsap.fromTo(
-            article,
-            { x: fromX, y: 24, rotateZ: index % 2 ? 2 : -2, autoAlpha: 0.2 },
-            {
-              x: 0,
-              y: 0,
-              rotateZ: 0,
-              autoAlpha: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: step,
-                start: 'top 78%',
-                end: 'center 52%',
-                scrub: 0.8,
-              },
-            },
-          );
-
-          if (artifact) {
             gsap.fromTo(
-              artifact,
-              { x: -fromX * 0.5, y: 55, rotateZ: index % 2 ? -3 : 3, autoAlpha: 0 },
+              article,
+              { x: fromX, y: 24, rotateZ: index % 2 ? 2 : -2, autoAlpha: 0.2 },
               {
                 x: 0,
                 y: 0,
                 rotateZ: 0,
                 autoAlpha: 1,
-                ease: 'power2.out',
+                ease: 'power3.out',
                 scrollTrigger: {
-                  trigger: artifact,
-                  start: 'top 88%',
-                  end: 'center 65%',
-                  scrub: 0.7,
+                  trigger: step,
+                  start: 'top 78%',
+                  end: 'center 52%',
+                  scrub: 0.8,
                 },
               },
             );
-          }
-        });
-      });
 
-      media.add('(max-width: 58rem) and (prefers-reduced-motion: no-preference)', () => {
-        const steps = gsap.utils.toArray<HTMLElement>('[data-process-step]');
+            if (artifact) {
+              gsap.fromTo(
+                artifact,
+                { x: -fromX * 0.5, y: 55, rotateZ: index % 2 ? -3 : 3, autoAlpha: 0 },
+                {
+                  x: 0,
+                  y: 0,
+                  rotateZ: 0,
+                  autoAlpha: 1,
+                  ease: 'power2.out',
+                  scrollTrigger: {
+                    trigger: artifact,
+                    start: 'top 88%',
+                    end: 'center 65%',
+                    scrub: 0.7,
+                  },
+                },
+              );
+            }
+          });
+        },
+      );
 
-        steps.forEach((step) => {
-          const article = step.querySelector('article');
-          const artifact = step.querySelector('.process-step__artifact');
+      media.add(
+        '(max-width: 58rem) and (prefers-reduced-motion: no-preference)',
+        () => {
+          const steps = gsap.utils.toArray<HTMLElement>('[data-process-step]');
 
-          gsap.fromTo(
-            article,
-            { y: 24, autoAlpha: 0.2 },
-            {
-              y: 0,
-              autoAlpha: 1,
-              ease: 'power3.out',
-              scrollTrigger: {
-                trigger: step,
-                start: 'top 82%',
-                end: 'center 58%',
-                scrub: 0.8,
-              },
-            },
-          );
+          steps.forEach((step) => {
+            const article = step.querySelector('article');
+            const artifact = step.querySelector('.process-step__artifact');
 
-          if (artifact) {
             gsap.fromTo(
-              artifact,
-              { y: 36, autoAlpha: 0 },
+              article,
+              { y: 24, autoAlpha: 0.2 },
               {
                 y: 0,
                 autoAlpha: 1,
-                ease: 'power2.out',
+                ease: 'power3.out',
                 scrollTrigger: {
-                  trigger: artifact,
-                  start: 'top 88%',
-                  end: 'center 68%',
-                  scrub: 0.7,
+                  trigger: step,
+                  start: 'top 82%',
+                  end: 'center 58%',
+                  scrub: 0.8,
                 },
               },
             );
-          }
-        });
-      });
+
+            if (artifact) {
+              gsap.fromTo(
+                artifact,
+                { y: 36, autoAlpha: 0 },
+                {
+                  y: 0,
+                  autoAlpha: 1,
+                  ease: 'power2.out',
+                  scrollTrigger: {
+                    trigger: artifact,
+                    start: 'top 88%',
+                    end: 'center 68%',
+                    scrub: 0.7,
+                  },
+                },
+              );
+            }
+          });
+        },
+      );
 
       media.add('(prefers-reduced-motion: no-preference)', () => {
         gsap.to('[data-process-path]', {

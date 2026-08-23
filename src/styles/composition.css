@@ -492,31 +492,11 @@
   width: 4.6rem;
   aspect-ratio: 1;
   background:
-    radial-gradient(
-      ellipse 26% 31% at 49% 67%,
-      currentColor 0 83%,
-      transparent 86%
-    ),
-    radial-gradient(
-      ellipse 10% 14% at 22% 38%,
-      currentColor 0 82%,
-      transparent 86%
-    ),
-    radial-gradient(
-      ellipse 10% 15% at 41% 24%,
-      currentColor 0 82%,
-      transparent 86%
-    ),
-    radial-gradient(
-      ellipse 10% 15% at 62% 24%,
-      currentColor 0 82%,
-      transparent 86%
-    ),
-    radial-gradient(
-      ellipse 10% 14% at 80% 40%,
-      currentColor 0 82%,
-      transparent 86%
-    );
+    radial-gradient(ellipse 26% 31% at 49% 67%, currentColor 0 83%, transparent 86%),
+    radial-gradient(ellipse 10% 14% at 22% 38%, currentColor 0 82%, transparent 86%),
+    radial-gradient(ellipse 10% 15% at 41% 24%, currentColor 0 82%, transparent 86%),
+    radial-gradient(ellipse 10% 15% at 62% 24%, currentColor 0 82%, transparent 86%),
+    radial-gradient(ellipse 10% 14% at 80% 40%, currentColor 0 82%, transparent 86%);
   color: var(--color-forest-950);
   filter: blur(0.25px);
   opacity: 0.065;

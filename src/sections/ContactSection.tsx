@@ -12,9 +12,13 @@ export function ContactSection() {
       <div className="section-shell contact__heading">
         <p className="eyebrow">{copy.contact.eyebrow}</p>
         <h2 id="contact-title" className="contact__logo-heading">
-          <span className="contact__logo-question">{copy.contact.heading.question}</span>
+          <span className="contact__logo-question">
+            {copy.contact.heading.question}
+          </span>
           <span className="contact__logo-lockup">
-            <span className="contact__logo-script">{copy.contact.heading.scriptLine}</span>
+            <span className="contact__logo-script">
+              {copy.contact.heading.scriptLine}
+            </span>
             <span className="contact__logo-brand">{copy.contact.heading.brand}</span>
           </span>
         </h2>

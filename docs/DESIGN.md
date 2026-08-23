@@ -9,16 +9,16 @@
 
 ## Как пользоваться
 
-| Задача | Куда идти |
-| --- | --- |
-| Сменить цвет, шрифт, отступ, тень | `src/styles/tokens.css` |
-| Поменять типографику абзаца, заголовка секции, фокус | `src/styles/global.css` |
-| Сверстать или поправить блок, карточку, форму | `src/styles/composition.css` |
-| Изменить текст EN/RU | `src/content/copy/{en,ru}.json` |
-| Добавить или переставить проект | `src/content/projects.json` |
-| Сменить Telegram, email, соцсети | `src/content/settings.json` |
-| Подключить другой вес/набор шрифта | `src/main.tsx` |
-| Поменять входную анимацию | `src/animation/` |
+| Задача                                               | Куда идти                       |
+| ---------------------------------------------------- | ------------------------------- |
+| Сменить цвет, шрифт, отступ, тень                    | `src/styles/tokens.css`         |
+| Поменять типографику абзаца, заголовка секции, фокус | `src/styles/global.css`         |
+| Сверстать или поправить блок, карточку, форму        | `src/styles/composition.css`    |
+| Изменить текст EN/RU                                 | `src/content/copy/{en,ru}.json` |
+| Добавить или переставить проект                      | `src/content/projects.json`     |
+| Сменить Telegram, email, соцсети                     | `src/content/settings.json`     |
+| Подключить другой вес/набор шрифта                   | `src/main.tsx`                  |
+| Поменять входную анимацию                            | `src/animation/`                |
 
 Правило: сначала токен, потом композиция. Жёсткие hex в компонентах
 допустимы только как локальный акцент (сейчас так сделан бумажный тон
@@ -56,49 +56,49 @@ src/styles/composition.css   # все секции, компоненты, бре
 BEM-подобные классы: блок (`archive-card`), элемент (`archive-card__tab`),
 модификатор (`archive-card--riot`). Общие утилиты живут в `global.css`:
 
-| Класс | Назначение |
-| --- | --- |
-| `.section-shell` | Центрированный контейнер `var(--container)` |
-| `.eyebrow` | Жёлтый моно-кикер с «радиоштрихами» слева |
-| `.section-title` | Display-заголовок секции, `max-width: 18ch` |
-| `.section-intro` | Вводный абзац на `--measure-narrow` |
-| `.skip-link` | Жёлтая плашка «пропустить к контенту» |
-| `.visually-hidden` | Скрытие для всех, кроме скринридеров |
+| Класс              | Назначение                                  |
+| ------------------ | ------------------------------------------- |
+| `.section-shell`   | Центрированный контейнер `var(--container)` |
+| `.eyebrow`         | Жёлтый моно-кикер с «радиоштрихами» слева   |
+| `.section-title`   | Display-заголовок секции, `max-width: 18ch` |
+| `.section-intro`   | Вводный абзац на `--measure-narrow`         |
+| `.skip-link`       | Жёлтая плашка «пропустить к контенту»       |
+| `.visually-hidden` | Скрытие для всех, кроме скринридеров        |
 
 ## Палитра
 
 Имена ролей важнее оттенка. Новые цвета добавлять рядом с семейством,
 не как одноразовый `--color-button`.
 
-| Токен | Hex | Роль |
-| --- | --- | --- |
-| `--color-forest-950` | `#102a24` | Чернила, фон `html/body`, обводки |
-| `--color-forest-900` | `#16342c` | Тёмные панели, мобильное меню |
-| `--color-forest-800` | `#24463a` | Ночной градиент |
-| `--color-forest-700` | `#365b48` | Приглушённый текст на бумаге |
-| `--color-orange-700` | `#b85b42` | Акцент на бумаге, labels |
-| `--color-orange-600` | `#d4724b` | Шапка канбана, подвал, градиент мира |
-| `--color-orange-500` | `#e58a56` | Hover-заливка CTA, вкладка `riot` |
-| `--color-yellow-500` | `#f2d44f` | Солнце, CTA, фокус, selection |
-| `--color-yellow-300` | `#f7e887` | Герой-билет, live-метка канбана |
-| `--color-paper-500` | `#e9d89c` | Канбан-доска, вкладки архива |
-| `--color-paper-300` | `#f1e7ba` | Билеты, подпись тотема, telegram-ticket |
-| `--color-cream` | `#f6efcd` | Основной текст на тёмном |
-| `--color-moss` | `#8da16a` | Морда тотема, мягкие орбы |
-| `--color-sage` | `#b6c37b` | Вкладка `river`, online-статус |
-| `--color-ink` | = forest-950 | Семантический алиас |
+| Токен                | Hex          | Роль                                    |
+| -------------------- | ------------ | --------------------------------------- |
+| `--color-forest-950` | `#102a24`    | Чернила, фон `html/body`, обводки       |
+| `--color-forest-900` | `#16342c`    | Тёмные панели, мобильное меню           |
+| `--color-forest-800` | `#24463a`    | Ночной градиент                         |
+| `--color-forest-700` | `#365b48`    | Приглушённый текст на бумаге            |
+| `--color-orange-700` | `#b85b42`    | Акцент на бумаге, labels                |
+| `--color-orange-600` | `#d4724b`    | Шапка канбана, подвал, градиент мира    |
+| `--color-orange-500` | `#e58a56`    | Hover-заливка CTA, вкладка `riot`       |
+| `--color-yellow-500` | `#f2d44f`    | Солнце, CTA, фокус, selection           |
+| `--color-yellow-300` | `#f7e887`    | Герой-билет, live-метка канбана         |
+| `--color-paper-500`  | `#e9d89c`    | Канбан-доска, вкладки архива            |
+| `--color-paper-300`  | `#f1e7ba`    | Билеты, подпись тотема, telegram-ticket |
+| `--color-cream`      | `#f6efcd`    | Основной текст на тёмном                |
+| `--color-moss`       | `#8da16a`    | Морда тотема, мягкие орбы               |
+| `--color-sage`       | `#b6c37b`    | Вкладка `river`, online-статус          |
+| `--color-ink`        | = forest-950 | Семантический алиас                     |
 
 `theme-color` в `index.html` — `#17352d` (чуть светлее forest-950, совпадает
 с полосками шкафа архива).
 
 ### Градиенты
 
-| Токен | Где |
-| --- | --- |
-| `--gradient-world` | Фон `.poster-world`: солнце → лес → охра |
-| `--gradient-sun` | Аватар в Telegram-треде |
+| Токен              | Где                                                |
+| ------------------ | -------------------------------------------------- |
+| `--gradient-world` | Фон `.poster-world`: солнце → лес → охра           |
+| `--gradient-sun`   | Аватар в Telegram-треде                            |
 | `--gradient-paper` | Зарезервирован, почти не используется в композиции |
-| `--gradient-night` | Зарезервирован |
+| `--gradient-night` | Зарезервирован                                     |
 
 Локальные радиальные заливки секций (`process-journey::before`,
 `archive::before`, `contact`) не вынесены в токены: они привязаны к
@@ -121,13 +121,13 @@ Selection: жёлтый фон, лесные чернила. Фокус: `0.2rem
 Шрифты подключаются через Fontsource в `src/main.tsx`, не через Google
 Fonts runtime. Менять набор — менять и импорты, и CSS-переменные.
 
-| Роль | Токен | Семейство | Начертания | Fallback |
-| --- | --- | --- | --- | --- |
-| Заголовки, бренд, маркеры | `--font-display` | Unbounded | 400, 700 · latin + cyrillic | Arial Black, sans-serif |
-| Основной текст | `--font-body` | Lora | 400, 500, 600 · latin + cyrillic + cyrillic-ext | Iowan Old Style, Palatino, Book Antiqua, serif |
-| UI, навигация, ярлыки | `--font-mono` | IBM Plex Mono | 400, 600 · latin + cyrillic | ui-monospace, monospace |
-| Script EN (contact lockup) | `--font-script-en` | Pacifico | 400 · latin | Segoe Script, cursive |
-| Script RU (contact lockup) | `--font-script-ru` | Marck Script | 400 · cyrillic | Segoe Script, cursive |
+| Роль                       | Токен              | Семейство     | Начертания                                      | Fallback                                       |
+| -------------------------- | ------------------ | ------------- | ----------------------------------------------- | ---------------------------------------------- |
+| Заголовки, бренд, маркеры  | `--font-display`   | Unbounded     | 400, 700 · latin + cyrillic                     | Arial Black, sans-serif                        |
+| Основной текст             | `--font-body`      | Lora          | 400, 500, 600 · latin + cyrillic + cyrillic-ext | Iowan Old Style, Palatino, Book Antiqua, serif |
+| UI, навигация, ярлыки      | `--font-mono`      | IBM Plex Mono | 400, 600 · latin + cyrillic                     | ui-monospace, monospace                        |
+| Script EN (contact lockup) | `--font-script-en` | Pacifico      | 400 · latin                                     | Segoe Script, cursive                          |
+| Script RU (contact lockup) | `--font-script-ru` | Marck Script  | 400 · cyrillic                                  | Segoe Script, cursive                          |
 
 Pacifico не содержит кириллицы — поэтому для `lang="ru"` слоган в контакте
 переключается на Marck Script через `:lang(ru)`. Не подставлять Pacifico
@@ -138,21 +138,25 @@ Pacifico не содержит кириллицы — поэтому для `lan
 Все размеры текста — `clamp`, чтобы один и тот же ритм жил от телефона
 до широкого постера.
 
-| Токен | Диапазон | Типичное применение |
-| --- | --- | --- |
-| `--step--1` | 0.78–0.88rem | Eyebrow, мелкие mono-ярлыки |
-| `--step-0` | 1–1.15rem | `body` |
-| `--step-1` | 1.18–1.55rem | Интро секций, описание героя |
-| `--step-2` | 1.45–2.2rem | Заголовки шагов и досье |
-| `--step-3` | 2–3.8rem | `.section-title` |
-| `--step-4` | 2.9–7.2rem | Запас для крупных акцентов |
-| `--step-5` | 4–12.6rem | Запас; герой использует свой clamp |
+| Токен       | Диапазон     | Типичное применение                |
+| ----------- | ------------ | ---------------------------------- |
+| `--step--1` | 0.78–0.88rem | Eyebrow, мелкие mono-ярлыки        |
+| `--step-0`  | 1–1.15rem    | `body`                             |
+| `--step-1`  | 1.18–1.55rem | Интро секций, описание героя       |
+| `--step-2`  | 1.45–2.2rem  | Заголовки шагов и досье            |
+| `--step-3`  | 2–3.8rem     | `.section-title`                   |
+| `--step-4`  | 2.9–7.2rem   | Запас для крупных акцентов         |
+| `--step-5`  | 4–12.6rem    | Запас; герой использует свой clamp |
 
 Герой намеренно вне шкалы:
 
 ```css
-.hero__title { font-size: clamp(4.6rem, 8.2vw, 8.8rem); }
-:lang(ru) .hero__title { font-size: clamp(4rem, 7.1vw, 7.5rem); }
+.hero__title {
+  font-size: clamp(4.6rem, 8.2vw, 8.8rem);
+}
+:lang(ru) .hero__title {
+  font-size: clamp(4rem, 7.1vw, 7.5rem);
+}
 ```
 
 Кириллица шире латиницы — для RU заголовок уже ужат. Любой новый
@@ -160,12 +164,12 @@ Pacifico не содержит кириллицы — поэтому для `lan
 
 ### Ритм набора
 
-| Токен | Значение | Где |
-| --- | --- | --- |
-| `--type-body-tracking` | 0.012em | `body` |
-| `--type-body-leading` | 1.58 | `body` |
-| `--type-small-tracking` | 0.018em | Карточки, билеты, мелкий копирайт |
-| `--type-small-leading` | 1.54 | То же |
+| Токен                   | Значение | Где                               |
+| ----------------------- | -------- | --------------------------------- |
+| `--type-body-tracking`  | 0.012em  | `body`                            |
+| `--type-body-leading`   | 1.58     | `body`                            |
+| `--type-small-tracking` | 0.018em  | Карточки, билеты, мелкий копирайт |
+| `--type-small-leading`  | 1.54     | То же                             |
 
 Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height ≈ 0.8–1.02`,
 `text-wrap: balance`. Mono-ярлыки: uppercase, tracking `0.05em…0.16em`.
@@ -174,15 +178,15 @@ Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height �
 
 ## Пространство и сетка
 
-| Токен | Диапазон | Роль |
-| --- | --- | --- |
-| `--space-2xs` | 0.35–0.55rem | Микрозазоры |
-| `--space-xs` | 0.65–0.9rem | Подписи, внутренние поля |
-| `--space-sm` | 0.9–1.3rem | Поля карточек |
-| `--space-md` | 1.35–2.2rem | Ряды, интро-сетки |
-| `--space-lg` | 2–4rem | Секции, форма |
-| `--space-xl` | 3.2–7.5rem | Вертикаль между главами |
-| `--space-2xl` | 5–13rem | Контакт, низ процесса |
+| Токен         | Диапазон     | Роль                     |
+| ------------- | ------------ | ------------------------ |
+| `--space-2xs` | 0.35–0.55rem | Микрозазоры              |
+| `--space-xs`  | 0.65–0.9rem  | Подписи, внутренние поля |
+| `--space-sm`  | 0.9–1.3rem   | Поля карточек            |
+| `--space-md`  | 1.35–2.2rem  | Ряды, интро-сетки        |
+| `--space-lg`  | 2–4rem       | Секции, форма            |
+| `--space-xl`  | 3.2–7.5rem   | Вертикаль между главами  |
+| `--space-2xl` | 5–13rem      | Контакт, низ процесса    |
 
 Контейнер: `--container: min(92rem, calc(100vw - 2 * var(--space-md)))`.
 Не задавать фиксированную ширину страницы — только этот токен.
@@ -192,12 +196,12 @@ Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height �
 Композиция и GSAP должны совпадать. Если двигаете порог в CSS —
 проверьте хуки анимации.
 
-| Порог | Что происходит |
-| --- | --- |
-| `max-width: 72rem` | Уже колонки, канбан чуть сжимается |
-| `max-width: 58rem` | Одна колонка, бургер, архив без pin, канбан стопкой |
-| `min-width: 59rem` | Process/archive motion (см. хуки) |
-| `min-width: 929px` | Меню архива может прятать лишние карты |
+| Порог              | Что происходит                                          |
+| ------------------ | ------------------------------------------------------- |
+| `max-width: 72rem` | Уже колонки, канбан чуть сжимается                      |
+| `max-width: 58rem` | Одна колонка, бургер, архив без pin, канбан стопкой     |
+| `min-width: 59rem` | Process/archive motion (см. хуки)                       |
+| `min-width: 929px` | Меню архива может прятать лишние карты                  |
 | `max-width: 38rem` | Прячутся ленты, алмаз, scroll-cue; форма в одну колонку |
 
 `58rem ≈ 928px`. Анимации процесса и архива включаются с `59rem`,
@@ -205,43 +209,43 @@ Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height �
 
 ## Поверхности
 
-| Токен | Значение | Смысл |
-| --- | --- | --- |
-| `--border-thin` | 1px cream 32% | Хедер, разделители на тёмном |
-| `--border-ink` | 2px forest-950 | Печатный край бумаги и кнопок |
-| `--shadow-print` | 0.45 / 0.5rem forest 48% | Штамп CTA и маркеров |
+| Токен             | Значение                 | Смысл                            |
+| ----------------- | ------------------------ | -------------------------------- |
+| `--border-thin`   | 1px cream 32%            | Хедер, разделители на тёмном     |
+| `--border-ink`    | 2px forest-950           | Печатный край бумаги и кнопок    |
+| `--shadow-print`  | 0.45 / 0.5rem forest 48% | Штамп CTA и маркеров             |
 | `--shadow-yellow` | 0.45 / 0.5rem yellow-500 | Бумага на тёмном, мобильное меню |
-| `--glow-yellow` | 4rem yellow 38% | Пиксельные глифы |
-| `--radius-xs` | 0.25rem | Почти не используется |
-| `--radius-sm` | 0.65rem | Почти не используется |
-| `--radius-blob` | organic 45/55… | Ореол вокруг тотема |
+| `--glow-yellow`   | 4rem yellow 38%          | Пиксельные глифы                 |
+| `--radius-xs`     | 0.25rem                  | Почти не используется            |
+| `--radius-sm`     | 0.65rem                  | Почти не используется            |
+| `--radius-blob`   | organic 45/55…           | Ореол вокруг тотема              |
 
 Углы по умолчанию прямые (`border-radius: 0` у полей формы и кнопок).
 Круги — только солнце, аватар, орбы.
 
 ## Движение
 
-| Токен | Значение |
-| --- | --- |
-| `--ease-organic` | `cubic-bezier(0.22, 1, 0.36, 1)` |
-| `--ease-tactile` | `cubic-bezier(0.34, 1.56, 0.64, 1)` — лёгкий overshoot |
-| `--duration-fast` | 180ms — hover, меню |
-| `--duration-medium` | 420ms — подчеркивания, панели |
-| `--duration-slow` | 900ms — орбы, pointer-glow |
+| Токен               | Значение                                               |
+| ------------------- | ------------------------------------------------------ |
+| `--ease-organic`    | `cubic-bezier(0.22, 1, 0.36, 1)`                       |
+| `--ease-tactile`    | `cubic-bezier(0.34, 1.56, 0.64, 1)` — лёгкий overshoot |
+| `--duration-fast`   | 180ms — hover, меню                                    |
+| `--duration-medium` | 420ms — подчеркивания, панели                          |
+| `--duration-slow`   | 900ms — орбы, pointer-glow                             |
 
 Единственный JS-рантайм анимации — GSAP + ScrollTrigger
 (`src/animation/gsap.ts`). Не добавлять Framer Motion / CSS keyframes
 для сюжетных сцен: они разъедутся с `prefers-reduced-motion`.
 
-| Хук / сцена | Поведение |
-| --- | --- |
-| `useHeroMotion` | Появление копирайта, 3D-вход тотема, parallax, pointer tilt |
-| `useProcessMotion` | С ≥59rem шаги въезжают слева/справа, рисуется пунктир |
+| Хук / сцена        | Поведение                                                      |
+| ------------------ | -------------------------------------------------------------- |
+| `useHeroMotion`    | Появление копирайта, 3D-вход тотема, parallax, pointer tilt    |
+| `useProcessMotion` | С ≥59rem шаги въезжают слева/справа, рисуется пунктир          |
 | `useArchiveMotion` | На широком экране pin + scrub стопки; первые 3 карты в скролле |
-| `GlowField` | `--pointer-x/y` пишутся в rAF, без ререндера React |
-| CSS `orb-drift` | Три орба, 14–22s |
-| CSS `grain-jump` | Шаги по 0.65s, opacity 0.13 |
-| CSS `cue-line` | Полоска «скролль дальше» |
+| `GlowField`        | `--pointer-x/y` пишутся в rAF, без ререндера React             |
+| CSS `orb-drift`    | Три орба, 14–22s                                               |
+| CSS `grain-jump`   | Шаги по 0.65s, opacity 0.13                                    |
+| CSS `cue-line`     | Полоска «скролль дальше»                                       |
 
 `ARCHIVE_SCROLL_SEQUENCE_LIMIT = 3` в `src/animation/archive-motion.ts`.
 Четвёртая и дальше карты на десктопе открываются из селекта шкафа
@@ -253,16 +257,16 @@ Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height �
 
 ## Слои (z-index)
 
-| Токен / факт | Значение | Слой |
-| --- | --- | --- |
-| `--z-base` | 0 | Фон мира |
-| `--z-decor` | 1 | Ленты, глифы, орбы |
-| `--z-content` | 2 | Секции |
-| `.archive__cabinet` | 10 | Липкий шкаф |
-| `--z-header` | 20 | Шапка |
-| `.archive-card[data-menu-active]` | 30 | Карта из меню |
-| `.grain-overlay` | 40 | Зерно на весь экран |
-| `--z-skip` | 50 | Skip-link |
+| Токен / факт                      | Значение | Слой                |
+| --------------------------------- | -------- | ------------------- |
+| `--z-base`                        | 0        | Фон мира            |
+| `--z-decor`                       | 1        | Ленты, глифы, орбы  |
+| `--z-content`                     | 2        | Секции              |
+| `.archive__cabinet`               | 10       | Липкий шкаф         |
+| `--z-header`                      | 20       | Шапка               |
+| `.archive-card[data-menu-active]` | 30       | Карта из меню       |
+| `.grain-overlay`                  | 40       | Зерно на весь экран |
+| `--z-skip`                        | 50       | Skip-link           |
 
 Новый декоративный слой — между `--z-decor` и `--z-content`.
 Не поднимать декор выше хедера и skip-link.
@@ -293,10 +297,10 @@ Display-заголовки: `letter-spacing: -0.045em…-0.08em`, `line-height �
 
 Ссылка на `settings.telegramBotUrl`. Текст — `copy.common.telegramCta`.
 
-| Проп `variant` | Класс | Вид |
-| --- | --- | --- |
+| Проп `variant`  | Класс                | Вид                             |
+| --------------- | -------------------- | ------------------------------- |
 | `sun` (default) | `.telegram-cta--sun` | Жёлтая плашка, `--shadow-print` |
-| `ink` | `.telegram-cta--ink` | Лесная плашка, оранжевая тень |
+| `ink`           | `.telegram-cta--ink` | Лесная плашка, оранжевая тень   |
 
 Hover: сдвиг `0.25rem 0.3rem` и оранжевая заливка слева направо.
 Минимальная высота 4rem.
@@ -312,12 +316,12 @@ Hover: сдвиг `0.25rem 0.3rem` и оранжевая заливка слев
 </TicketCopy>
 ```
 
-| `variant` | Бумага | Перфорация | Наклон |
-| --- | --- | --- | --- |
-| `hero` | `--color-yellow-300` | справа | −0.45° |
-| `process` | `--color-paper-300` | слева | +0.55° |
-| `archive` | `#dca36e` | справа | −0.70° |
-| `contact` | тип есть, стилей нет | не использовать, пока нет CSS | — |
+| `variant` | Бумага               | Перфорация                    | Наклон |
+| --------- | -------------------- | ----------------------------- | ------ |
+| `hero`    | `--color-yellow-300` | справа                        | −0.45° |
+| `process` | `--color-paper-300`  | слева                         | +0.55° |
+| `archive` | `#dca36e`            | справа                        | −0.70° |
+| `contact` | тип есть, стилей нет | не использовать, пока нет CSS | —      |
 
 Положение пятен задаётся custom properties (`--paw-x`, `--coffee-y`…).
 Новый вариант — новый модификатор в `composition.css`, не копия разметки.
@@ -340,22 +344,22 @@ honeypot. Отправка в Formspree (`VITE_FORMSPREE_ENDPOINT`). Без endp
 
 Все декоративные, кроме тотема (у него `role="img"` и локализованный alt).
 
-| Компонент | Класс | Заметка |
-| --- | --- | --- |
-| `GlowField` | `.glow-field` | Три орба + pointer blob. На coarse pointer blob выключен |
-| `GrainOverlay` | `.grain-overlay` | SVG turbulence, `pointer-events: none` |
-| `PixelGlyphs` | `.pixel-glyph--*` | cross, diamond, steps, spark. Позиции в `rem`/`vw` от верха мира |
-| `LowPolyTotem` | `.low-poly-totem` | Геометрический волк. Цвета плоскостей — классы `.totem-*` |
-| `ProjectBoard` | `.project-board` | 4 колонки канбана из `copy.process.board` |
-| `TelegramThread` | `.telegram-thread` | Инсценированный чат из `copy.process.telegram` |
+| Компонент        | Класс              | Заметка                                                          |
+| ---------------- | ------------------ | ---------------------------------------------------------------- |
+| `GlowField`      | `.glow-field`      | Три орба + pointer blob. На coarse pointer blob выключен         |
+| `GrainOverlay`   | `.grain-overlay`   | SVG turbulence, `pointer-events: none`                           |
+| `PixelGlyphs`    | `.pixel-glyph--*`  | cross, diamond, steps, spark. Позиции в `rem`/`vw` от верха мира |
+| `LowPolyTotem`   | `.low-poly-totem`  | Геометрический волк. Цвета плоскостей — классы `.totem-*`        |
+| `ProjectBoard`   | `.project-board`   | 4 колонки канбана из `copy.process.board`                        |
+| `TelegramThread` | `.telegram-thread` | Инсценированный чат из `copy.process.telegram`                   |
 
 `artVariant` проекта красит только вкладку досье:
 
-| `artVariant` | Вкладка |
-| --- | --- |
-| `signal` | paper-500 (по умолчанию) |
-| `riot` | orange-500 |
-| `river` | sage |
+| `artVariant` | Вкладка                  |
+| ------------ | ------------------------ |
+| `signal`     | paper-500 (по умолчанию) |
+| `riot`       | orange-500               |
+| `river`      | sage                     |
 
 Новый вариант: добавить значение в `src/content/schema.ts` и класс
 `.archive-card--{name}` в `composition.css`.
