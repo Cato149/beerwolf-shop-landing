@@ -1,6 +1,6 @@
 # Host Caddy (not Docker) serves the current release from the site tree.
 # The deployment workflow atomically points beerwolf-current at a release.
-shop.beerwolf.site, beerwolf.site {
+shop.beerwolf.site {
 	root * /root/caddy/site/beerwolf-current
 
 	# Used by the deployment smoke check without reading a content file.

@@ -161,8 +161,8 @@ On each production deploy GitHub Actions:
    `/root/caddy/site/beerwolf-releases/<commit>-<attempt>`.
 4. Atomically switches the relative `beerwolf-current` symlink.
 5. Writes `deploy/beerwolf.caddy` into `/etc/caddy/`, validates, then
-   `systemctl reload` (or `start`/`restart` if the admin API on :2019 is
-   off), then checks `/healthz`.
+   reloads the running Caddy. It will not start a second unit if `:80`
+   is already taken.
 
 The site block lives in `deploy/beerwolf.caddy`. The workflow adds
 `import beerwolf.caddy` to `/etc/caddy/Caddyfile` once. If that file already
