@@ -26,6 +26,7 @@ export const copySchema = z.object({
   }),
   nav: z.object({
     label: nonEmptyText,
+    brand: nonEmptyText,
     concept: nonEmptyText,
     process: nonEmptyText,
     archive: nonEmptyText,
@@ -36,6 +37,7 @@ export const copySchema = z.object({
   }),
   common: z.object({
     telegramCta: nonEmptyText,
+    me: nonEmptyText,
     viewProject: nonEmptyText,
     demoProject: nonEmptyText,
     scrollCue: nonEmptyText,
@@ -166,6 +168,7 @@ export const settingsSchema = z.object({
   brandName: nonEmptyText,
   telegramBotUrl: z.url(),
   email: z.email(),
+  personalSiteUrl: z.url(),
   socials: z
     .array(
       z.object({

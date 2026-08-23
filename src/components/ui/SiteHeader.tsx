@@ -16,12 +16,8 @@ export function SiteHeader() {
 
   return (
     <header className="site-header">
-      <a className="brand-mark" href="#top" aria-label={settings.brandName}>
-        <svg viewBox="0 0 48 48" aria-hidden="true">
-          <path d="m7 8 8 12 9-14 9 14 9-12-4 33H11z" />
-          <path d="m17 25 7-6 7 6-7 11z" />
-        </svg>
-        <span>{settings.brandName}</span>
+      <a className="brand-mark" href="#top" aria-label={copy.nav.brand}>
+        {copy.nav.brand}
       </a>
 
       <button
@@ -48,6 +44,15 @@ export function SiteHeader() {
             ))}
           </ul>
         </nav>
+        <a
+          className="site-header__me"
+          href={settings.personalSiteUrl}
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => setIsOpen(false)}
+        >
+          {copy.common.me}
+        </a>
         <LanguageSwitcher />
       </div>
     </header>

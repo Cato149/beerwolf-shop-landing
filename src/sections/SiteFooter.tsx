@@ -19,6 +19,11 @@ export function SiteFooter() {
         <div>
           <p className="site-footer__label">{copy.footer.socialTitle}</p>
           <ul className="site-footer__links">
+            <li>
+              <a href={settings.personalSiteUrl} target="_blank" rel="noreferrer">
+                {copy.common.me} ↗
+              </a>
+            </li>
             {settings.socials.map((social) => (
               <li key={social.label}>
                 <a href={social.url} target="_blank" rel="noreferrer">

@@ -5,6 +5,7 @@
   },
   "nav": {
     "label": "Основная навигация",
+    "brand": "Пиволк",
     "concept": "Ритуал",
     "process": "Как всё устроено",
     "archive": "Архив проектов",
@@ -15,6 +16,7 @@
   },
   "common": {
     "telegramCta": "Заказать через TelegramBot",
+    "me": "Это я",
     "viewProject": "Открыть проект",
     "demoProject": "Демо-досье",
     "scrollCue": "Листайте навстречу сигналу",

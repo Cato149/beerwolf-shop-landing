@@ -5,6 +5,10 @@ describe('editable content', () => {
     expect(supportedLocales).toEqual(['en', 'ru']);
     expect(copies.en.hero.titleAccent).toContain('furry');
     expect(copies.ru.hero.titleAccent).toContain('фурри');
+    expect(copies.en.nav.brand).toBe('Beerwolf');
+    expect(copies.ru.nav.brand).toBe('Пиволк');
+    expect(copies.en.common.me).toBe('ME');
+    expect(copies.ru.common.me).toBe('Это я');
   });
 
   it('keeps project ids unique and every project bilingual', () => {
@@ -21,6 +25,7 @@ describe('editable content', () => {
 
   it('provides a primary Telegram route and contact settings', () => {
     expect(settings.telegramBotUrl).toMatch(/^https:\/\/t\.me\//);
+    expect(settings.personalSiteUrl).toMatch(/^https:\/\/beerwolf\.site\/?$/);
     expect(settings.email).toContain('@');
     expect(settings.socials.length).toBeGreaterThanOrEqual(2);
   });

@@ -5,6 +5,7 @@
   },
   "nav": {
     "label": "Main navigation",
+    "brand": "Beerwolf",
     "concept": "The ritual",
     "process": "How it works",
     "archive": "Project archive",
@@ -15,6 +16,7 @@
   },
   "common": {
     "telegramCta": "Order via TelegramBot",
+    "me": "ME",
     "viewProject": "Visit project",
     "demoProject": "Demo dossier",
     "scrollCue": "Scroll into the signal",

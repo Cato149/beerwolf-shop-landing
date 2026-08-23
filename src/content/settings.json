@@ -2,6 +2,7 @@
   "brandName": "Beerwolf",
   "telegramBotUrl": "https://t.me/beerwolf_shop_bot",
   "email": "hello@beerwolf.studio",
+  "personalSiteUrl": "https://beerwolf.site",
   "socials": [
     {
       "label": "Telegram",
