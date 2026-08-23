@@ -198,18 +198,31 @@ jobs:
           readonly CADDYFILE_BACKUP="/tmp/Caddyfile.beerwolf-backup"
           readonly SNIPPET_BACKUP="/tmp/beerwolf.caddy.backup"
 
-          # systemd ExecReload calls `caddy reload`, which needs the admin
-          # API on 127.0.0.1:2019. If that socket is off, restart instead.
+          # Prefer the running listener. Starting a second caddy.service when
+          # :80 is already taken exits with "bind: address already in use".
           reload_caddy() {
+            if systemctl is-active --quiet caddy; then
+              systemctl reload caddy || systemctl restart caddy
+              return
+            fi
+
+            if curl -sf --max-time 2 http://127.0.0.1:2019/config/ >/dev/null; then
+              caddy reload --config "$CADDYFILE"
+              return
+            fi
+
+            if ss -lnt | grep -qE ':80([[:space:]]|$)'; then
+              echo "caddy.service is inactive but :80 is already bound. Not starting a second Caddy." >&2
+              ss -lntp | grep -E ':80|:443' >&2 || true
+              echo "Stop that process or reload it so it reads ${CADDYFILE}." >&2
+              return 1
+            fi
+
             if ! systemctl cat caddy >/dev/null 2>&1; then
               echo "caddy.service is not installed." >&2
               return 1
             fi
-            if systemctl is-active --quiet caddy; then
-              systemctl reload caddy || systemctl restart caddy
-            else
-              systemctl start caddy
-            fi
+            systemctl start caddy
           }
 
           install -d -m 0755 /etc/caddy "$RELEASES_DIR" "$RELEASE_DIR"
