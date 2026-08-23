@@ -48,6 +48,7 @@ collections:
         widget: object
         fields:
           - { label: Accessible label, name: label, widget: string }
+          - { label: Header brand, name: brand, widget: string }
           - { label: Concept link, name: concept, widget: string }
           - { label: Process link, name: process, widget: string }
           - { label: Archive link, name: archive, widget: string }
@@ -60,6 +61,7 @@ collections:
         widget: object
         fields:
           - { label: Telegram CTA, name: telegramCta, widget: string }
+          - { label: Personal site link, name: me, widget: string }
           - { label: Visit project, name: viewProject, widget: string }
           - { label: Demo project, name: demoProject, widget: string }
           - { label: Scroll cue, name: scrollCue, widget: string }
@@ -291,6 +293,8 @@ collections:
           - { label: Brand name, name: brandName, widget: string }
           - { label: Telegram bot URL, name: telegramBotUrl, widget: string }
           - { label: Contact email, name: email, widget: string }
+          # Personal / identity site shown as ME in the header and footer.
+          - { label: Personal site URL, name: personalSiteUrl, widget: string }
           - label: Social links
             name: socials
             widget: list

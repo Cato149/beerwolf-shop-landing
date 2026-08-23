@@ -26,9 +26,16 @@ test('supports keyboard entry and persists Russian', async ({ page }) => {
   await page.keyboard.press('Tab');
   await expect(page.getByRole('link', { name: /Skip to the main/i })).toBeFocused();
 
+  await expect(page.getByRole('link', { name: 'Beerwolf' })).toBeVisible();
+  const meLink = page.getByRole('link', { name: 'ME' }).first();
+  await expect(meLink).toBeVisible();
+  await expect(meLink).toHaveAttribute('href', /beerwolf\.site/);
+
   await page.getByRole('button', { name: 'RU' }).first().click();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('фурри-образов');
+  await expect(page.getByRole('link', { name: 'Пиволк' })).toBeVisible();
+  await expect(page.getByRole('link', { name: /Это я/ }).first()).toBeVisible();
 
   await page.reload();
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
