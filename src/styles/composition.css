@@ -1215,8 +1215,8 @@
 .archive__cards {
   position: sticky;
   top: 8vh;
-  height: 86vh;
-  min-height: 38rem;
+  height: calc(86vh - 5.75rem);
+  min-height: 32rem;
   perspective: 90rem;
 }
 
@@ -1238,6 +1238,8 @@
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.06em;
+  /* Let clicks on the empty bar reach the dossier CTA underneath. */
+  pointer-events: none;
 }
 
 .archive-cabinet__brand {
@@ -1251,6 +1253,7 @@
   align-items: center;
   justify-content: flex-end;
   gap: clamp(0.75rem, 2vw, 1.5rem);
+  pointer-events: auto;
 }
 
 .archive-cabinet__picker {
@@ -1366,8 +1369,8 @@
   position: absolute;
   inset: 0 0 auto;
   z-index: calc(5 - var(--card-index));
-  height: min(76vh, 52rem);
-  min-height: 35rem;
+  height: min(68vh, 46rem);
+  min-height: 30rem;
   transform: translate3d(
       0,
       calc(69vh + var(--card-index) * 1.35rem),
@@ -1558,7 +1561,13 @@
 }
 
 .archive-card__link {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  min-height: 2.75rem;
+  align-items: center;
   color: var(--color-orange-700);
+  pointer-events: auto;
 }
 
 .contact {

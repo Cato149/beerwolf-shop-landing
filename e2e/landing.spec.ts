@@ -95,4 +95,23 @@ test.describe('reduced motion', () => {
       await expect(cards.nth(index)).toBeVisible();
     }
   });
+
+  test('live dossier link can be clicked', async ({ page }) => {
+    await page.goto('/');
+    const link = page.getByRole('link', { name: /Visit project|Открыть проект/ }).first();
+    await link.scrollIntoViewIfNeeded();
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute('href', 'https://beerwolf.site');
+
+    const hit = await link.evaluate((element) => {
+      const rect = element.getBoundingClientRect();
+      const top = document.elementFromPoint(
+        rect.left + rect.width / 2,
+        rect.top + rect.height / 2,
+      );
+      return element === top || element.contains(top);
+    });
+
+    expect(hit).toBe(true);
+  });
 });

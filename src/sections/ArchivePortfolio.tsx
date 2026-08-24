@@ -170,7 +170,7 @@ export function ArchivePortfolio() {
                           className="archive-card__link"
                           href={project.liveUrl}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
                         >
                           {copy.common.viewProject} ↗
                         </a>
