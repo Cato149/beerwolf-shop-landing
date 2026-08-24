@@ -77,45 +77,6 @@
           ]
         }
       }
-    },
-    {
-      "id": "river-memory",
-      "year": "2025",
-      "client": "Tavi / river dragon",
-      "image": "art/river-memory.svg",
-      "imageAlt": {
-        "en": "A low-poly river dragon curling around a dark green memory pool",
-        "ru": "Низкополигональный речной дракон обвивает тёмно-зелёный бассейн памяти"
-      },
-      "artVariant": "river",
-      "stack": [
-        "React",
-        "Canvas",
-        "Static hosting"
-      ],
-      "liveUrl": "",
-      "translations": {
-        "en": {
-          "title": "River Memory",
-          "description": "A quiet personal museum where stories drift downstream. Visitors uncover artwork, travel notes and character history by following floating objects.",
-          "direction": "Faded nature books, early 3D water, field-guide typography.",
-          "features": [
-            "Current-driven timeline",
-            "Low-poly keepsakes",
-            "Accessible reading mode"
-          ]
-        },
-        "ru": {
-          "title": "Память реки",
-          "description": "Тихий персональный музей, где истории плывут по течению. Арты, путевые заметки и история персонажа открываются вслед за плавающими объектами.",
-          "direction": "Выцветшие книги о природе, ранняя 3D-вода, типографика полевых справочников.",
-          "features": [
-            "Хронология по течению",
-            "Низкополигональные сувениры",
-            "Доступный режим чтения"
-          ]
-        }
-      }
     }
   ]
 }
