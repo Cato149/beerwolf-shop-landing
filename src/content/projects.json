@@ -3,7 +3,7 @@
     {
       "id": "bw-persinal",
       "year": "2026",
-      "client": "Beewolf / Maned wolf",
+      "client": "Beerwolf / Maned wolf",
       "image": "/uploads/bwps.avif",
       "imageAlt": {
         "en": "Love-waves to music, 70-s poster aesthetics and maned wolfs",
@@ -40,40 +40,40 @@
       }
     },
     {
-      "id": "soft-riot",
-      "year": "2025",
-      "client": "Rook / striped hyena",
-      "image": "art/soft-riot.svg",
+      "id": "fureminder",
+      "year": "2026",
+      "client": "Cosmo / Jackal",
+      "image": "/uploads/fureminder.avif",
       "imageAlt": {
-        "en": "A striped geometric creature leaping through yellow photocopied stars",
-        "ru": "Полосатое геометрическое существо прыгает сквозь жёлтые ксероксные звёзды"
+        "en": "Furry event calendar",
+        "ru": "Календарь для фурри ивентов"
       },
       "artVariant": "riot",
       "stack": [
-        "React",
-        "SVG",
-        "Headless CMS"
+        "Python / AIOGram / FastAPI",
+        "GCal API",
+        "TS / React"
       ],
-      "liveUrl": "",
+      "liveUrl": "https://t.me/Furreminderbot",
       "translations": {
         "en": {
-          "title": "Soft Riot",
-          "description": "Part commission sheet, part touring zine. The site mixes an illustration gallery with gig memories, handmade badges and deliberately unruly type.",
-          "direction": "Queer punk flyers, torn paper, safety orange and friendly damage.",
+          "title": "See you soon!",
+          "description": "An interesting project designed to aggregate all fandom events in one place and provide advance reminders. Events are entered into Google Calendar and synchronized with a Telegram bot, allowing users to view them via convenient layouts.",
+          "direction": "Liquid glass, monochrome, tickets. Minimalism and the shortest possible user journey.",
           "features": [
-            "Layered gig map",
-            "Drag-to-sort sticker wall",
-            "Printable character sheet"
+            "Admin panel & analytics dashboard",
+            "Realtime GCal sync",
+            "Bot notifications"
           ]
         },
         "ru": {
-          "title": "Тихий бунт",
-          "description": "Наполовину коммишен-лист, наполовину гастрольный зин. Галерея иллюстраций смешана с концертными воспоминаниями, самодельными значками и нарочно непослушной типографикой.",
-          "direction": "Квир-панк афиши, рваная бумага, сигнальный оранжевый и дружелюбные повреждения.",
+          "title": "Скоро увидемся!",
+          "description": "Интересный проект который должен собрать в одном месте все события фандома и напомнить о них заранее. События заводятся в GCal и синхронизируются с ботом в Telegram где их можно посмотреть через удобные представления.",
+          "direction": "Жидкое стекло, монохром, билеты. Строгость и максимально короткий путь пользователя",
           "features": [
-            "Многослойная карта концертов",
-            "Стена с перетаскиваемыми стикерами",
-            "Печатный лист персонажа"
+            "Админ панель с аналитикой",
+            "Живая синхронизация с GCal",
+            "Напоминания за указаное время в боте"
           ]
         }
       }
