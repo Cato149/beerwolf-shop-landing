@@ -1,36 +1,40 @@
 {
   "projects": [
     {
-      "id": "moth-signal",
+      "id": "bw-persinal",
       "year": "2026",
-      "client": "Morrow / luna moth",
+      "client": "Beewolf / Maned wolf",
       "image": "art/moth-signal.svg",
       "imageAlt": {
-        "en": "A lime moth silhouette crossing an orange radio-wave sun",
-        "ru": "Лаймовый силуэт мотылька на фоне оранжевого солнца из радиоволн"
+        "en": "Love-waves to music, 70-s poster aesthetics and maned wolfs",
+        "ru": "Волны любви к музыке, эстетике постеров 70-х и гривистым волкам"
       },
       "artVariant": "signal",
-      "stack": ["React", "GSAP", "Web Audio"],
-      "liveUrl": null,
+      "stack": [
+        "HTML/CSS",
+        "Last.fm API",
+        "Caddy"
+      ],
+      "liveUrl": "https://beerwolf.site/",
       "translations": {
         "en": {
-          "title": "Moth Signal",
-          "description": "A nocturnal identity archive that behaves like a shortwave receiver: field recordings, artwork and character lore surface as the visitor tunes the dial.",
-          "direction": "Night radio manuals, entomology plates, fluorescent screen print.",
+          "title": "Beerwolf Personal Signal",
+          "description": "It captures the vibe of a jam session on the Woodstock stage in '73, stretching from sunset deep into the night. If you look closely, you might even uncover a couple of secrets.",
+          "direction": "Sunset colors, radio waves, typography, and a bit of shoegaze grit.",
           "features": [
-            "Tuneable audio fragments",
-            "Specimen archive",
-            "Moon-phase palette"
+            "5(?) unique easter eggs",
+            "Live fast.fm integration",
+            "Day/Night themes"
           ]
         },
         "ru": {
-          "title": "Сигнал мотылька",
-          "description": "Ночной архив образа, работающий как коротковолновый приёмник: полевые записи, арты и история персонажа появляются, пока посетитель настраивает частоту.",
-          "direction": "Инструкции к ночным радиостанциям, энтомологические таблицы, флуоресцентная шелкография.",
+          "title": "Пиволк. Личный сигнал",
+          "description": "Ощущение джема на сцене Woodstock 73-го с заката до глубокой ночи. Если остаться тут на подольше то можно найти пару секретов.",
+          "direction": "Закатные цвета, радиоволны, типография и немного грязи шугейза",
           "features": [
-            "Настраиваемые аудиофрагменты",
-            "Архив образцов",
-            "Палитра лунных фаз"
+            "5 уникальных пасхалок",
+            "Живая интеграция с Last.fm",
+            "Смена тем"
           ]
         }
       }
@@ -45,8 +49,12 @@
         "ru": "Полосатое геометрическое существо прыгает сквозь жёлтые ксероксные звёзды"
       },
       "artVariant": "riot",
-      "stack": ["React", "SVG", "Headless CMS"],
-      "liveUrl": null,
+      "stack": [
+        "React",
+        "SVG",
+        "Headless CMS"
+      ],
+      "liveUrl": "",
       "translations": {
         "en": {
           "title": "Soft Riot",
@@ -80,8 +88,12 @@
         "ru": "Низкополигональный речной дракон обвивает тёмно-зелёный бассейн памяти"
       },
       "artVariant": "river",
-      "stack": ["React", "Canvas", "Static hosting"],
-      "liveUrl": null,
+      "stack": [
+        "React",
+        "Canvas",
+        "Static hosting"
+      ],
+      "liveUrl": "",
       "translations": {
         "en": {
           "title": "River Memory",
