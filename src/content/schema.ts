@@ -147,7 +147,11 @@ export const projectSchema = z.object({
   imageAlt: localizedTextSchema,
   artVariant: z.enum(['signal', 'riot', 'river']),
   stack: z.array(nonEmptyText).min(1),
-  liveUrl: z.url().nullable().optional(),
+  // CMS string widgets often save "" instead of omitting the field.
+  liveUrl: z.preprocess(
+    (value) => (value === '' ? null : value),
+    z.url().nullable().optional(),
+  ),
   translations: z.object({
     en: z.object({
       title: nonEmptyText,

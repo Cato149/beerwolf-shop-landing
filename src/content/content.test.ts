@@ -1,4 +1,5 @@
 import { copies, projects, settings, supportedLocales } from '.';
+import { projectSchema } from './schema';
 
 describe('editable content', () => {
   it('validates every supported locale', () => {
@@ -28,5 +29,15 @@ describe('editable content', () => {
     expect(settings.personalSiteUrl).toMatch(/^https:\/\/beerwolf\.site\/?$/);
     expect(settings.email).toContain('@');
     expect(settings.socials.length).toBeGreaterThanOrEqual(2);
+  });
+
+  it('treats an empty liveUrl as a demo dossier', () => {
+    const parsed = projectSchema.parse({
+      ...projects[0],
+      id: 'empty-url',
+      liveUrl: '',
+    });
+
+    expect(parsed.liveUrl).toBeNull();
   });
 });
