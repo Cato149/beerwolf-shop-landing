@@ -93,7 +93,7 @@
         "Canvas",
         "Static hosting"
       ],
-      "liveUrl": "",
+      "liveUrl": null,
       "translations": {
         "en": {
           "title": "River Memory",
