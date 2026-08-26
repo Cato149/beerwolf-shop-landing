@@ -1,5 +1,11 @@
 # Host Caddy (not Docker) serves the current release from the site tree.
 # The deployment workflow atomically points beerwolf-current at a release.
+
+{
+	# ACME account email for Let's Encrypt / ZeroSSL certificate notices.
+	email 24oz.beerwolf@gmail.com
+}
+
 shop.beerwolf.site, beerwolf.site {
 	root * /root/caddy/site/beerwolf-current
 
@@ -15,3 +21,18 @@ shop.beerwolf.site, beerwolf.site {
 	try_files {path} {path}/ /index.html
 	file_server
 }
+
+
+shop-bot.beerwolf.site {
+	encode gzip zstd
+
+	# Uvicorn in Docker, published on loopback only (see docker-compose.yml).
+	reverse_proxy 127.0.0.1:8000 {
+		# Webhooks (Telegram updates, GitHub issue payloads) can be slower than page hits.
+		transport http {
+			read_timeout 60s
+			write_timeout 60s
+		}
+	}
+}
+
