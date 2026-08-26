@@ -232,14 +232,9 @@ jobs:
           if test -f "$CADDYFILE"; then
             cp "$CADDYFILE" "$CADDYFILE_BACKUP"
           else
-            # Global options must come first. The imported snippet is site blocks only.
-            cat > "$CADDYFILE" <<'CADDY'
-{
-	email 24oz.beerwolf@gmail.com
-}
-
-import beerwolf.caddy
-CADDY
+            # ACME email is prepended below so this file stays YAML-safe
+            # (a bare `{` line would terminate the workflow `run: |` block).
+            printf 'import beerwolf.caddy\n' > "$CADDYFILE"
             cp "$CADDYFILE" "$CADDYFILE_BACKUP"
           fi
           snippet_existed=false
