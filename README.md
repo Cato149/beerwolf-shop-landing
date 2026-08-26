@@ -168,13 +168,18 @@ On each production deploy GitHub Actions:
    then reloads. It will not start a second unit if `:80` is already
    taken.
 
-The host `/etc/caddy/Caddyfile` is owned by the bot
-(`scripts/render-caddyfile.py`): global `{ email }` first, then
-`shop-bot.beerwolf.site`. Landing deploy does not rewrite that file
-except to append `import beerwolf.caddy` once. Site blocks for
-`beerwolf.site` / `shop.beerwolf.site` live in `deploy/beerwolf.caddy`,
-installed as `/etc/caddy/beerwolf.caddy`. Keep the import line in the
-bot’s Caddyfile template so a bot redeploy does not drop the landing.
+The host `/etc/caddy/Caddyfile` already has global `{ email }` and
+`shop-bot.beerwolf.site`. Landing deploy appends `import beerwolf.caddy`
+once and writes `/etc/caddy/beerwolf.caddy` (`beerwolf.site` /
+`shop.beerwolf.site`).
+
+Let’s Encrypt HTTP-01 follows DNS. `shop.beerwolf.site` and
+`shop-bot.beerwolf.site` must be A records to `85.137.89.253`. If the
+apex `beerwolf.site` still points at Timeweb (`193.104.57.96`), Caddy
+cannot complete the challenge (LE gets HTTPS 404 on the other host).
+Point the apex A record at the VPS; Caddy will retry the certificate
+without another deploy. Smoke check uses `https://shop.beerwolf.site/healthz`
+until the apex DNS matches.
 
 Create a GitHub environment named `production` and add these secrets:
 

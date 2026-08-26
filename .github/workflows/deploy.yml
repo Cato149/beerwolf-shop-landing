@@ -299,4 +299,6 @@ jobs:
           DEPLOY
 
       - name: Verify production
-        run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://beerwolf.site/healthz
+        # Apex beerwolf.site still has a Timeweb A record (193.104.57.96).
+        # This VPS is shop.beerwolf.site / shop-bot.beerwolf.site (85.137.89.253).
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://shop.beerwolf.site/healthz

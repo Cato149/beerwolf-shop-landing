@@ -2,8 +2,11 @@
 # global { email } block (must stay first) and shop-bot.beerwolf.site.
 # This snippet is landing hosts only — a second shop-bot or { } here
 # makes Caddy reject the config as ambiguous / “global must be first”.
+#
+# Both names need an A record to this VPS. shop.beerwolf.site already
+# does; beerwolf.site still on Timeweb cannot pass HTTP-01.
 
-shop.beerwolf.site, beerwolf.site {
+shop.beerwolf.site {
 	root * /root/caddy/site/beerwolf-current
 
 	# Used by the deployment smoke check without reading a content file.
