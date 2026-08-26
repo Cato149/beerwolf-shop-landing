@@ -1,10 +1,9 @@
 # Host Caddy (not Docker) serves the current release from the site tree.
 # The deployment workflow atomically points beerwolf-current at a release.
-
-{
-	# ACME account email for Let's Encrypt / ZeroSSL certificate notices.
-	email 24oz.beerwolf@gmail.com
-}
+#
+# Site blocks only. Global options ({ email ... }) must live in
+# /etc/caddy/Caddyfile and be the first block; Caddy rejects a second
+# unnamed { } after any site, which is how `import beerwolf.caddy` is spliced.
 
 shop.beerwolf.site, beerwolf.site {
 	root * /root/caddy/site/beerwolf-current

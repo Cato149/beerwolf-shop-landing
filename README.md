@@ -168,8 +168,13 @@ On each production deploy GitHub Actions:
    is already taken.
 
 The site block lives in `deploy/beerwolf.caddy`. The workflow adds
-`import beerwolf.caddy` to `/etc/caddy/Caddyfile` once. If that file already
-has a `beerwolf.site` site, remove the duplicate before the first import.
+`import beerwolf.caddy` to `/etc/caddy/Caddyfile` once. That snippet has
+site blocks only: a global `{ email ... }` inside an imported file is
+spliced after existing sites and Caddy then fails with “server block
+without any key is global configuration, and if used, it must be first”.
+ACME email is written at the top of `/etc/caddy/Caddyfile` when that file
+has no global options block yet. If the main file already has a
+`beerwolf.site` site, remove the duplicate before the first import.
 
 Create a GitHub environment named `production` and add these secrets:
 

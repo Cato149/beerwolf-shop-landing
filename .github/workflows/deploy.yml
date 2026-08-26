@@ -232,7 +232,14 @@ jobs:
           if test -f "$CADDYFILE"; then
             cp "$CADDYFILE" "$CADDYFILE_BACKUP"
           else
-            printf 'import beerwolf.caddy\n' > "$CADDYFILE"
+            # Global options must come first. The imported snippet is site blocks only.
+            cat > "$CADDYFILE" <<'CADDY'
+{
+	email 24oz.beerwolf@gmail.com
+}
+
+import beerwolf.caddy
+CADDY
             cp "$CADDYFILE" "$CADDYFILE_BACKUP"
           fi
           snippet_existed=false
@@ -244,6 +251,19 @@ jobs:
 
           if ! awk '$0 == "import beerwolf.caddy" { found=1 } END { exit !found }' "$CADDYFILE"; then
             printf '\nimport beerwolf.caddy\n' >> "$CADDYFILE"
+          fi
+
+          # Distro Caddyfiles often start with `:80 { ... }`. A global `{ }`
+          # may only appear as the first block, so prepend when missing.
+          first_line="$(awk '/^[[:space:]]*($|#)/ { next } { print; exit }' "$CADDYFILE" || true)"
+          if [[ ! "$first_line" =~ ^[[:space:]]*\{ ]]; then
+            tmp_caddy="$(mktemp)"
+            {
+              printf '{\n\temail 24oz.beerwolf@gmail.com\n}\n\n'
+              cat "$CADDYFILE"
+            } > "$tmp_caddy"
+            cat "$tmp_caddy" > "$CADDYFILE"
+            rm -f "$tmp_caddy"
           fi
 
           if ! command -v caddy >/dev/null; then
