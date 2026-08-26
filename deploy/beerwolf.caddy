@@ -1,9 +1,7 @@
-# Host Caddy (not Docker) serves the current release from the site tree.
-# The deployment workflow atomically points beerwolf-current at a release.
-#
-# Site blocks only. Global options ({ email ... }) must live in
-# /etc/caddy/Caddyfile and be the first block; Caddy rejects a second
-# unnamed { } after any site, which is how `import beerwolf.caddy` is spliced.
+# Imported by the host /etc/caddy/Caddyfile. That file already has the
+# global { email } block (must stay first) and shop-bot.beerwolf.site.
+# This snippet is landing hosts only — a second shop-bot or { } here
+# makes Caddy reject the config as ambiguous / “global must be first”.
 
 shop.beerwolf.site, beerwolf.site {
 	root * /root/caddy/site/beerwolf-current
@@ -19,19 +17,5 @@ shop.beerwolf.site, beerwolf.site {
 	encode zstd gzip
 	try_files {path} {path}/ /index.html
 	file_server
-}
-
-
-shop-bot.beerwolf.site {
-	encode gzip zstd
-
-	# Uvicorn in Docker, published on loopback only (see docker-compose.yml).
-	reverse_proxy 127.0.0.1:8000 {
-		# Webhooks (Telegram updates, GitHub issue payloads) can be slower than page hits.
-		transport http {
-			read_timeout 60s
-			write_timeout 60s
-		}
-	}
 }
 

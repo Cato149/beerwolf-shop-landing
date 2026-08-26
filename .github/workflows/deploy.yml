@@ -229,14 +229,16 @@ jobs:
           tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
           test -f "$RELEASE_DIR/index.html"
 
-          if test -f "$CADDYFILE"; then
-            cp "$CADDYFILE" "$CADDYFILE_BACKUP"
-          else
-            # ACME email is prepended below so this file stays YAML-safe
-            # (a bare `{` line would terminate the workflow `run: |` block).
-            printf 'import beerwolf.caddy\n' > "$CADDYFILE"
-            cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+          # The host Caddyfile is owned by the bot (render-caddyfile.py):
+          # global { email } plus shop-bot.beerwolf.site. This deploy only
+          # writes the landing snippet and appends `import` once.
+          if ! test -f "$CADDYFILE"; then
+            echo "Host Caddyfile is missing at ${CADDYFILE}." >&2
+            echo "Render it from the bot first (global options + shop-bot), then redeploy." >&2
+            exit 1
           fi
+          cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+
           snippet_existed=false
           if test -f "$CADDY_SNIPPET"; then
             cp "$CADDY_SNIPPET" "$SNIPPET_BACKUP"
@@ -244,21 +246,8 @@ jobs:
           fi
           install -m 0644 /tmp/beerwolf.caddy "$CADDY_SNIPPET"
 
-          if ! awk '$0 == "import beerwolf.caddy" { found=1 } END { exit !found }' "$CADDYFILE"; then
-            printf '\nimport beerwolf.caddy\n' >> "$CADDYFILE"
-          fi
-
-          # Distro Caddyfiles often start with `:80 { ... }`. A global `{ }`
-          # may only appear as the first block, so prepend when missing.
-          first_line="$(awk '/^[[:space:]]*($|#)/ { next } { print; exit }' "$CADDYFILE" || true)"
-          if [[ ! "$first_line" =~ ^[[:space:]]*\{ ]]; then
-            tmp_caddy="$(mktemp)"
-            {
-              printf '{\n\temail 24oz.beerwolf@gmail.com\n}\n\n'
-              cat "$CADDYFILE"
-            } > "$tmp_caddy"
-            cat "$tmp_caddy" > "$CADDYFILE"
-            rm -f "$tmp_caddy"
+          if ! awk '{ sub(/\r$/, "") } $1 == "import" && $2 ~ /(^|\/)beerwolf\.caddy$/ { found=1 } END { exit !found }' "$CADDYFILE"; then
+            printf '\n# beerwolf landing (shop-landing). Keep this import when re-rendering Caddyfile.\nimport beerwolf.caddy\n' >> "$CADDYFILE"
           fi
 
           if ! command -v caddy >/dev/null; then

@@ -163,18 +163,18 @@ On each production deploy GitHub Actions:
 3. Extracts it into
    `/root/caddy/site/beerwolf-releases/<commit>-<attempt>`.
 4. Atomically switches the relative `beerwolf-current` symlink.
-5. Writes `deploy/beerwolf.caddy` into `/etc/caddy/`, validates, then
-   reloads the running Caddy. It will not start a second unit if `:80`
-   is already taken.
+5. Writes `deploy/beerwolf.caddy` into `/etc/caddy/`, appends
+   `import beerwolf.caddy` to the host Caddyfile if missing, validates,
+   then reloads. It will not start a second unit if `:80` is already
+   taken.
 
-The site block lives in `deploy/beerwolf.caddy`. The workflow adds
-`import beerwolf.caddy` to `/etc/caddy/Caddyfile` once. That snippet has
-site blocks only: a global `{ email ... }` inside an imported file is
-spliced after existing sites and Caddy then fails with “server block
-without any key is global configuration, and if used, it must be first”.
-ACME email is written at the top of `/etc/caddy/Caddyfile` when that file
-has no global options block yet. If the main file already has a
-`beerwolf.site` site, remove the duplicate before the first import.
+The host `/etc/caddy/Caddyfile` is owned by the bot
+(`scripts/render-caddyfile.py`): global `{ email }` first, then
+`shop-bot.beerwolf.site`. Landing deploy does not rewrite that file
+except to append `import beerwolf.caddy` once. Site blocks for
+`beerwolf.site` / `shop.beerwolf.site` live in `deploy/beerwolf.caddy`,
+installed as `/etc/caddy/beerwolf.caddy`. Keep the import line in the
+bot’s Caddyfile template so a bot redeploy does not drop the landing.
 
 Create a GitHub environment named `production` and add these secrets:
 
