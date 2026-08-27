@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { analyticsEvents, umamiEventAttrs } from '../../analytics/umami';
 import { settings } from '../../content';
 import { useLocale } from '../../i18n/useLocale';
 import { LanguageSwitcher } from './LanguageSwitcher';
@@ -8,7 +9,6 @@ export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
 
   const navItems = [
-    { href: '#concept', label: copy.nav.concept },
     { href: '#process', label: copy.nav.process },
     { href: '#archive', label: copy.nav.archive },
     { href: '#contact', label: copy.nav.contact },
@@ -50,6 +50,7 @@ export function SiteHeader() {
           target="_blank"
           rel="noreferrer"
           onClick={() => setIsOpen(false)}
+          {...umamiEventAttrs(analyticsEvents.personalSite, { source: 'header' })}
         >
           {copy.common.me}
         </a>

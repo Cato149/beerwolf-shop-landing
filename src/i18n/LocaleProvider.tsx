@@ -3,6 +3,14 @@ import { copies, defaultLocale, isLocale, type Locale } from '../content';
 import { LocaleContext } from './locale-context';
 
 const STORAGE_KEY = 'beerwolf.locale';
+const OPEN_GRAPH_LOCALES: Record<Locale, string> = {
+  en: 'en_US',
+  ru: 'ru_RU',
+};
+
+const setMetaContent = (selector: string, content: string) => {
+  document.querySelector<HTMLMetaElement>(selector)?.setAttribute('content', content);
+};
 
 const getStoredLocale = (): Locale => {
   if (typeof window === 'undefined') return defaultLocale;
@@ -35,11 +43,12 @@ export function LocaleProvider({ children }: LocaleProviderProps) {
   useEffect(() => {
     document.documentElement.lang = locale;
     document.title = copy.meta.title;
-
-    const description = document.querySelector<HTMLMetaElement>(
-      'meta[name="description"]',
-    );
-    description?.setAttribute('content', copy.meta.description);
+    setMetaContent('meta[name="description"]', copy.meta.description);
+    setMetaContent('meta[property="og:title"]', copy.meta.title);
+    setMetaContent('meta[property="og:description"]', copy.meta.description);
+    setMetaContent('meta[property="og:locale"]', OPEN_GRAPH_LOCALES[locale]);
+    setMetaContent('meta[name="twitter:title"]', copy.meta.title);
+    setMetaContent('meta[name="twitter:description"]', copy.meta.description);
   }, [copy.meta.description, copy.meta.title, locale]);
 
   const contextValue = useMemo(() => ({ locale, copy, setLocale }), [copy, locale]);

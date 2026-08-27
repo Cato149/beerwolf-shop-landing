@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from 'react';
+import { analyticsEvents, trackEvent } from '../../analytics/umami';
 import { useLocale } from '../../i18n/useLocale';
 
 type SubmissionState = 'idle' | 'sending' | 'success' | 'error' | 'invalid';
@@ -23,6 +24,7 @@ export function ContactForm() {
     if (!form.checkValidity()) {
       setSubmissionState('invalid');
       form.reportValidity();
+      trackEvent(analyticsEvents.contactFormInvalid, { locale });
       return;
     }
 
@@ -48,8 +50,15 @@ export function ContactForm() {
 
       form.reset();
       setSubmissionState('success');
+      trackEvent(analyticsEvents.contactFormSuccess, {
+        locale,
+        method: String(data.get('preferredContact') ?? ''),
+        has_budget: Boolean(String(data.get('budget') ?? '').trim()),
+        has_references: Boolean(String(data.get('references') ?? '').trim()),
+      });
     } catch {
       setSubmissionState('error');
+      trackEvent(analyticsEvents.contactFormError, { locale });
     }
   };
 

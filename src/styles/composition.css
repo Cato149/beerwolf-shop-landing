@@ -690,6 +690,28 @@
   z-index: 1;
 }
 
+.telegram-cta__copy {
+  display: grid;
+  gap: 0.12rem;
+}
+
+.telegram-cta__copy strong,
+.telegram-cta__copy small {
+  display: block;
+}
+
+.telegram-cta__copy strong {
+  font: inherit;
+}
+
+.telegram-cta__copy small {
+  font-size: 0.58rem;
+  font-weight: 500;
+  letter-spacing: 0.07em;
+  opacity: 0.72;
+  text-transform: none;
+}
+
 .telegram-cta svg {
   width: 1.75rem;
   fill: none;
@@ -1550,6 +1572,35 @@
   padding-left: 1rem;
 }
 
+.archive-card__testimonial {
+  position: relative;
+  margin: var(--space-sm) 0 0;
+  padding: 0.85rem 0.9rem 0.75rem 1.1rem;
+  border-left: 0.3rem solid var(--color-orange-600);
+  background:
+    linear-gradient(104deg, rgb(212 114 75 / 17%), transparent 78%),
+    rgb(255 248 218 / 52%);
+  box-shadow: inset 0 -1px rgb(16 42 36 / 15%);
+  transform: rotate(-0.45deg);
+}
+
+.archive-card__testimonial blockquote {
+  margin: 0;
+  font-size: 0.72rem;
+  font-style: italic;
+  line-height: 1.42;
+}
+
+.archive-card__testimonial figcaption {
+  margin-top: 0.45rem;
+  color: var(--color-orange-700);
+  font-family: var(--font-mono);
+  font-size: 0.54rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
 .archive-card__link,
 .archive-card__status {
   margin-top: auto;
@@ -1697,6 +1748,53 @@
   transform: rotate(-1deg);
 }
 
+.contact-price-sticker {
+  position: absolute;
+  z-index: 4;
+  top: -1.4rem;
+  right: -1.55rem;
+  display: grid;
+  width: 7.6rem;
+  aspect-ratio: 1;
+  place-items: center;
+  pointer-events: none;
+  transform: rotate(12deg);
+}
+
+.contact-price-sticker svg {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  filter: drop-shadow(0.22rem 0.26rem 0 rgb(16 42 36 / 42%));
+}
+
+.contact-price-sticker polygon {
+  fill: #8a4a43;
+  stroke: #5c2f2b;
+  stroke-width: 1.1;
+}
+
+.contact-price-sticker circle {
+  fill: #9d564c;
+  stroke: var(--color-paper-300);
+  stroke-width: 1.8;
+}
+
+.contact-price-sticker span {
+  position: relative;
+  z-index: 1;
+  max-width: 4.2rem;
+  color: var(--color-cream);
+  font-family: var(--font-display);
+  font-size: 0.98rem;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  line-height: 0.88;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 0.08rem 0 rgb(16 42 36 / 45%);
+}
+
 .contact__routes {
   display: grid;
   grid-template-columns: minmax(17rem, 0.72fr) minmax(0, 1.28fr);
@@ -1708,6 +1806,7 @@
 .telegram-ticket {
   position: sticky;
   top: var(--space-lg);
+  overflow: visible;
   padding: var(--space-lg) var(--space-md);
   border: var(--border-ink);
   background: var(--color-paper-300);
@@ -2423,6 +2522,12 @@
     grid-template-columns: 1fr;
   }
 
+  .contact-price-sticker {
+    top: -1.15rem;
+    right: -1.1rem;
+    width: 6.8rem;
+  }
+
   .telegram-ticket {
     position: relative;
     top: auto;
@@ -2563,6 +2668,12 @@
   .contact__heading h2,
   .contact__logo-heading {
     max-width: min(100%, 22rem);
+  }
+
+  .contact-price-sticker {
+    top: -1rem;
+    right: -0.75rem;
+    width: 6.4rem;
   }
 
   .contact__logo-script {

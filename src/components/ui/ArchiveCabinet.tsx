@@ -1,4 +1,5 @@
 import { useId } from 'react';
+import { analyticsEvents, umamiEventAttrs } from '../../analytics/umami';
 import { projects } from '../../content';
 import { useLocale } from '../../i18n/useLocale';
 
@@ -49,7 +50,11 @@ export function ArchiveCabinet({ selectedIndex, onSelect }: ArchiveCabinetProps)
           </div>
         </div>
 
-        <a className="archive-cabinet__skip" href="#contact">
+        <a
+          className="archive-cabinet__skip"
+          href="#contact"
+          {...umamiEventAttrs(analyticsEvents.skipToContact)}
+        >
           {copy.archive.cabinet.skipToContact}
         </a>
       </div>

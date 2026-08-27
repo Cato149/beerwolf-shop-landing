@@ -44,11 +44,51 @@ VITE_FORMSPREE_ENDPOINT=https://formspree.io/f/your-form-id
 # Deployment base path. Use / locally and on beerwolf.site.
 # GitHub Pages sets this automatically from the repository name.
 VITE_BASE_PATH=/
+
+# Umami website UUID. Leave empty locally so dev and tests do not send events.
+VITE_UMAMI_WEBSITE_ID=
+
+# Tracker script URL. Empty values use https://cloud.umami.is/script.js.
+VITE_UMAMI_SCRIPT_URL=
+
+# Hostnames allowed to send events. Empty values default to shop.beerwolf.site.
+VITE_UMAMI_DOMAINS=
+
+# Optional Umami API host when the script is served from another origin.
+VITE_UMAMI_HOST_URL=
 ```
 
 The Formspree endpoint is public by design. Configure spam controls and delivery
 inside Formspree. If the endpoint is absent, the form is disabled and the site
 openly directs visitors to Telegram or email instead of simulating success.
+
+### Analytics (Umami)
+
+Pageviews, unique visits, country/region, referrers, devices and session duration
+come from the Umami tracker itself. Custom events cover the commission funnel:
+
+| Event                                          | When                                                                 |
+| ---------------------------------------------- | -------------------------------------------------------------------- |
+| `telegram_bot`                                 | Start commission CTA (hero or contact card)                          |
+| `personal_site`                                | ME links in the header or footer                                     |
+| `contact_email`                                | Mailto on the Telegram card                                          |
+| `social_link`                                  | Footer Telegram / Discord / email                                    |
+| `contact_form_success` / `_invalid` / `_error` | Form outcome (no personal fields)                                    |
+| `page_leave`                                   | Tab close or navigation, with wall-clock and engaged seconds         |
+| `language_switch`                              | EN ↔ RU                                                              |
+| `section_view`                                 | First time a section (concept, process, archive, contact) is in view |
+| `archive_select`                               | Dossier picked from the cabinet                                      |
+| `archive_project`                              | Live dossier link                                                    |
+| `skip_to_contact`                              | Archive skip link                                                    |
+
+Create a website in [Umami Cloud](https://cloud.umami.is) or a self-hosted instance,
+copy the website UUID, and add `VITE_UMAMI_WEBSITE_ID` as a GitHub Actions
+**variable** (same place as Formspree). Countries appear in the Umami dashboard
+once the site is receiving traffic; no extra client geo lookup is used.
+
+The tracker is not injected when the id is empty. `data-domains` keeps localhost
+and GitHub Pages from mixing with production stats. The script respects
+Do Not Track.
 
 ## Commands
 
@@ -141,9 +181,9 @@ Two production publishes run from `main` (or via **Actions → Run workflow**):
   action supplies the public path, which is `/beerwolf-shop-landing/` for the
   project site and `/` if a custom Pages domain is attached.
 
-Add `VITE_FORMSPREE_ENDPOINT` as a GitHub Actions **variable** so production
-builds can submit the contact form. Enable **Settings → Pages → Source:
-GitHub Actions** once.
+Add `VITE_FORMSPREE_ENDPOINT` and `VITE_UMAMI_WEBSITE_ID` as GitHub Actions
+**variables** so production builds can submit the contact form and send analytics.
+Enable **Settings → Pages → Source: GitHub Actions** once.
 
 Development follows Gitflow: feature branches start from `develop`, are reviewed
 there, and release changes move to `main`. Only `main` is deployed.

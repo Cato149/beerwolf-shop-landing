@@ -158,6 +158,10 @@ ol {
   [data-section-ticket] {
     visibility: hidden;
   }
+
+  [data-price-sticker] {
+    visibility: hidden;
+  }
 }
 
 .section-title {
