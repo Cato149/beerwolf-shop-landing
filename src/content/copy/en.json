@@ -15,7 +15,8 @@
     "skip": "Skip to the main composition"
   },
   "common": {
-    "telegramCta": "Order via TelegramBot",
+    "telegramCta": "Start commission",
+    "telegramCtaNote": "via Telegram Bot",
     "me": "ME",
     "viewProject": "Visit project",
     "demoProject": "Demo dossier",
@@ -147,6 +148,7 @@
     "telegramBody": "Open the bot, answer a few calm questions, and keep the whole project in one conversation.",
     "formTitle": "Prefer another channel?",
     "formIntro": "Leave a signal here. I’ll reply through the contact method you choose.",
+    "priceSticker": "From $470",
     "fields": {
       "name": "Name / nickname",
       "namePlaceholder": "How should I address you?",

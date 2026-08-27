@@ -1,6 +1,7 @@
 import { useState } from 'react';
-import { settings } from '../content';
+import { analyticsEvents, umamiEventAttrs } from '../analytics/umami';
 import { LanguageSwitcher } from '../components/ui/LanguageSwitcher';
+import { settings } from '../content';
 import { useLocale } from '../i18n/useLocale';
 
 export function SiteFooter() {
@@ -20,13 +21,25 @@ export function SiteFooter() {
           <p className="site-footer__label">{copy.footer.socialTitle}</p>
           <ul className="site-footer__links">
             <li>
-              <a href={settings.personalSiteUrl} target="_blank" rel="noreferrer">
+              <a
+                href={settings.personalSiteUrl}
+                target="_blank"
+                rel="noreferrer"
+                {...umamiEventAttrs(analyticsEvents.personalSite, { source: 'footer' })}
+              >
                 {copy.common.me} ↗
               </a>
             </li>
             {settings.socials.map((social) => (
               <li key={social.label}>
-                <a href={social.url} target="_blank" rel="noreferrer">
+                <a
+                  href={social.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  {...umamiEventAttrs(analyticsEvents.socialLink, {
+                    network: social.label.toLowerCase(),
+                  })}
+                >
                   {social.label} ↗
                 </a>
               </li>

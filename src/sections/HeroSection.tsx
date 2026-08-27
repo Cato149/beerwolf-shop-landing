@@ -35,7 +35,7 @@ export function HeroSection() {
             {copy.hero.description}
           </TicketCopy>
           <div data-hero-reveal>
-            <TelegramCta />
+            <TelegramCta source="hero" />
           </div>
         </div>
       </div>

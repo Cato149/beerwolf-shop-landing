@@ -10,6 +10,8 @@ describe('editable content', () => {
     expect(copies.ru.nav.brand).toBe('Пиволк');
     expect(copies.en.common.me).toBe('ME');
     expect(copies.ru.common.me).toBe('Это я');
+    expect(copies.en.common.telegramCta).toBe('Start commission');
+    expect(copies.ru.contact.priceSticker).toBe('От $470');
   });
 
   it('keeps project ids unique and every project bilingual', () => {
@@ -21,6 +23,8 @@ describe('editable content', () => {
       expect(project.translations.ru.title).toBeTruthy();
       expect(project.imageAlt.en).toBeTruthy();
       expect(project.imageAlt.ru).toBeTruthy();
+      expect(project.translations.en.testimonial.quote).toBeTruthy();
+      expect(project.translations.ru.testimonial.quote).toBeTruthy();
     });
   });
 

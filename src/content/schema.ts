@@ -37,6 +37,7 @@ export const copySchema = z.object({
   }),
   common: z.object({
     telegramCta: nonEmptyText,
+    telegramCtaNote: nonEmptyText,
     me: nonEmptyText,
     viewProject: nonEmptyText,
     demoProject: nonEmptyText,
@@ -101,6 +102,7 @@ export const copySchema = z.object({
     telegramBody: nonEmptyText,
     formTitle: nonEmptyText,
     formIntro: nonEmptyText,
+    priceSticker: nonEmptyText,
     fields: z.object({
       name: nonEmptyText,
       namePlaceholder: nonEmptyText,
@@ -158,12 +160,20 @@ export const projectSchema = z.object({
       description: nonEmptyText,
       direction: nonEmptyText,
       features: z.array(nonEmptyText).min(1),
+      testimonial: z.object({
+        quote: nonEmptyText,
+        author: nonEmptyText,
+      }),
     }),
     ru: z.object({
       title: nonEmptyText,
       description: nonEmptyText,
       direction: nonEmptyText,
       features: z.array(nonEmptyText).min(1),
+      testimonial: z.object({
+        quote: nonEmptyText,
+        author: nonEmptyText,
+      }),
     }),
   }),
 });

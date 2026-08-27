@@ -10,11 +10,7 @@
         "ru": "Волны любви к музыке, эстетике постеров 70-х и гривистым волкам"
       },
       "artVariant": "signal",
-      "stack": [
-        "HTML/CSS",
-        "Last.fm API",
-        "Caddy"
-      ],
+      "stack": ["HTML/CSS", "Last.fm API", "Caddy"],
       "liveUrl": "https://beerwolf.site",
       "translations": {
         "en": {
@@ -25,7 +21,11 @@
             "5(?) unique easter eggs",
             "Live fast.fm integration",
             "Day/Night themes"
-          ]
+          ],
+          "testimonial": {
+            "quote": "It feels less like a portfolio template and more like a place my character has actually lived in.",
+            "author": "Beerwolf / Maned wolf"
+          }
         },
         "ru": {
           "title": "Пиволк. Личный сигнал",
@@ -35,25 +35,25 @@
             "5 уникальных пасхалок",
             "Живая интеграция с Last.fm",
             "Смена тем"
-          ]
+          ],
+          "testimonial": {
+            "quote": "Это не шаблонное портфолио, а место, в котором мой персонаж будто действительно живёт.",
+            "author": "Пиволк / гривистый волк"
+          }
         }
       }
     },
     {
       "id": "cos-furreminder",
       "year": "2026",
-      "client": "Cosmo / Jackal",
+      "client": "Cosmopolite / Jackal",
       "image": "/uploads/fureminder.avif",
       "imageAlt": {
         "en": "Furry event calendar",
         "ru": "Календарь для фурри ивентов"
       },
       "artVariant": "riot",
-      "stack": [
-        "Python / AIOGram / FastAPI",
-        "GCal API",
-        "TS / React"
-      ],
+      "stack": ["Python / AIOGram / FastAPI", "GCal API", "TS / React"],
       "liveUrl": "https://t.me/Furreminderbot",
       "translations": {
         "en": {
@@ -64,7 +64,11 @@
             "Admin panel & analytics dashboard",
             "Realtime GCal sync",
             "Bot notifications"
-          ]
+          ],
+          "testimonial": {
+            "quote": "While working on the bot, the understanding of the task was almost intuitive, and it was built incredibly fast. I suspect a wizard wrote it.",
+            "author": "Cosmopolite"
+          }
         },
         "ru": {
           "title": "Скоро увидимся!",
@@ -74,7 +78,11 @@
             "Админ панель с аналитикой",
             "Живая синхронизация с GCal",
             "Напоминания за указаное время в боте"
-          ]
+          ],
+          "testimonial": {
+            "quote": "При работе над ботом понимание задачи было на каком-то интуитивном уровне, и сделано невероятно быстро. Предполагаю, что его написал колдун.",
+            "author": "Cosmopolite"
+          }
         }
       }
     }
