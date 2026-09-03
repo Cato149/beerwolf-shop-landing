@@ -25,7 +25,11 @@
             "5(?) unique easter eggs",
             "Live fast.fm integration",
             "Day/Night themes"
-          ]
+          ],
+          "testimonial": {
+            "quote": "It feels less like a portfolio template and more like a place my character has actually lived in.",
+            "author": "Beerwolf / Maned wolf"
+          }
         },
         "ru": {
           "title": "Пиволк. Личный сигнал",
@@ -35,14 +39,18 @@
             "5 уникальных пасхалок",
             "Живая интеграция с Last.fm",
             "Смена тем"
-          ]
+          ],
+          "testimonial": {
+            "quote": "Это не шаблонное портфолио, а место, в котором мой персонаж будто действительно живёт.",
+            "author": "Пиволк / гривистый волк"
+          }
         }
       }
     },
     {
       "id": "cos-furreminder",
       "year": "2026",
-      "client": "Cosmo / Jackal",
+      "client": "Cosmopolite / Jackal",
       "image": "/uploads/fureminder.avif",
       "imageAlt": {
         "en": "Furry event calendar",
@@ -64,7 +72,11 @@
             "Admin panel & analytics dashboard",
             "Realtime GCal sync",
             "Bot notifications"
-          ]
+          ],
+          "testimonial": {
+            "quote": "While working on the bot, the understanding of the task was almost intuitive, and it was built incredibly fast. I suspect a wizard wrote it.",
+            "author": "Cosmopolite"
+          }
         },
         "ru": {
           "title": "Скоро увидимся!",
@@ -74,7 +86,58 @@
             "Админ панель с аналитикой",
             "Живая синхронизация с GCal",
             "Напоминания за указаное время в боте"
-          ]
+          ],
+          "testimonial": {
+            "quote": "При работе над ботом понимание задачи было на каком-то интуитивном уровне, и сделано невероятно быстро. Предполагаю, что его написал колдун.",
+            "author": "Cosmopolite"
+          }
+        }
+      }
+    },
+    {
+      "id": "bw-varectra",
+      "year": "2026",
+      "client": "Varectra / Protogen",
+      "image": "/uploads/pasted-image-1788474540465.png",
+      "imageAlt": {
+        "en": "Varectra TUI",
+        "ru": "Varectra TUI"
+      },
+      "artVariant": "signal",
+      "stack": [
+        "Svelte",
+        "Atom",
+        "Sveltia CMS"
+      ],
+      "liveUrl": "varectra.net",
+      "translations": {
+        "en": {
+          "title": "A seamless TUI experience in the browser",
+          "description": "Thanks to connections and black-market dealings, I managed to obtain secret documents and assemble this TUI (Text User Interface)—complete with detailed documentation—for a very delightful (and occasionally shock-inducing) protogen.",
+          "direction": "The design language here is based on terminal aesthetics and ASCII art. But don't worry about having to learn commands—you can control everything using either keyboard shortcuts or the mouse. Still, it feels pretty cool to imagine yourself as a hacker, doesn't it?",
+          "features": [
+            "Мouse-free control",
+            "Classic IDE themes",
+            "Interactive character map"
+          ],
+          "testimonial": {
+            "quote": "Pending",
+            "author": "Varectra"
+          }
+        },
+        "ru": {
+          "title": "Легкий опыт TUI в браузере",
+          "description": "Благодаря связям и торгу на черном рынке удалось добыть секретные документы собрать вот такой TUI (Text User Interface) с подробной документацией по очень приятному и иногда бьющему током протогену.",
+          "direction": "Основой языка дизайна в данном случае стала эстетика терминала, ASCII-art. Но не бойтесь, что придется учить команды, ведь управление возможно как при помощи горячих клавиш, так и при помощи мышки. Но круто ведь ощутить себя хакером, не так ли?",
+          "features": [
+            "Управление без мыши",
+            "Классические темы из IDE",
+            "Интерактивная карта персонажа"
+          ],
+          "testimonial": {
+            "quote": "Pending",
+            "author": "Varectra"
+          }
         }
       }
     }
