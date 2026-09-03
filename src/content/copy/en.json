@@ -80,19 +80,31 @@
       "columns": [
         {
           "title": "TO DO",
-          "cards": ["Choose final domain", "Send gallery captions"]
+          "cards": [
+            "Choose final domain",
+            "Send gallery captions"
+          ]
         },
         {
           "title": "IN MOTION",
-          "cards": ["Archive card animation", "Mobile type pass"]
+          "cards": [
+            "Archive card animation",
+            "Mobile type pass"
+          ]
         },
         {
           "title": "REVIEW",
-          "cards": ["Hero color proof"]
+          "cards": [
+            "Hero color proof"
+          ]
         },
         {
           "title": "DONE",
-          "cards": ["Moodboard", "Content map", "Wireframe"]
+          "cards": [
+            "Moodboard",
+            "Content map",
+            "Wireframe"
+          ]
         }
       ]
     },
@@ -113,13 +125,17 @@
           "text": "Revision logged as BW-28. You can follow it from here."
         }
       ],
-      "actions": ["Project status", "Request revision", "Get materials"]
+      "actions": [
+        "Project status",
+        "Request revision",
+        "Get materials"
+      ]
     }
   },
   "archive": {
     "eyebrow": "Previous transmissions",
     "title": "Pull a story from the archive.",
-    "intro": "Three fictional commission dossiers show how different identities can produce completely different web worlds. Real projects can replace them from the admin panel.",
+    "intro": "Three real commission dossiers show how different identities can produce completely different web worlds.",
     "labels": {
       "client": "Identity",
       "year": "Logged",
@@ -164,7 +180,12 @@
       "consent": "I agree that Beerwolf may use these details to reply to this project request.",
       "honeypot": "Leave this field empty"
     },
-    "methods": ["Telegram", "Discord", "Email", "Other"],
+    "methods": [
+      "Telegram",
+      "Discord",
+      "Email",
+      "Other"
+    ],
     "submit": "Send the signal",
     "sending": "Sending…",
     "success": "Signal received. I’ll follow your chosen trail shortly.",
