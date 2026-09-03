@@ -24,6 +24,14 @@ env:
   VITE_BASE_PATH: /
   # Public Formspree endpoint used by the contact form at build time.
   VITE_FORMSPREE_ENDPOINT: ${{ vars.VITE_FORMSPREE_ENDPOINT }}
+  # Umami website UUID baked into the production tracker script.
+  VITE_UMAMI_WEBSITE_ID: ${{ vars.VITE_UMAMI_WEBSITE_ID }}
+  # Tracker script URL. Empty values use Umami Cloud.
+  VITE_UMAMI_SCRIPT_URL: ${{ vars.VITE_UMAMI_SCRIPT_URL }}
+  # Hostnames allowed to send events. Empty values default to shop.beerwolf.site.
+  VITE_UMAMI_DOMAINS: ${{ vars.VITE_UMAMI_DOMAINS }}
+  # Optional Umami API host when the script is served from another origin.
+  VITE_UMAMI_HOST_URL: ${{ vars.VITE_UMAMI_HOST_URL }}
 
 jobs:
   deploy:
@@ -229,12 +237,16 @@ jobs:
           tar -xzf "$ARCHIVE" -C "$RELEASE_DIR"
           test -f "$RELEASE_DIR/index.html"
 
-          if test -f "$CADDYFILE"; then
-            cp "$CADDYFILE" "$CADDYFILE_BACKUP"
-          else
-            printf 'import beerwolf.caddy\n' > "$CADDYFILE"
-            cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+          # The host Caddyfile is owned by the bot (render-caddyfile.py):
+          # global { email } plus shop-bot.beerwolf.site. This deploy only
+          # writes the landing snippet and appends `import` once.
+          if ! test -f "$CADDYFILE"; then
+            echo "Host Caddyfile is missing at ${CADDYFILE}." >&2
+            echo "Render it from the bot first (global options + shop-bot), then redeploy." >&2
+            exit 1
           fi
+          cp "$CADDYFILE" "$CADDYFILE_BACKUP"
+
           snippet_existed=false
           if test -f "$CADDY_SNIPPET"; then
             cp "$CADDY_SNIPPET" "$SNIPPET_BACKUP"
@@ -242,8 +254,8 @@ jobs:
           fi
           install -m 0644 /tmp/beerwolf.caddy "$CADDY_SNIPPET"
 
-          if ! awk '$0 == "import beerwolf.caddy" { found=1 } END { exit !found }' "$CADDYFILE"; then
-            printf '\nimport beerwolf.caddy\n' >> "$CADDYFILE"
+          if ! awk '{ sub(/\r$/, "") } $1 == "import" && $2 ~ /(^|\/)beerwolf\.caddy$/ { found=1 } END { exit !found }' "$CADDYFILE"; then
+            printf '\n# beerwolf landing (shop-landing). Keep this import when re-rendering Caddyfile.\nimport beerwolf.caddy\n' >> "$CADDYFILE"
           fi
 
           if ! command -v caddy >/dev/null; then
@@ -295,4 +307,6 @@ jobs:
           DEPLOY
 
       - name: Verify production
-        run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://beerwolf.site/healthz
+        # Apex beerwolf.site still has a Timeweb A record (193.104.57.96).
+        # This VPS is shop.beerwolf.site / shop-bot.beerwolf.site (85.137.89.253).
+        run: curl --fail --silent --show-error --retry 5 --retry-delay 2 https://shop.beerwolf.site/healthz

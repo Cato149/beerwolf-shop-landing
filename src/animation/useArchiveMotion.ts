@@ -13,7 +13,15 @@ type UseArchiveMotionOptions = {
 };
 
 function getCardDetails(card: HTMLElement) {
-  return card.querySelectorAll('.archive-card__dossier > *, .archive-card__art img');
+  return card.querySelectorAll(
+    '.archive-card__dossier > *:not(.archive-card__link):not(.archive-card__status), .archive-card__art img',
+  );
+}
+
+function setScrollCardPointerEvents(cards: HTMLElement[], activeIndex: number) {
+  cards.forEach((card, cardIndex) => {
+    card.style.pointerEvents = cardIndex === activeIndex ? 'auto' : 'none';
+  });
 }
 
 /** Real timeline label: ScrollTrigger.labelToScroll() only looks up exact keys. */
@@ -130,6 +138,7 @@ export function useArchiveMotion(
 
           primeScrollCards();
           primeMenuOnlyCards();
+          setScrollCardPointerEvents(scrollCards, 0);
 
           const heading =
             scope.current?.querySelector<HTMLElement>('[data-section-heading]');
@@ -147,15 +156,15 @@ export function useArchiveMotion(
               onUpdate: (self) => {
                 if (menuActiveIndexRef.current !== null) return;
 
-                if (scrollCards.length <= 1) {
-                  onActiveIndexChange?.(0);
-                  return;
-                }
+                const activeIndex =
+                  scrollCards.length <= 1
+                    ? 0
+                    : Math.min(
+                        scrollCards.length - 1,
+                        Math.round(self.progress * (scrollCards.length - 1)),
+                      );
 
-                const activeIndex = Math.min(
-                  scrollCards.length - 1,
-                  Math.round(self.progress * (scrollCards.length - 1)),
-                );
+                setScrollCardPointerEvents(scrollCards, activeIndex);
                 onActiveIndexChange?.(activeIndex);
               },
             },

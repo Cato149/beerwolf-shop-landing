@@ -1,4 +1,5 @@
 import { useCallback, useRef, useState, type CSSProperties } from 'react';
+import { analyticsEvents, trackEvent, umamiEventAttrs } from '../analytics/umami';
 import {
   ARCHIVE_SCROLL_SEQUENCE_LIMIT,
   type ArchiveMotionControls,
@@ -42,6 +43,15 @@ export function ArchivePortfolio() {
   useSectionIntroMotion(sectionRef);
 
   const handleSelect = (index: number) => {
+    const project = projects[index];
+    if (project) {
+      trackEvent(analyticsEvents.archiveSelect, {
+        project: project.id,
+        index,
+        locale,
+      });
+    }
+
     setSelectedIndex(index);
 
     if (motionControlsRef.current?.isScrollSequenceCard(index)) {
@@ -165,12 +175,22 @@ export function ArchivePortfolio() {
                         </div>
                       </dl>
 
+                      <figure className="archive-card__testimonial">
+                        <blockquote>“{translatedProject.testimonial.quote}”</blockquote>
+                        <figcaption>
+                          — {translatedProject.testimonial.author}
+                        </figcaption>
+                      </figure>
+
                       {project.liveUrl ? (
                         <a
                           className="archive-card__link"
                           href={project.liveUrl}
                           target="_blank"
-                          rel="noreferrer"
+                          rel="noopener noreferrer"
+                          {...umamiEventAttrs(analyticsEvents.archiveProject, {
+                            project: project.id,
+                          })}
                         >
                           {copy.common.viewProject} ↗
                         </a>

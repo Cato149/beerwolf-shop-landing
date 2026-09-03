@@ -11,14 +11,23 @@ test('presents the complete commission journey', async ({ page }) => {
     }),
   ).toBeVisible();
   await expect(
-    page.getByRole('link', { name: /Order via TelegramBot/i }).first(),
-  ).toBeVisible();
-  await expect(page.locator('[data-archive-card]')).toHaveCount(3);
+    page.getByRole('link', { name: /Start commission.*Telegram Bot/i }).first(),
+  ).toHaveAttribute('data-umami-event', 'telegram_bot');
+  await expect(page.getByRole('link', { name: 'ME' }).first()).toHaveAttribute(
+    'data-umami-event',
+    'personal_site',
+  );
+  await expect(page.locator('[data-archive-card]')).toHaveCount(2);
+  await expect(page.locator('.archive-card__testimonial')).toHaveCount(2);
+  await expect(page.locator('.telegram-ticket .contact-price-sticker')).toContainText(
+    '$470',
+  );
+  await expect(page.getByRole('link', { name: /ritual|ритуал/i })).toHaveCount(0);
   await expect(page.locator('#archive [data-section-ticket]')).toHaveCount(1);
   await expect(page.locator('#process [data-section-ticket]')).toHaveCount(1);
   await expect(
     page.getByRole('heading', {
-      name: 'Need website? Better call Beerwolf.',
+      name: /Need website\?\s*Better call\s*Beerwolf/i,
     }),
   ).toBeAttached();
 });
@@ -33,7 +42,9 @@ test('supports keyboard entry and persists Russian', async ({ page }) => {
   await expect(meLink).toBeVisible();
   await expect(meLink).toHaveAttribute('href', /beerwolf\.site/);
 
-  await page.getByRole('button', { name: 'RU' }).first().click();
+  const russianButton = page.getByRole('button', { name: 'RU' }).first();
+  await russianButton.focus();
+  await page.keyboard.press('Enter');
   await expect(page.locator('html')).toHaveAttribute('lang', 'ru');
   await expect(page.getByRole('heading', { level: 1 })).toContainText('фурри-образов');
   await expect(page.getByRole('link', { name: 'Пиволк' })).toBeVisible();
@@ -53,7 +64,10 @@ test('has no serious automated accessibility violations', async ({ page }) => {
   expect(severeViolations).toEqual([]);
 });
 
-test('admin studio does not use a relative OAuth placeholder', async ({ page, request }) => {
+test('admin studio does not use a relative OAuth placeholder', async ({
+  page,
+  request,
+}) => {
   const config = await request.get('/admin/config.yml');
   expect(config.ok()).toBeTruthy();
   const body = await config.text();
@@ -79,7 +93,7 @@ test('archive file picker stays on the selected dossier', async ({ page }) => {
   await picker.selectOption({ index: 1 });
 
   await expect(page.getByRole('heading', { level: 1 })).not.toBeInViewport();
-  await expect(page.getByRole('heading', { name: 'Soft Riot' })).toBeVisible();
+  await expect(page.getByRole('heading', { name: 'See you soon!' })).toBeVisible();
 });
 
 test.describe('reduced motion', () => {
@@ -90,9 +104,18 @@ test.describe('reduced motion', () => {
     await page.locator('#archive').scrollIntoViewIfNeeded();
 
     const cards = page.locator('[data-archive-card]');
-    await expect(cards).toHaveCount(3);
-    for (let index = 0; index < 3; index += 1) {
+    await expect(cards).toHaveCount(2);
+    for (let index = 0; index < 2; index += 1) {
       await expect(cards.nth(index)).toBeVisible();
     }
+  });
+
+  test('live dossier link can be clicked', async ({ page }) => {
+    await page.goto('/');
+    const link = page.locator('.archive-card__link').first();
+    await link.scrollIntoViewIfNeeded();
+    await expect(link).toBeVisible();
+    await expect(link).toHaveAttribute('href', 'https://beerwolf.site');
+    await link.click({ trial: true });
   });
 });

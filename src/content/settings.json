@@ -1,20 +1,20 @@
 {
   "brandName": "Beerwolf",
   "telegramBotUrl": "https://t.me/beerwolf_shop_bot",
-  "email": "hello@beerwolf.studio",
+  "email": "24oz.beerwolf@gmail.com",
   "personalSiteUrl": "https://beerwolf.site",
   "socials": [
     {
       "label": "Telegram",
-      "url": "https://t.me/beerwolf_shop_bot"
+      "url": "https://t.me/beerwoof"
     },
     {
       "label": "Discord",
-      "url": "https://discord.com/"
+      "url": "https://discord.com/users/472506535835336704"
     },
     {
       "label": "Email",
-      "url": "mailto:hello@beerwolf.studio"
+      "url": "mailto:24oz.beerwolf@gmail.com"
     }
   ]
 }

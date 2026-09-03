@@ -1,3 +1,4 @@
+import { analyticsEvents, trackEvent } from '../../analytics/umami';
 import { supportedLocales, type Locale } from '../../content';
 import { useLocale } from '../../i18n/useLocale';
 
@@ -12,7 +13,12 @@ export function LanguageSwitcher() {
           type="button"
           key={candidate}
           aria-pressed={candidate === locale}
-          onClick={() => setLocale(candidate)}
+          onClick={() => {
+            if (candidate !== locale) {
+              trackEvent(analyticsEvents.languageSwitch, { from: locale, to: candidate });
+            }
+            setLocale(candidate);
+          }}
         >
           {candidate.toUpperCase()}
         </button>

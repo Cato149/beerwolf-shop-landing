@@ -61,6 +61,8 @@ collections:
         widget: object
         fields:
           - { label: Telegram CTA, name: telegramCta, widget: string }
+          # Smaller second line shown below the main Telegram action.
+          - { label: Telegram CTA note, name: telegramCtaNote, widget: string }
           - { label: Personal site link, name: me, widget: string }
           - { label: Visit project, name: viewProject, widget: string }
           - { label: Demo project, name: demoProject, widget: string }
@@ -175,6 +177,8 @@ collections:
           - { label: Telegram body, name: telegramBody, widget: text }
           - { label: Form title, name: formTitle, widget: string }
           - { label: Form introduction, name: formIntro, widget: text }
+          # Copy printed on the red dealership-style star sticker.
+          - { label: Price sticker, name: priceSticker, widget: string }
           - label: Field labels
             name: fields
             widget: object
@@ -271,6 +275,13 @@ collections:
                         name: features
                         widget: list
                         field: { label: Feature, name: feature, widget: string }
+                      # Customer quote printed in the project dossier.
+                      - label: Testimonial
+                        name: testimonial
+                        widget: object
+                        fields:
+                          - { label: Quote, name: quote, widget: text }
+                          - { label: Attribution, name: author, widget: string }
                   - label: Russian
                     name: ru
                     widget: object
@@ -282,6 +293,13 @@ collections:
                         name: features
                         widget: list
                         field: { label: Feature, name: feature, widget: string }
+                      # Russian version of the customer quote and attribution.
+                      - label: Testimonial
+                        name: testimonial
+                        widget: object
+                        fields:
+                          - { label: Quote, name: quote, widget: text }
+                          - { label: Attribution, name: author, widget: string }
 
   - name: settings
     label: Settings

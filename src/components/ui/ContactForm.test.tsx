@@ -1,8 +1,17 @@
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { afterEach, vi } from 'vitest';
+import { analyticsEvents, trackEvent } from '../../analytics/umami';
 import { LocaleProvider } from '../../i18n/LocaleProvider';
 import { ContactForm } from './ContactForm';
+
+vi.mock('../../analytics/umami', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('../../analytics/umami')>();
+  return {
+    ...actual,
+    trackEvent: vi.fn(),
+  };
+});
 
 const renderForm = () =>
   render(
@@ -14,6 +23,7 @@ const renderForm = () =>
 afterEach(() => {
   vi.unstubAllEnvs();
   vi.unstubAllGlobals();
+  vi.mocked(trackEvent).mockClear();
 });
 
 describe('ContactForm', () => {
@@ -35,6 +45,9 @@ describe('ContactForm', () => {
     expect(screen.getByRole('status')).toHaveTextContent(
       'Please complete the required fields',
     );
+    expect(trackEvent).toHaveBeenCalledWith(analyticsEvents.contactFormInvalid, {
+      locale: 'en',
+    });
   });
 
   it('submits valid data and announces success', async () => {
@@ -55,5 +68,11 @@ describe('ContactForm', () => {
 
     expect(fetchMock).toHaveBeenCalledOnce();
     expect(await screen.findByRole('status')).toHaveTextContent('Signal received');
+    expect(trackEvent).toHaveBeenCalledWith(analyticsEvents.contactFormSuccess, {
+      locale: 'en',
+      method: 'Telegram',
+      has_budget: false,
+      has_references: false,
+    });
   });
 });

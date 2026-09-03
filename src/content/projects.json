@@ -10,11 +10,7 @@
         "ru": "Волны любви к музыке, эстетике постеров 70-х и гривистым волкам"
       },
       "artVariant": "signal",
-      "stack": [
-        "HTML/CSS",
-        "Last.fm API",
-        "Caddy"
-      ],
+      "stack": ["HTML/CSS", "Last.fm API", "Caddy"],
       "liveUrl": "https://beerwolf.site",
       "translations": {
         "en": {
@@ -57,11 +53,7 @@
         "ru": "Календарь для фурри ивентов"
       },
       "artVariant": "riot",
-      "stack": [
-        "Python / AIOGram / FastAPI",
-        "GCal API",
-        "TS / React"
-      ],
+      "stack": ["Python / AIOGram / FastAPI", "GCal API", "TS / React"],
       "liveUrl": "https://t.me/Furreminderbot",
       "translations": {
         "en": {
@@ -90,53 +82,6 @@
           "testimonial": {
             "quote": "При работе над ботом понимание задачи было на каком-то интуитивном уровне, и сделано невероятно быстро. Предполагаю, что его написал колдун.",
             "author": "Cosmopolite"
-          }
-        }
-      }
-    },
-    {
-      "id": "bw-varectra",
-      "year": "2026",
-      "client": "Varectra / Protogen",
-      "image": "/uploads/pasted-image-1788474540465.png",
-      "imageAlt": {
-        "en": "Varectra TUI",
-        "ru": "Varectra TUI"
-      },
-      "artVariant": "signal",
-      "stack": [
-        "Svelte",
-        "Atom",
-        "Sveltia CMS"
-      ],
-      "liveUrl": "varectra.net",
-      "translations": {
-        "en": {
-          "title": "A seamless TUI experience in the browser",
-          "description": "Thanks to connections and black-market dealings, I managed to obtain secret documents and assemble this TUI (Text User Interface)—complete with detailed documentation—for a very delightful (and occasionally shock-inducing) protogen.",
-          "direction": "The design language here is based on terminal aesthetics and ASCII art. But don't worry about having to learn commands—you can control everything using either keyboard shortcuts or the mouse. Still, it feels pretty cool to imagine yourself as a hacker, doesn't it?",
-          "features": [
-            "Мouse-free control",
-            "Classic IDE themes",
-            "Interactive character map"
-          ],
-          "testimonial": {
-            "quote": "Pending",
-            "author": "Varectra"
-          }
-        },
-        "ru": {
-          "title": "Легкий опыт TUI в браузере",
-          "description": "Благодаря связям и торгу на черном рынке удалось добыть секретные документы собрать вот такой TUI (Text User Interface) с подробной документацией по очень приятному и иногда бьющему током протогену.",
-          "direction": "Основой языка дизайна в данном случае стала эстетика терминала, ASCII-art. Но не бойтесь, что придется учить команды, ведь управление возможно как при помощи горячих клавиш, так и при помощи мышки. Но круто ведь ощутить себя хакером, не так ли?",
-          "features": [
-            "Управление без мыши",
-            "Классические темы из IDE",
-            "Интерактивная карта персонажа"
-          ],
-          "testimonial": {
-            "quote": "Pending",
-            "author": "Varectra"
           }
         }
       }
