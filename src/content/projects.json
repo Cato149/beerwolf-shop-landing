@@ -109,7 +109,7 @@
         "Atom",
         "Sveltia CMS"
       ],
-      "liveUrl": "varectra.net",
+      "liveUrl": "https://varectra.net",
       "translations": {
         "en": {
           "title": "A seamless TUI experience in the browser",
