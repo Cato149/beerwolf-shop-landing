@@ -14,7 +14,7 @@ type UseArchiveMotionOptions = {
 
 function getCardDetails(card: HTMLElement) {
   return card.querySelectorAll(
-    '.archive-card__dossier > *:not(.archive-card__link):not(.archive-card__status), .archive-card__art img',
+    '.archive-card__dossier > *:not(.archive-card__link):not(.archive-card__status), .archive-card__art img, .archive-card__testimonial',
   );
 }
 
@@ -140,8 +140,9 @@ export function useArchiveMotion(
           primeMenuOnlyCards();
           setScrollCardPointerEvents(scrollCards, 0);
 
-          const heading =
-            scope.current?.querySelector<HTMLElement>('[data-section-heading]');
+          const heading = scope.current?.querySelector<HTMLElement>(
+            '[data-section-heading]',
+          );
 
           const timeline = gsap.timeline({
             scrollTrigger: {

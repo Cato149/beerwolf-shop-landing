@@ -123,18 +123,27 @@ export function ArchivePortfolio() {
                   </header>
 
                   <div className="archive-card__grid">
-                    <figure className="archive-card__art">
-                      <img
-                        src={getAssetUrl(project.image)}
-                        alt={project.imageAlt[locale]}
-                        loading="lazy"
-                        width="1200"
-                        height="760"
-                      />
-                      <figcaption>
-                        SCREEN PROOF / {project.artVariant.toUpperCase()}
-                      </figcaption>
-                    </figure>
+                    <div className="archive-card__visual">
+                      <figure className="archive-card__art">
+                        <img
+                          src={getAssetUrl(project.image)}
+                          alt={project.imageAlt[locale]}
+                          loading="lazy"
+                          width="1200"
+                          height="750"
+                        />
+                        <figcaption>
+                          SCREEN PROOF / {project.artVariant.toUpperCase()}
+                        </figcaption>
+                      </figure>
+
+                      <figure className="archive-card__testimonial">
+                        <blockquote>“{translatedProject.testimonial.quote}”</blockquote>
+                        <figcaption>
+                          — {translatedProject.testimonial.author}
+                        </figcaption>
+                      </figure>
+                    </div>
 
                     <div className="archive-card__dossier">
                       <div className="archive-card__title-row">
@@ -174,13 +183,6 @@ export function ArchivePortfolio() {
                           <dd>{project.stack.join(' / ')}</dd>
                         </div>
                       </dl>
-
-                      <figure className="archive-card__testimonial">
-                        <blockquote>“{translatedProject.testimonial.quote}”</blockquote>
-                        <figcaption>
-                          — {translatedProject.testimonial.author}
-                        </figcaption>
-                      </figure>
 
                       {project.liveUrl ? (
                         <a
